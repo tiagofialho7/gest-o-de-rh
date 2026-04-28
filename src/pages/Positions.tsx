@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Plus, Pencil, Trash2, MoreHorizontal } from "lucide-react";
+import { Plus, Pencil, Trash2, MoreHorizontal, FileSpreadsheet } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -32,15 +32,43 @@ import { useDeletePosition } from "@/hooks/useDeletePosition";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 import Layout from "@/components/Layout";
+import { ExcelImportDialog, type ImportResult } from "@/components/ExcelImportDialog";
+import { useAuth } from "@/hooks/useAuth";
+import { useUserRole } from "@/hooks/useUserRole";
+import { useRequireOrganization } from "@/hooks/useRequireOrganization";
+import { supabase } from "@/integrations/supabase/client";
+import { useQueryClient } from "@tanstack/react-query";
+import type { Database } from "@/integrations/supabase/types";
+
+type SeniorityLevel = Database["public"]["Enums"]["seniority_level"];
+
+const LEVEL_MAP: Record<string, SeniorityLevel> = {
+  estagiario: "estagiario",
+  estagiário: "estagiario",
+  trainee: "junior", // mapped: enum doesn't have trainee
+  junior: "junior",
+  júnior: "junior",
+  pleno: "pleno",
+  senior: "senior",
+  sênior: "senior",
+  especialista: "especialista",
+  lider: "lider",
+  líder: "lider",
+};
 
 
 export default function Positions() {
   const navigate = useNavigate();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [positionToDelete, setPositionToDelete] = useState<string | null>(null);
+  const [importOpen, setImportOpen] = useState(false);
 
   const { data: positions, isLoading } = usePositions();
   const deletePosition = useDeletePosition();
+  const { user } = useAuth();
+  const { canEdit } = useUserRole(user?.id);
+  const { organization } = useRequireOrganization();
+  const queryClient = useQueryClient();
 
   const handleEdit = (id: string) => {
     navigate(`/positions/${id}/edit`);
@@ -73,10 +101,18 @@ export default function Positions() {
         <Card>
           <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <CardTitle>Lista de Cargos</CardTitle>
-            <Button onClick={() => navigate("/positions/new")}>
-              <Plus className="mr-2 h-4 w-4" />
-              Novo Cargo
-            </Button>
+            <div className="flex gap-2">
+              {canEdit && (
+                <Button variant="outline" onClick={() => setImportOpen(true)}>
+                  <FileSpreadsheet className="mr-2 h-4 w-4" />
+                  Importar Excel
+                </Button>
+              )}
+              <Button onClick={() => navigate("/positions/new")}>
+                <Plus className="mr-2 h-4 w-4" />
+                Novo Cargo
+              </Button>
+            </div>
           </CardHeader>
           <CardContent>
             <Table>
