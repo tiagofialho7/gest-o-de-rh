@@ -31,13 +31,17 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Building2, ChevronDown, Edit, Plus, Trash2, Users, MoreHorizontal, Mail, Phone } from "lucide-react";
+import { Building2, ChevronDown, Edit, Plus, Trash2, Users, MoreHorizontal, Mail, Phone, FileSpreadsheet } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { ExcelImportDialog, type ImportResult } from "@/components/ExcelImportDialog";
+import { supabase } from "@/integrations/supabase/client";
+import { useQueryClient } from "@tanstack/react-query";
+import { useRequireOrganization } from "@/hooks/useRequireOrganization";
 
 export default function Departments() {
   const navigate = useNavigate();
@@ -46,10 +50,13 @@ export default function Departments() {
   const { data: departments, isLoading } = useDepartments();
   const { data: employees } = useEmployees();
   const deleteMutation = useDeleteDepartment();
+  const queryClient = useQueryClient();
+  const { organization } = useRequireOrganization();
 
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [departmentToDelete, setDepartmentToDelete] = useState<string | null>(null);
   const [expandedDepartments, setExpandedDepartments] = useState<Set<string>>(new Set());
+  const [importOpen, setImportOpen] = useState(false);
 
   const handleEdit = (department: Department) => {
     navigate(`/departments/${department.id}/edit`);
@@ -106,10 +113,16 @@ export default function Departments() {
           <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <CardTitle>Lista de Departamentos</CardTitle>
             {canEdit && (
-              <Button onClick={handleCreate}>
-                <Plus className="h-4 w-4 mr-2" />
-                Novo Departamento
-              </Button>
+              <div className="flex gap-2">
+                <Button variant="outline" onClick={() => setImportOpen(true)}>
+                  <FileSpreadsheet className="h-4 w-4 mr-2" />
+                  Importar Excel
+                </Button>
+                <Button onClick={handleCreate}>
+                  <Plus className="h-4 w-4 mr-2" />
+                  Novo Departamento
+                </Button>
+              </div>
             )}
           </CardHeader>
           <CardContent>
@@ -270,6 +283,71 @@ export default function Departments() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      <ExcelImportDialog
+        open={importOpen}
+        onOpenChange={setImportOpen}
+        title="Importar Departamentos"
+        description="Importe vários departamentos via planilha Excel."
+        templateFileName="modelo-departamentos.xlsx"
+        sheetName="Departamentos"
+        columns={[
+          { header: "Nome do Departamento", example: "Consultoria", required: true },
+          { header: "Código", example: "CON" },
+          { header: "Descrição", example: "Área de consultoria empresarial" },
+        ]}
+        notes={[
+          "Nome do Departamento é obrigatório.",
+          'A coluna "Código" será incluída no início da Descrição como "[CÓD] descrição" (o esquema atual não tem campo dedicado para código).',
+          "Departamentos com nome duplicado serão sinalizados como aviso, mas não bloqueiam a importação.",
+        ]}
+        onImport={async (rows): Promise<ImportResult> => {
+          const result: ImportResult = { success: 0, errors: [], warnings: [] };
+          if (!organization?.id) {
+            result.errors.push({ row: 0, message: "Organização não encontrada" });
+            return result;
+          }
+
+          const existingNames = new Set(
+            (departments || []).map((d) => d.name.trim().toLowerCase())
+          );
+
+          for (let i = 0; i < rows.length; i++) {
+            const rowNum = i + 2; // header is row 1
+            const r = rows[i];
+            const name = (r["Nome do Departamento"] || "").trim();
+            const code = (r["Código"] || "").trim();
+            const desc = (r["Descrição"] || "").trim();
+
+            if (!name) {
+              result.errors.push({ row: rowNum, message: "Nome do Departamento é obrigatório" });
+              continue;
+            }
+
+            if (existingNames.has(name.toLowerCase())) {
+              result.warnings.push({ row: rowNum, message: `Departamento "${name}" já existe (importado mesmo assim)` });
+            }
+
+            const description = code
+              ? `[${code}] ${desc}`.trim()
+              : desc || null;
+
+            const { error } = await supabase
+              .from("departments")
+              .insert({ name, description, organization_id: organization.id });
+
+            if (error) {
+              result.errors.push({ row: rowNum, message: error.message });
+            } else {
+              result.success++;
+              existingNames.add(name.toLowerCase());
+            }
+          }
+
+          queryClient.invalidateQueries({ queryKey: ["departments"] });
+          return result;
+        }}
+      />
     </>
   );
 }
