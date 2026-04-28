@@ -136,35 +136,71 @@ const PwrCareers = () => {
   });
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* HEADER + BANNER */}
-      <header className="bg-[hsl(225,55%,15%)]">
-        <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-          <img src={pwrLogo} alt="PWR Gestão" className="h-12 w-auto bg-white rounded-md p-1.5" />
-          <nav className="hidden md:flex items-center gap-6 text-sm text-white/80">
-            <a href="#sobre" className="hover:text-white transition-colors">Sobre</a>
-            <a href="#vagas" className="hover:text-white transition-colors">Vagas</a>
-            <a href="https://pwrgestao.com/" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Site</a>
+    <div className="min-h-screen bg-[#0a0a0a] text-white">
+      {/* HEADER NAV */}
+      <header className="absolute top-0 left-0 right-0 z-20">
+        <div className="max-w-6xl mx-auto px-4 py-5 flex items-center justify-between">
+          <img src={pwrLogo} alt="PWR Gestão" className="h-11 w-auto bg-white rounded-md p-1.5 shadow-lg" />
+          <nav className="hidden md:flex items-center gap-7 text-sm font-semibold uppercase tracking-wider text-white/80">
+            <a href="#sobre" className="hover:text-[hsl(20,100%,55%)] transition-colors">Sobre</a>
+            <a href="#vagas" className="hover:text-[hsl(20,100%,55%)] transition-colors">Vagas</a>
+            <a href="https://pwrgestao.com/" target="_blank" rel="noopener noreferrer" className="hover:text-[hsl(20,100%,55%)] transition-colors">Site</a>
           </nav>
-        </div>
-        <div className="relative">
-          <img src={pwrBanner} alt="Venha fazer parte dessa jornada" className="w-full h-auto block" />
         </div>
       </header>
 
+      {/* HERO com banner como background */}
+      <section
+        className="relative min-h-[85vh] flex items-center justify-center overflow-hidden"
+        style={{
+          backgroundImage: `linear-gradient(rgba(10,10,10,0.7), rgba(10,10,10,0.85)), url(${pwrBanner})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      >
+        {/* Vinheta laranja */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent" />
+        <div className="absolute -top-40 -right-40 w-[500px] h-[500px] bg-[hsl(20,100%,55%)]/20 rounded-full blur-3xl" />
+        <div className="absolute -bottom-40 -left-40 w-[500px] h-[500px] bg-[hsl(20,100%,55%)]/10 rounded-full blur-3xl" />
+
+        <div className="relative z-10 text-center px-4 max-w-5xl mx-auto pt-20">
+          <Badge className="mb-6 bg-[hsl(20,100%,55%)] hover:bg-[hsl(20,100%,55%)] text-white border-0 px-4 py-1.5 text-sm font-bold tracking-widest uppercase">
+            #NuncaParar
+          </Badge>
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-black uppercase leading-[0.95] tracking-tight mb-6">
+            <span className="block">Venha fazer parte</span>
+            <span className="block">dessa <span className="text-[hsl(20,100%,55%)]">jornada</span></span>
+          </h1>
+          <p className="text-xl md:text-2xl text-white/80 max-w-2xl mx-auto mb-10 font-light">
+            Nós somos <strong className="font-bold text-white">o time que nunca para</strong>.
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-4">
+            <Button asChild size="lg" className="bg-[hsl(20,100%,55%)] hover:bg-[hsl(20,100%,50%)] text-white font-bold uppercase tracking-wider rounded-full px-8 py-6 text-base shadow-2xl shadow-[hsl(20,100%,55%)]/40">
+              <a href="#vagas">Ver vagas abertas</a>
+            </Button>
+            <Button asChild size="lg" variant="outline" className="border-2 border-white/30 bg-white/5 hover:bg-white/10 text-white font-bold uppercase tracking-wider rounded-full px-8 py-6 text-base">
+              <a href="#sobre">Conheça a PWR</a>
+            </Button>
+          </div>
+        </div>
+      </section>
+
       {/* SOBRE */}
-      <section id="sobre" className="py-16 px-4">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-10">
-            <Badge className="mb-4 bg-[hsl(20,100%,55%)] hover:bg-[hsl(20,100%,55%)] text-white border-0">
-              #NuncaParar
-            </Badge>
-            <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight text-[hsl(225,55%,15%)] dark:text-foreground">
-              NÓS SOMOS O TIME QUE <span className="text-[hsl(20,100%,55%)]">NUNCA PARA</span>
+      <section id="sobre" className="py-24 px-4 bg-[#0a0a0a] relative">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(255,90,30,0.08),_transparent_60%)]" />
+        <div className="max-w-4xl mx-auto relative">
+          <div className="text-center mb-14">
+            <div className="inline-block mb-6">
+              <div className="h-1 w-20 bg-[hsl(20,100%,55%)] mx-auto mb-4" />
+              <span className="text-[hsl(20,100%,55%)] uppercase tracking-[0.3em] text-xs font-bold">Quem somos</span>
+            </div>
+            <h2 className="text-4xl md:text-6xl font-black tracking-tight text-white uppercase leading-[1]">
+              NÓS SOMOS O TIME QUE
+              <span className="block text-[hsl(20,100%,55%)] mt-2">NUNCA PARA</span>
             </h2>
           </div>
 
-          <div className="prose prose-lg dark:prose-invert max-w-none text-foreground/90 leading-relaxed space-y-5 [&_p]:text-justify">
+          <div className="space-y-6 text-lg leading-relaxed text-white/80 [&_p]:text-justify [&_strong]:text-white">
             <p>
               Somos um tipo diferente de pessoas. Não somos o gênio iluminado, muito menos o artista com um dom especial, nós somos apenas os que <strong>NUNCA PARAM</strong>. Ganhamos, conquistamos, nos apossamos do que queremos não por um milagre, mas pelo suor que derramamos no processo. Não paramos, não descansamos, até conseguir.
             </p>
@@ -195,30 +231,30 @@ const PwrCareers = () => {
           </div>
 
           {/* MISSÃO + 10 ANOS */}
-          <div className="grid md:grid-cols-2 gap-6 mt-14">
-            <Card className="border-2 border-[hsl(20,100%,55%)]/30 bg-gradient-to-br from-[hsl(20,100%,55%)]/5 to-transparent">
+          <div className="grid md:grid-cols-2 gap-6 mt-20">
+            <Card className="bg-gradient-to-br from-[hsl(20,100%,55%)]/15 to-transparent border-[hsl(20,100%,55%)]/40 border-2">
               <CardContent className="p-8">
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="size-10 rounded-lg bg-[hsl(20,100%,55%)] flex items-center justify-center">
-                    <Target className="size-5 text-white" />
+                  <div className="size-12 rounded-lg bg-[hsl(20,100%,55%)] flex items-center justify-center">
+                    <Target className="size-6 text-white" />
                   </div>
-                  <h3 className="text-xl font-bold">Nossa Missão</h3>
+                  <h3 className="text-2xl font-black uppercase text-white">Nossa Missão</h3>
                 </div>
-                <p className="text-foreground/80 leading-relaxed">
-                  O Grupo PWR Gestão promove a riqueza e a produtividade, por meio da garra, da consistência e da gratidão, defendendo irrestritamente o empreendedorismo e a liberdade.
+                <p className="text-white/80 leading-relaxed">
+                  O Grupo PWR Gestão promove a <strong className="text-white">riqueza e a produtividade</strong>, por meio da garra, da consistência e da gratidão, defendendo irrestritamente o empreendedorismo e a liberdade.
                 </p>
               </CardContent>
             </Card>
-            <Card className="border-2 border-[hsl(225,55%,15%)]/20 bg-gradient-to-br from-[hsl(225,55%,15%)]/5 to-transparent">
+            <Card className="bg-gradient-to-br from-white/5 to-transparent border-white/10 border-2">
               <CardContent className="p-8">
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="size-10 rounded-lg bg-[hsl(225,55%,15%)] flex items-center justify-center">
-                    <Sparkles className="size-5 text-white" />
+                  <div className="size-12 rounded-lg bg-white/10 flex items-center justify-center">
+                    <Sparkles className="size-6 text-[hsl(20,100%,55%)]" />
                   </div>
-                  <h3 className="text-xl font-bold">10 anos de jornada</h3>
+                  <h3 className="text-2xl font-black uppercase text-white">10 anos de jornada</h3>
                 </div>
-                <p className="text-foreground/80 leading-relaxed">
-                  Uma década de muitas histórias, conquistas e crescimento — construída com pessoas que <strong>nunca param</strong> e estão sempre evoluindo.
+                <p className="text-white/80 leading-relaxed">
+                  Uma <strong className="text-white">década de muitas histórias e conquistas</strong>, construída com pessoas que nunca param e estão sempre evoluindo.
                 </p>
               </CardContent>
             </Card>
@@ -227,23 +263,27 @@ const PwrCareers = () => {
       </section>
 
       {/* CTA TIME */}
-      <section className="bg-[hsl(225,55%,15%)] text-white py-14 px-4">
+      <section className="bg-gradient-to-r from-[hsl(20,100%,50%)] to-[hsl(15,100%,55%)] text-white py-16 px-4 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2260%22 height=%2260%22><path d=%22M0 60L60 0%22 stroke=%22white%22 stroke-opacity=%220.05%22/></svg>')] opacity-50" />
         <div className="max-w-4xl mx-auto text-center">
-          <Users className="size-12 mx-auto mb-4 text-[hsl(20,100%,55%)]" />
-          <h2 className="text-3xl md:text-4xl font-bold mb-3">Venha fazer parte do Nosso Time</h2>
-          <p className="text-white/80 text-lg max-w-2xl mx-auto">
-            Procuramos pessoas que compartilhem da nossa filosofia: garra, consistência, gratidão e a vontade de <strong className="text-[hsl(20,100%,55%)]">nunca parar</strong>.
+          <Users className="size-12 mx-auto mb-4" />
+          <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tight mb-4">Venha fazer parte do Nosso Time</h2>
+          <p className="text-white/95 text-lg max-w-2xl mx-auto">
+            Procuramos pessoas que compartilhem da nossa filosofia: garra, consistência, gratidão e a vontade de <strong>nunca parar</strong>.
           </p>
         </div>
       </section>
 
       {/* VAGAS */}
-      <section id="vagas" className="py-16 px-4">
+      <section id="vagas" className="py-20 px-4 bg-[#0f0f0f]">
         <div className="max-w-6xl mx-auto">
-          <div className="flex items-center gap-3 mb-8">
-            <Briefcase className="size-6 text-[hsl(20,100%,55%)]" />
-            <h2 className="text-3xl font-bold">Vagas Abertas</h2>
-            <Badge variant="secondary" className="ml-auto">{filtered.length}</Badge>
+          <div className="text-center mb-10">
+            <div className="h-1 w-20 bg-[hsl(20,100%,55%)] mx-auto mb-4" />
+            <span className="text-[hsl(20,100%,55%)] uppercase tracking-[0.3em] text-xs font-bold">Oportunidades</span>
+            <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tight text-white mt-3">
+              Vagas <span className="text-[hsl(20,100%,55%)]">abertas</span>
+              <Badge variant="secondary" className="ml-3 align-middle text-base bg-white/10 text-white border-white/20">{filtered.length}</Badge>
+            </h2>
           </div>
 
           {/* Filtros */}
