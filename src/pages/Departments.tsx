@@ -31,13 +31,17 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Building2, ChevronDown, Edit, Plus, Trash2, Users, MoreHorizontal, Mail, Phone } from "lucide-react";
+import { Building2, ChevronDown, Edit, Plus, Trash2, Users, MoreHorizontal, Mail, Phone, FileSpreadsheet } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { ExcelImportDialog, type ImportResult } from "@/components/ExcelImportDialog";
+import { supabase } from "@/integrations/supabase/client";
+import { useQueryClient } from "@tanstack/react-query";
+import { useRequireOrganization } from "@/hooks/useRequireOrganization";
 
 export default function Departments() {
   const navigate = useNavigate();
@@ -46,10 +50,13 @@ export default function Departments() {
   const { data: departments, isLoading } = useDepartments();
   const { data: employees } = useEmployees();
   const deleteMutation = useDeleteDepartment();
+  const queryClient = useQueryClient();
+  const { organization } = useRequireOrganization();
 
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [departmentToDelete, setDepartmentToDelete] = useState<string | null>(null);
   const [expandedDepartments, setExpandedDepartments] = useState<Set<string>>(new Set());
+  const [importOpen, setImportOpen] = useState(false);
 
   const handleEdit = (department: Department) => {
     navigate(`/departments/${department.id}/edit`);
@@ -106,10 +113,16 @@ export default function Departments() {
           <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <CardTitle>Lista de Departamentos</CardTitle>
             {canEdit && (
-              <Button onClick={handleCreate}>
-                <Plus className="h-4 w-4 mr-2" />
-                Novo Departamento
-              </Button>
+              <div className="flex gap-2">
+                <Button variant="outline" onClick={() => setImportOpen(true)}>
+                  <FileSpreadsheet className="h-4 w-4 mr-2" />
+                  Importar Excel
+                </Button>
+                <Button onClick={handleCreate}>
+                  <Plus className="h-4 w-4 mr-2" />
+                  Novo Departamento
+                </Button>
+              </div>
             )}
           </CardHeader>
           <CardContent>
