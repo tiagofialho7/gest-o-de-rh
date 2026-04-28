@@ -287,9 +287,9 @@ const PwrCareers = () => {
           </div>
 
           {/* Filtros */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3 mb-8 [&_button]:bg-white/5 [&_button]:border-white/10 [&_button]:text-white [&_input]:bg-white/5 [&_input]:border-white/10 [&_input]:text-white [&_input]:placeholder:text-white/50">
             <div className="relative lg:col-span-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-white/50 z-10" />
               <Input
                 placeholder="Buscar vaga..."
                 value={search}
@@ -345,11 +345,11 @@ const PwrCareers = () => {
               ))}
             </div>
           ) : filtered.length === 0 ? (
-            <Card>
+            <Card className="bg-white/5 border-white/10">
               <CardContent className="p-12 text-center">
-                <Briefcase className="size-12 text-muted-foreground mx-auto mb-4" />
-                <p className="text-lg font-medium mb-1">Nenhuma vaga encontrada</p>
-                <p className="text-sm text-muted-foreground mb-6">
+                <Briefcase className="size-12 text-white/40 mx-auto mb-4" />
+                <p className="text-lg font-bold text-white mb-1">Nenhuma vaga encontrada</p>
+                <p className="text-sm text-white/60 mb-6">
                   Não encontrou uma vaga que combine com você? Cadastre-se no nosso banco de talentos!
                 </p>
                 <Button asChild className="bg-[hsl(20,100%,55%)] hover:bg-[hsl(20,100%,50%)] text-white">
@@ -363,19 +363,19 @@ const PwrCareers = () => {
             <div className="space-y-3">
               {filtered.map((job) => (
                 <Link key={job.id} to={`/vagas/${job.id}/aplicar`} className="block group">
-                  <Card className="hover:shadow-lg hover:border-[hsl(20,100%,55%)]/50 transition-all duration-200">
+                  <Card className="bg-white/5 border-white/10 hover:bg-white/10 hover:border-[hsl(20,100%,55%)]/60 hover:shadow-lg hover:shadow-[hsl(20,100%,55%)]/10 transition-all duration-200">
                     <CardContent className="p-5 flex items-center gap-4">
                       <div className="flex-1 min-w-0">
-                        <h3 className="font-semibold text-lg mb-2 group-hover:text-[hsl(20,100%,55%)] transition-colors">
+                        <h3 className="font-bold text-lg mb-2 text-white group-hover:text-[hsl(20,100%,55%)] transition-colors">
                           {job.title}
                         </h3>
-                        <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
-                          {job.department && <Badge variant="secondary">{job.department}</Badge>}
+                        <div className="flex flex-wrap items-center gap-2 text-sm text-white/60">
+                          {job.department && <Badge className="bg-[hsl(20,100%,55%)]/20 text-[hsl(20,100%,65%)] border-[hsl(20,100%,55%)]/30 hover:bg-[hsl(20,100%,55%)]/30">{job.department}</Badge>}
                           {job.work_model && (
-                            <Badge variant="outline">{WORK_MODEL_LABELS[job.work_model] || job.work_model}</Badge>
+                            <Badge variant="outline" className="border-white/20 text-white/80">{WORK_MODEL_LABELS[job.work_model] || job.work_model}</Badge>
                           )}
                           {job.contract_type && (
-                            <Badge variant="outline">{CONTRACT_LABELS[job.contract_type] || job.contract_type}</Badge>
+                            <Badge variant="outline" className="border-white/20 text-white/80">{CONTRACT_LABELS[job.contract_type] || job.contract_type}</Badge>
                           )}
                           {job.unit_city && (
                             <span className="flex items-center gap-1">
@@ -385,7 +385,7 @@ const PwrCareers = () => {
                           )}
                         </div>
                       </div>
-                      <ChevronRight className="size-5 text-muted-foreground group-hover:text-[hsl(20,100%,55%)] group-hover:translate-x-1 transition-all" />
+                      <ChevronRight className="size-5 text-white/40 group-hover:text-[hsl(20,100%,55%)] group-hover:translate-x-1 transition-all" />
                     </CardContent>
                   </Card>
                 </Link>
@@ -394,18 +394,18 @@ const PwrCareers = () => {
           )}
 
           {/* Banco de Talentos CTA */}
-          <Card className="mt-8 border-2 border-dashed border-[hsl(20,100%,55%)]/40 bg-[hsl(20,100%,55%)]/5">
+          <Card className="mt-10 border-2 border-dashed border-[hsl(20,100%,55%)]/50 bg-[hsl(20,100%,55%)]/10">
             <CardContent className="p-8 flex flex-col md:flex-row items-center gap-6 text-center md:text-left">
-              <div className="size-14 rounded-full bg-[hsl(20,100%,55%)] flex items-center justify-center shrink-0">
-                <Sparkles className="size-7 text-white" />
+              <div className="size-16 rounded-full bg-[hsl(20,100%,55%)] flex items-center justify-center shrink-0 shadow-xl shadow-[hsl(20,100%,55%)]/40">
+                <Sparkles className="size-8 text-white" />
               </div>
               <div className="flex-1">
-                <h3 className="text-xl font-bold mb-1">Não encontrou a vaga ideal?</h3>
-                <p className="text-muted-foreground">
+                <h3 className="text-2xl font-black uppercase mb-1 text-white">Não encontrou a vaga ideal?</h3>
+                <p className="text-white/70">
                   Cadastre-se no nosso <strong>Banco de Talentos</strong> e seja considerado para futuras oportunidades.
                 </p>
               </div>
-              <Button asChild size="lg" className="bg-[hsl(20,100%,55%)] hover:bg-[hsl(20,100%,50%)] text-white shrink-0">
+              <Button asChild size="lg" className="bg-[hsl(20,100%,55%)] hover:bg-[hsl(20,100%,50%)] text-white shrink-0 font-bold uppercase tracking-wider rounded-full px-8">
                 <Link to="/vagas/00000000-0000-0000-0000-000000000001/aplicar">
                   Quero me cadastrar
                 </Link>
@@ -416,7 +416,7 @@ const PwrCareers = () => {
       </section>
 
       {/* FOOTER */}
-      <footer className="bg-[hsl(225,55%,15%)] text-white py-10 px-4">
+      <footer className="bg-black border-t border-white/10 text-white py-12 px-4">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-3">
             <img src={pwrLogo} alt="PWR Gestão" className="h-10 bg-white rounded p-1" />
