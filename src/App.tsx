@@ -47,6 +47,7 @@ const JobDetailPage = lazy(() => import("./pages/JobDetailPage"));
 const JobFormPage = lazy(() => import("./pages/JobFormPage"));
 const JobApplicationPage = lazy(() => import("./pages/JobApplicationPage"));
 const CareersPage = lazy(() => import("./pages/CareersPage"));
+const PwrCareers = lazy(() => import("./pages/PwrCareers"));
 const Feedbacks = lazy(() => import("./pages/Feedbacks"));
 const PerformanceEvaluation = lazy(() => import("./pages/PerformanceEvaluation"));
 const EvaluationFormPage = lazy(() => import("./pages/EvaluationFormPage"));
@@ -107,6 +108,16 @@ const App = () => (
           <Route path="/carreiras/:slug" element={
             <Suspense fallback={<div className="container mx-auto px-4 py-8 space-y-4"><Skeleton className="h-12 w-64" /><Skeleton className="h-64 w-full" /></div>}>
               <CareersPage />
+            </Suspense>
+          } />
+          <Route path="/careers" element={
+            <Suspense fallback={<div className="container mx-auto px-4 py-8 space-y-4"><Skeleton className="h-12 w-64" /><Skeleton className="h-64 w-full" /></div>}>
+              <PwrCareers />
+            </Suspense>
+          } />
+          <Route path="/vagas-publicas" element={
+            <Suspense fallback={<div className="container mx-auto px-4 py-8 space-y-4"><Skeleton className="h-12 w-64" /><Skeleton className="h-64 w-full" /></div>}>
+              <PwrCareers />
             </Suspense>
           } />
 
