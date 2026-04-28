@@ -283,6 +283,71 @@ export default function Departments() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      <ExcelImportDialog
+        open={importOpen}
+        onOpenChange={setImportOpen}
+        title="Importar Departamentos"
+        description="Importe vários departamentos via planilha Excel."
+        templateFileName="modelo-departamentos.xlsx"
+        sheetName="Departamentos"
+        columns={[
+          { header: "Nome do Departamento", example: "Consultoria", required: true },
+          { header: "Código", example: "CON" },
+          { header: "Descrição", example: "Área de consultoria empresarial" },
+        ]}
+        notes={[
+          "Nome do Departamento é obrigatório.",
+          'A coluna "Código" será incluída no início da Descrição como "[CÓD] descrição" (o esquema atual não tem campo dedicado para código).',
+          "Departamentos com nome duplicado serão sinalizados como aviso, mas não bloqueiam a importação.",
+        ]}
+        onImport={async (rows): Promise<ImportResult> => {
+          const result: ImportResult = { success: 0, errors: [], warnings: [] };
+          if (!organization?.id) {
+            result.errors.push({ row: 0, message: "Organização não encontrada" });
+            return result;
+          }
+
+          const existingNames = new Set(
+            (departments || []).map((d) => d.name.trim().toLowerCase())
+          );
+
+          for (let i = 0; i < rows.length; i++) {
+            const rowNum = i + 2; // header is row 1
+            const r = rows[i];
+            const name = (r["Nome do Departamento"] || "").trim();
+            const code = (r["Código"] || "").trim();
+            const desc = (r["Descrição"] || "").trim();
+
+            if (!name) {
+              result.errors.push({ row: rowNum, message: "Nome do Departamento é obrigatório" });
+              continue;
+            }
+
+            if (existingNames.has(name.toLowerCase())) {
+              result.warnings.push({ row: rowNum, message: `Departamento "${name}" já existe (importado mesmo assim)` });
+            }
+
+            const description = code
+              ? `[${code}] ${desc}`.trim()
+              : desc || null;
+
+            const { error } = await supabase
+              .from("departments")
+              .insert({ name, description, organization_id: organization.id });
+
+            if (error) {
+              result.errors.push({ row: rowNum, message: error.message });
+            } else {
+              result.success++;
+              existingNames.add(name.toLowerCase());
+            }
+          }
+
+          queryClient.invalidateQueries({ queryKey: ["departments"] });
+          return result;
+        }}
+      />
     </>
   );
 }
