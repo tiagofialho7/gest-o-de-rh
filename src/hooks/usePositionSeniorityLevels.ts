@@ -19,7 +19,8 @@ export type SeniorityLevel =
   | "gerente"
   | "diretor"
   | "administrativo"
-  | "operacional";
+  | "operacional"
+  | "socio";
 
 export interface PositionSeniorityLevel {
   id: string;
@@ -53,6 +54,7 @@ export const seniorityLevelLabels: Record<SeniorityLevel, string> = {
   diretor: "Diretor",
   administrativo: "Administrativo",
   operacional: "Operacional",
+  socio: "Sócio",
 };
 
 export const seniorityLevelOrder: SeniorityLevel[] = [
@@ -73,6 +75,7 @@ export const seniorityLevelOrder: SeniorityLevel[] = [
   "diretor",
   "administrativo",
   "operacional",
+  "socio",
 ];
 
 export const usePositionSeniorityLevels = (positionId: string | undefined) => {
