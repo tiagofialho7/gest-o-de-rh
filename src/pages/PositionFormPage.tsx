@@ -381,6 +381,33 @@ export default function PositionFormPage() {
                           </FormItem>
                         )}
                       />
+
+                      <FormField
+                        control={form.control}
+                        name="employment_regime"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Regime de Contratação</FormLabel>
+                            <Select
+                              onValueChange={(value) => field.onChange(value === "none" ? null : value)}
+                              value={field.value || "none"}
+                            >
+                              <FormControl>
+                                <SelectTrigger>
+                                  <SelectValue placeholder="Selecione o regime" />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                <SelectItem value="none">Não definido</SelectItem>
+                                <SelectItem value="clt">CLT</SelectItem>
+                                <SelectItem value="pj">PJ</SelectItem>
+                                <SelectItem value="socio">Sócio</SelectItem>
+                              </SelectContent>
+                            </Select>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
                     </TabsContent>
 
                     <TabsContent value="description" className="space-y-4">
