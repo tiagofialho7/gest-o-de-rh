@@ -43,7 +43,7 @@ const formSchema = z.object({
   has_levels: z.boolean().default(true),
   activities: z.string().optional(),
   expected_profile_code: z.string().optional().nullable(),
-  employment_regime: z.enum(["clt", "pj", "socio"]).nullable().optional(),
+  employment_regime: z.enum(["clt", "pj", "socio", "estagio", "associado"]).nullable().optional(),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -96,7 +96,7 @@ export default function PositionFormPage() {
         has_levels: position.has_levels,
         activities: position.activities || "",
         expected_profile_code: position.expected_profile_code || null,
-        employment_regime: (position.employment_regime as "clt" | "pj" | "socio" | null) || null,
+        employment_regime: (position.employment_regime as "clt" | "pj" | "socio" | "estagio" | "associado" | null) || null,
       });
     }
   }, [position, form]);
@@ -402,6 +402,8 @@ export default function PositionFormPage() {
                                 <SelectItem value="clt">CLT</SelectItem>
                                 <SelectItem value="pj">PJ</SelectItem>
                                 <SelectItem value="socio">Sócio</SelectItem>
+                                <SelectItem value="estagio">Estágio</SelectItem>
+                                <SelectItem value="associado">Associado</SelectItem>
                               </SelectContent>
                             </Select>
                             <FormMessage />

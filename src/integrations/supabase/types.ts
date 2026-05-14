@@ -4188,7 +4188,7 @@ export type Database = {
         | "doctorate"
         | "postdoc"
       employee_status: "pending" | "active" | "on_leave" | "terminated"
-      employment_regime: "clt" | "pj" | "socio"
+      employment_regime: "clt" | "pj" | "socio" | "estagio" | "associado"
       employment_type: "full_time" | "part_time" | "contractor" | "intern"
       equity_status:
         | "granted"
@@ -4248,6 +4248,17 @@ export type Database = {
         | "senior"
         | "especialista"
         | "lider"
+        | "trainee"
+        | "consultor"
+        | "auxiliar"
+        | "assistente"
+        | "analista"
+        | "supervisor"
+        | "coordenador"
+        | "gerente"
+        | "diretor"
+        | "administrativo"
+        | "operacional"
       termination_cause:
         | "recebimento_proposta"
         | "baixo_desempenho"
@@ -4476,7 +4487,7 @@ export const Constants = {
         "postdoc",
       ],
       employee_status: ["pending", "active", "on_leave", "terminated"],
-      employment_regime: ["clt", "pj", "socio"],
+      employment_regime: ["clt", "pj", "socio", "estagio", "associado"],
       employment_type: ["full_time", "part_time", "contractor", "intern"],
       equity_status: [
         "granted",
@@ -4542,6 +4553,17 @@ export const Constants = {
         "senior",
         "especialista",
         "lider",
+        "trainee",
+        "consultor",
+        "auxiliar",
+        "assistente",
+        "analista",
+        "supervisor",
+        "coordenador",
+        "gerente",
+        "diretor",
+        "administrativo",
+        "operacional",
       ],
       termination_cause: [
         "recebimento_proposta",

@@ -45,7 +45,9 @@ type SeniorityLevel = Database["public"]["Enums"]["seniority_level"];
 const LEVEL_MAP: Record<string, SeniorityLevel> = {
   estagiario: "estagiario",
   estagiário: "estagiario",
-  trainee: "junior", // mapped: enum doesn't have trainee
+  estagio: "estagiario",
+  estágio: "estagiario",
+  trainee: "trainee",
   junior: "junior",
   júnior: "junior",
   pleno: "pleno",
@@ -54,6 +56,16 @@ const LEVEL_MAP: Record<string, SeniorityLevel> = {
   especialista: "especialista",
   lider: "lider",
   líder: "lider",
+  consultor: "consultor",
+  auxiliar: "auxiliar",
+  assistente: "assistente",
+  analista: "analista",
+  supervisor: "supervisor",
+  coordenador: "coordenador",
+  gerente: "gerente",
+  diretor: "diretor",
+  administrativo: "administrativo",
+  operacional: "operacional",
 };
 
 
@@ -161,7 +173,13 @@ export default function Positions() {
                       <TableCell>
                         {position.employment_regime ? (
                           <Badge variant="outline" className="uppercase">
-                            {position.employment_regime === "socio" ? "Sócio" : position.employment_regime}
+                            {position.employment_regime === "socio"
+                              ? "Sócio"
+                              : position.employment_regime === "estagio"
+                              ? "Estágio"
+                              : position.employment_regime === "associado"
+                              ? "Associado"
+                              : position.employment_regime}
                           </Badge>
                         ) : (
                           <span className="text-muted-foreground">-</span>
@@ -248,10 +266,10 @@ export default function Positions() {
           ]}
           notes={[
             "Nome do Cargo é obrigatório.",
-            "Níveis válidos: Estagiário, Trainee, Júnior, Pleno, Sênior, Especialista, Líder.",
-            'Quando informado, o Nível cria automaticamente um registro de senioridade vinculado ao cargo. "Trainee" é mapeado para "Júnior".',
+            "Níveis válidos: Estagiário, Estágio, Trainee, Júnior, Pleno, Sênior, Especialista, Líder, Consultor, Auxiliar, Assistente, Analista, Supervisor, Coordenador, Gerente, Diretor, Administrativo, Operacional.",
+            "Quando informado, o Nível cria automaticamente um registro de senioridade vinculado ao cargo.",
             'A coluna "Departamento" é informativa (será adicionada à descrição entre colchetes), pois cargos não são vinculados a departamentos no sistema atual.',
-            'Regime aceita: CLT, PJ ou Sócio (opcional).',
+            'Regime aceita: CLT, PJ, Sócio, Estágio ou Associado (opcional).',
             "Cargos com nome duplicado serão sinalizados como aviso, mas não bloqueiam a importação.",
           ]}
           onImport={async (rows): Promise<ImportResult> => {
@@ -273,19 +291,22 @@ export default function Positions() {
               const dept = (r["Departamento"] || "").trim();
               const desc = (r["Descrição"] || "").trim();
               const regimeRaw = (r["Regime"] || "").trim().toLowerCase();
-              const REGIME_MAP: Record<string, "clt" | "pj" | "socio"> = {
+              const REGIME_MAP: Record<string, "clt" | "pj" | "socio" | "estagio" | "associado"> = {
                 clt: "clt",
                 pj: "pj",
                 socio: "socio",
                 "sócio": "socio",
+                estagio: "estagio",
+                "estágio": "estagio",
+                associado: "associado",
               };
-              let employment_regime: "clt" | "pj" | "socio" | null = null;
+              let employment_regime: "clt" | "pj" | "socio" | "estagio" | "associado" | null = null;
               if (regimeRaw) {
                 const m = REGIME_MAP[regimeRaw];
                 if (!m) {
                   result.errors.push({
                     row: rowNum,
-                    message: `Regime inválido "${r["Regime"]}". Use: CLT, PJ ou Sócio.`,
+                    message: `Regime inválido "${r["Regime"]}". Use: CLT, PJ, Sócio, Estágio ou Associado.`,
                   });
                   continue;
                 }
@@ -303,17 +324,11 @@ export default function Positions() {
                 if (!mapped) {
                   result.errors.push({
                     row: rowNum,
-                    message: `Nível inválido "${levelRaw}". Use: Estagiário, Trainee, Júnior, Pleno, Sênior, Especialista, Líder.`,
+                    message: `Nível inválido "${levelRaw}". Use: Estagiário, Estágio, Trainee, Júnior, Pleno, Sênior, Especialista, Líder, Consultor, Auxiliar, Assistente, Analista, Supervisor, Coordenador, Gerente, Diretor, Administrativo, Operacional.`,
                   });
                   continue;
                 }
                 seniority = mapped;
-                if (levelRaw.toLowerCase() === "trainee") {
-                  result.warnings.push({
-                    row: rowNum,
-                    message: 'Nível "Trainee" mapeado para "Júnior" (enum do sistema).',
-                  });
-                }
               }
 
               if (existingTitles.has(title.toLowerCase())) {
