@@ -120,6 +120,7 @@ export default function Positions() {
                 <TableRow>
                   <TableHead>Cargo</TableHead>
                   <TableHead>Níveis</TableHead>
+                  <TableHead>Regime</TableHead>
                   <TableHead>Perfil Esperado</TableHead>
                   <TableHead>Descrição</TableHead>
                   <TableHead className="text-right">Ações</TableHead>
@@ -153,6 +154,15 @@ export default function Positions() {
                       <TableCell>
                         {position.has_levels ? (
                           <Badge variant="secondary">Com níveis</Badge>
+                        ) : (
+                          <span className="text-muted-foreground">-</span>
+                        )}
+                      </TableCell>
+                      <TableCell>
+                        {position.employment_regime ? (
+                          <Badge variant="outline" className="uppercase">
+                            {position.employment_regime === "socio" ? "Sócio" : position.employment_regime}
+                          </Badge>
                         ) : (
                           <span className="text-muted-foreground">-</span>
                         )}
@@ -193,7 +203,7 @@ export default function Positions() {
                   ))
                 ) : (
                   <TableRow>
-                    <TableCell colSpan={5} className="text-center text-muted-foreground">
+                    <TableCell colSpan={6} className="text-center text-muted-foreground">
                       Nenhum cargo cadastrado
                     </TableCell>
                   </TableRow>
@@ -233,6 +243,7 @@ export default function Positions() {
             { header: "Nome do Cargo", example: "Consultor de Gestão", required: true },
             { header: "Nível", example: "Pleno" },
             { header: "Departamento", example: "Consultoria" },
+            { header: "Regime", example: "CLT" },
             { header: "Descrição", example: "Responsável por projetos de gestão empresarial" },
           ]}
           notes={[
@@ -240,6 +251,7 @@ export default function Positions() {
             "Níveis válidos: Estagiário, Trainee, Júnior, Pleno, Sênior, Especialista, Líder.",
             'Quando informado, o Nível cria automaticamente um registro de senioridade vinculado ao cargo. "Trainee" é mapeado para "Júnior".',
             'A coluna "Departamento" é informativa (será adicionada à descrição entre colchetes), pois cargos não são vinculados a departamentos no sistema atual.',
+            'Regime aceita: CLT, PJ ou Sócio (opcional).',
             "Cargos com nome duplicado serão sinalizados como aviso, mas não bloqueiam a importação.",
           ]}
           onImport={async (rows): Promise<ImportResult> => {
@@ -260,6 +272,25 @@ export default function Positions() {
               const levelRaw = (r["Nível"] || "").trim();
               const dept = (r["Departamento"] || "").trim();
               const desc = (r["Descrição"] || "").trim();
+              const regimeRaw = (r["Regime"] || "").trim().toLowerCase();
+              const REGIME_MAP: Record<string, "clt" | "pj" | "socio"> = {
+                clt: "clt",
+                pj: "pj",
+                socio: "socio",
+                "sócio": "socio",
+              };
+              let employment_regime: "clt" | "pj" | "socio" | null = null;
+              if (regimeRaw) {
+                const m = REGIME_MAP[regimeRaw];
+                if (!m) {
+                  result.errors.push({
+                    row: rowNum,
+                    message: `Regime inválido "${r["Regime"]}". Use: CLT, PJ ou Sócio.`,
+                  });
+                  continue;
+                }
+                employment_regime = m;
+              }
 
               if (!title) {
                 result.errors.push({ row: rowNum, message: "Nome do Cargo é obrigatório" });
@@ -301,6 +332,7 @@ export default function Positions() {
                   title,
                   description,
                   has_levels,
+                  employment_regime,
                   organization_id: organization.id,
                 })
                 .select("id")
