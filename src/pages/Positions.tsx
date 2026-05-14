@@ -45,7 +45,9 @@ type SeniorityLevel = Database["public"]["Enums"]["seniority_level"];
 const LEVEL_MAP: Record<string, SeniorityLevel> = {
   estagiario: "estagiario",
   estagiário: "estagiario",
-  trainee: "junior", // mapped: enum doesn't have trainee
+  estagio: "estagiario",
+  estágio: "estagiario",
+  trainee: "trainee",
   junior: "junior",
   júnior: "junior",
   pleno: "pleno",
@@ -54,6 +56,16 @@ const LEVEL_MAP: Record<string, SeniorityLevel> = {
   especialista: "especialista",
   lider: "lider",
   líder: "lider",
+  consultor: "consultor",
+  auxiliar: "auxiliar",
+  assistente: "assistente",
+  analista: "analista",
+  supervisor: "supervisor",
+  coordenador: "coordenador",
+  gerente: "gerente",
+  diretor: "diretor",
+  administrativo: "administrativo",
+  operacional: "operacional",
 };
 
 
