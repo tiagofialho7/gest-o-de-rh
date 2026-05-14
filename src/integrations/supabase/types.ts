@@ -2885,6 +2885,9 @@ export type Database = {
           activities: string | null
           created_at: string
           description: string | null
+          employment_regime:
+            | Database["public"]["Enums"]["employment_regime"]
+            | null
           expected_profile_code: string | null
           has_levels: boolean
           id: string
@@ -2897,6 +2900,9 @@ export type Database = {
           activities?: string | null
           created_at?: string
           description?: string | null
+          employment_regime?:
+            | Database["public"]["Enums"]["employment_regime"]
+            | null
           expected_profile_code?: string | null
           has_levels?: boolean
           id?: string
@@ -2909,6 +2915,9 @@ export type Database = {
           activities?: string | null
           created_at?: string
           description?: string | null
+          employment_regime?:
+            | Database["public"]["Enums"]["employment_regime"]
+            | null
           expected_profile_code?: string | null
           has_levels?: boolean
           id?: string
@@ -4179,6 +4188,7 @@ export type Database = {
         | "doctorate"
         | "postdoc"
       employee_status: "pending" | "active" | "on_leave" | "terminated"
+      employment_regime: "clt" | "pj" | "socio"
       employment_type: "full_time" | "part_time" | "contractor" | "intern"
       equity_status:
         | "granted"
@@ -4466,6 +4476,7 @@ export const Constants = {
         "postdoc",
       ],
       employee_status: ["pending", "active", "on_leave", "terminated"],
+      employment_regime: ["clt", "pj", "socio"],
       employment_type: ["full_time", "part_time", "contractor", "intern"],
       equity_status: [
         "granted",

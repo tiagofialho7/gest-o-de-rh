@@ -43,6 +43,7 @@ const formSchema = z.object({
   has_levels: z.boolean().default(true),
   activities: z.string().optional(),
   expected_profile_code: z.string().optional().nullable(),
+  employment_regime: z.enum(["clt", "pj", "socio"]).nullable().optional(),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -79,6 +80,7 @@ export default function PositionFormPage() {
       has_levels: true,
       activities: "",
       expected_profile_code: null,
+      employment_regime: null,
     },
   });
 
@@ -94,6 +96,7 @@ export default function PositionFormPage() {
         has_levels: position.has_levels,
         activities: position.activities || "",
         expected_profile_code: position.expected_profile_code || null,
+        employment_regime: (position.employment_regime as "clt" | "pj" | "socio" | null) || null,
       });
     }
   }, [position, form]);
@@ -191,12 +194,14 @@ export default function PositionFormPage() {
           has_levels: data.has_levels,
           activities: data.activities || null,
           expected_profile_code: data.expected_profile_code || null,
+          employment_regime: data.employment_regime || null,
         });
       } else {
         const result = await createPosition.mutateAsync({
           title: data.title,
           description: data.description || undefined,
           has_levels: data.has_levels,
+          employment_regime: data.employment_regime || null,
         });
         positionId = result.id;
 
@@ -373,6 +378,33 @@ export default function PositionFormPage() {
                                 onCheckedChange={field.onChange}
                               />
                             </FormControl>
+                          </FormItem>
+                        )}
+                      />
+
+                      <FormField
+                        control={form.control}
+                        name="employment_regime"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Regime de Contratação</FormLabel>
+                            <Select
+                              onValueChange={(value) => field.onChange(value === "none" ? null : value)}
+                              value={field.value || "none"}
+                            >
+                              <FormControl>
+                                <SelectTrigger>
+                                  <SelectValue placeholder="Selecione o regime" />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                <SelectItem value="none">Não definido</SelectItem>
+                                <SelectItem value="clt">CLT</SelectItem>
+                                <SelectItem value="pj">PJ</SelectItem>
+                                <SelectItem value="socio">Sócio</SelectItem>
+                              </SelectContent>
+                            </Select>
+                            <FormMessage />
                           </FormItem>
                         )}
                       />
