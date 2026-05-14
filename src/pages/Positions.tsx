@@ -66,6 +66,8 @@ const LEVEL_MAP: Record<string, SeniorityLevel> = {
   diretor: "diretor",
   administrativo: "administrativo",
   operacional: "operacional",
+  socio: "socio",
+  "sócio": "socio",
 };
 
 
@@ -266,11 +268,11 @@ export default function Positions() {
           ]}
           notes={[
             "Nome do Cargo é obrigatório.",
-            "Níveis válidos: Estagiário, Estágio, Trainee, Júnior, Pleno, Sênior, Especialista, Líder, Consultor, Auxiliar, Assistente, Analista, Supervisor, Coordenador, Gerente, Diretor, Administrativo, Operacional.",
+            "Níveis válidos: Estagiário, Estágio, Trainee, Júnior, Pleno, Sênior, Especialista, Líder, Consultor, Auxiliar, Assistente, Analista, Supervisor, Coordenador, Gerente, Diretor, Administrativo, Operacional, Sócio.",
             "Quando informado, o Nível cria automaticamente um registro de senioridade vinculado ao cargo.",
             'A coluna "Departamento" é informativa (será adicionada à descrição entre colchetes), pois cargos não são vinculados a departamentos no sistema atual.',
             'Regime aceita: CLT, PJ, Sócio, Estágio ou Associado (opcional).',
-            "Cargos com nome duplicado serão sinalizados como aviso, mas não bloqueiam a importação.",
+            "Cargos com nome duplicado serão atualizados (regime, nível, departamento e descrição) ao invés de duplicados.",
           ]}
           onImport={async (rows): Promise<ImportResult> => {
             const result: ImportResult = { success: 0, errors: [], warnings: [] };
@@ -279,8 +281,8 @@ export default function Positions() {
               return result;
             }
 
-            const existingTitles = new Set(
-              (positions || []).map((p) => p.title.trim().toLowerCase())
+            const existingByTitle = new Map(
+              (positions || []).map((p) => [p.title.trim().toLowerCase(), p.id])
             );
 
             for (let i = 0; i < rows.length; i++) {
@@ -324,57 +326,78 @@ export default function Positions() {
                 if (!mapped) {
                   result.errors.push({
                     row: rowNum,
-                    message: `Nível inválido "${levelRaw}". Use: Estagiário, Estágio, Trainee, Júnior, Pleno, Sênior, Especialista, Líder, Consultor, Auxiliar, Assistente, Analista, Supervisor, Coordenador, Gerente, Diretor, Administrativo, Operacional.`,
+                    message: `Nível inválido "${levelRaw}". Use: Estagiário, Estágio, Trainee, Júnior, Pleno, Sênior, Especialista, Líder, Consultor, Auxiliar, Assistente, Analista, Supervisor, Coordenador, Gerente, Diretor, Administrativo, Operacional, Sócio.`,
                   });
                   continue;
                 }
                 seniority = mapped;
               }
 
-              if (existingTitles.has(title.toLowerCase())) {
-                result.warnings.push({
-                  row: rowNum,
-                  message: `Cargo "${title}" já existe (importado mesmo assim)`,
-                });
-              }
-
               const description = dept ? `[${dept}] ${desc}`.trim() : desc || null;
               const has_levels = !!seniority;
 
-              const { data: inserted, error } = await supabase
-                .from("positions")
-                .insert({
-                  title,
-                  description,
-                  has_levels,
-                  employment_regime,
-                  organization_id: organization.id,
-                })
-                .select("id")
-                .single();
+              const existingId = existingByTitle.get(title.toLowerCase());
+              let positionId: string | null = null;
 
-              if (error) {
-                result.errors.push({ row: rowNum, message: error.message });
-                continue;
+              if (existingId) {
+                const { error: updError } = await supabase
+                  .from("positions")
+                  .update({
+                    description,
+                    has_levels,
+                    employment_regime,
+                  })
+                  .eq("id", existingId);
+                if (updError) {
+                  result.errors.push({ row: rowNum, message: updError.message });
+                  continue;
+                }
+                positionId = existingId;
+                result.warnings.push({
+                  row: rowNum,
+                  message: `Cargo "${title}" já existia e foi atualizado.`,
+                });
+              } else {
+                const { data: inserted, error } = await supabase
+                  .from("positions")
+                  .insert({
+                    title,
+                    description,
+                    has_levels,
+                    employment_regime,
+                    organization_id: organization.id,
+                  })
+                  .select("id")
+                  .single();
+                if (error) {
+                  result.errors.push({ row: rowNum, message: error.message });
+                  continue;
+                }
+                positionId = inserted.id;
+                existingByTitle.set(title.toLowerCase(), inserted.id);
               }
 
-              if (seniority && inserted) {
+              if (seniority && positionId) {
+                await supabase
+                  .from("position_seniority_levels")
+                  .delete()
+                  .eq("position_id", positionId)
+                  .eq("seniority", seniority);
                 const { error: lvlError } = await supabase
                   .from("position_seniority_levels")
                   .insert({
-                    position_id: inserted.id,
+                    position_id: positionId,
                     seniority,
                   });
                 if (lvlError) {
                   result.warnings.push({
                     row: rowNum,
-                    message: `Cargo criado, mas falhou ao adicionar nível: ${lvlError.message}`,
+                    message: `Cargo salvo, mas falhou ao adicionar nível: ${lvlError.message}`,
                   });
                 }
               }
 
               result.success++;
-              existingTitles.add(title.toLowerCase());
             }
 
             queryClient.invalidateQueries({ queryKey: ["positions"] });
