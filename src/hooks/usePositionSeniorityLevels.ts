@@ -2,7 +2,24 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 
-export type SeniorityLevel = "estagiario" | "junior" | "pleno" | "senior" | "especialista" | "lider";
+export type SeniorityLevel =
+  | "estagiario"
+  | "trainee"
+  | "junior"
+  | "pleno"
+  | "senior"
+  | "especialista"
+  | "lider"
+  | "consultor"
+  | "auxiliar"
+  | "assistente"
+  | "analista"
+  | "supervisor"
+  | "coordenador"
+  | "gerente"
+  | "diretor"
+  | "administrativo"
+  | "operacional";
 
 export interface PositionSeniorityLevel {
   id: string;
@@ -20,20 +37,42 @@ export interface PositionSeniorityLevel {
 
 export const seniorityLevelLabels: Record<SeniorityLevel, string> = {
   estagiario: "Estagiário",
+  trainee: "Trainee",
   junior: "Júnior",
   pleno: "Pleno",
   senior: "Sênior",
   especialista: "Especialista",
   lider: "Líder",
+  consultor: "Consultor",
+  auxiliar: "Auxiliar",
+  assistente: "Assistente",
+  analista: "Analista",
+  supervisor: "Supervisor",
+  coordenador: "Coordenador",
+  gerente: "Gerente",
+  diretor: "Diretor",
+  administrativo: "Administrativo",
+  operacional: "Operacional",
 };
 
 export const seniorityLevelOrder: SeniorityLevel[] = [
   "estagiario",
+  "trainee",
   "junior",
   "pleno",
   "senior",
   "especialista",
   "lider",
+  "consultor",
+  "auxiliar",
+  "assistente",
+  "analista",
+  "supervisor",
+  "coordenador",
+  "gerente",
+  "diretor",
+  "administrativo",
+  "operacional",
 ];
 
 export const usePositionSeniorityLevels = (positionId: string | undefined) => {
