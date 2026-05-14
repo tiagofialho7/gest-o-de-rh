@@ -173,7 +173,13 @@ export default function Positions() {
                       <TableCell>
                         {position.employment_regime ? (
                           <Badge variant="outline" className="uppercase">
-                            {position.employment_regime === "socio" ? "Sócio" : position.employment_regime}
+                            {position.employment_regime === "socio"
+                              ? "Sócio"
+                              : position.employment_regime === "estagio"
+                              ? "Estágio"
+                              : position.employment_regime === "associado"
+                              ? "Associado"
+                              : position.employment_regime}
                           </Badge>
                         ) : (
                           <span className="text-muted-foreground">-</span>
