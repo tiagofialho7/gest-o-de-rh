@@ -4259,6 +4259,7 @@ export type Database = {
         | "diretor"
         | "administrativo"
         | "operacional"
+        | "socio"
       termination_cause:
         | "recebimento_proposta"
         | "baixo_desempenho"
@@ -4564,6 +4565,7 @@ export const Constants = {
         "diretor",
         "administrativo",
         "operacional",
+        "socio",
       ],
       termination_cause: [
         "recebimento_proposta",

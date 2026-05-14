@@ -1,0 +1,1 @@
+ALTER TYPE seniority_level ADD VALUE IF NOT EXISTS 'socio';
