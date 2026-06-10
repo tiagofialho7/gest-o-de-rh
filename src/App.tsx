@@ -18,6 +18,7 @@ import ErrorBoundary from "@/components/ErrorBoundary";
 import Auth from "./pages/Auth";
 import AcceptInvite from "./pages/AcceptInvite";
 import NotFound from "./pages/NotFound";
+import ResetPassword from "./pages/ResetPassword";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AdminRoute from "./components/AdminRoute";
 import PeopleRoute from "./components/PeopleRoute";
@@ -96,6 +97,7 @@ const App = () => (
           {/* Public routes (no layout) */}
           <Route path="/auth" element={<Auth />} />
           <Route path="/accept-invite" element={<AcceptInvite />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/vagas/00000000-0000-0000-0000-000000000001/aplicar" element={
             <Suspense fallback={<div className="container mx-auto px-4 py-8 space-y-4"><Skeleton className="h-12 w-64" /><Skeleton className="h-64 w-full" /></div>}>
               <TalentBankApplication />
