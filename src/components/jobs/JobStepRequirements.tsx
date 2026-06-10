@@ -83,8 +83,7 @@ export function JobStepRequirements({ form }: JobStepRequirementsProps) {
                 <TagsInput
                   value={field.value || []}
                   onChange={field.onChange}
-                  placeholder="Digite e pressione Enter..."
-                  suggestions={skillSuggestions}
+                  placeholder="Digite uma habilidade e pressione Enter..."
                 />
               </FormControl>
               <FormMessage />
@@ -103,8 +102,7 @@ export function JobStepRequirements({ form }: JobStepRequirementsProps) {
                 <TagsInput
                   value={field.value || []}
                   onChange={field.onChange}
-                  placeholder="Digite e pressione Enter..."
-                  suggestions={skillSuggestions}
+                  placeholder="Digite habilidades, cursos ou certificações desejáveis e pressione Enter..."
                 />
               </FormControl>
               <FormMessage />
