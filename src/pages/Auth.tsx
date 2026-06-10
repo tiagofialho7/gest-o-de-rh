@@ -12,6 +12,8 @@ import { useRegistrationSettings } from "@/hooks/useRegistrationSettings";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2, ShieldAlert } from "lucide-react";
 import { z } from "zod";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { supabase } from "@/integrations/supabase/client";
 
 
 const loginSchema = z.object({
@@ -44,6 +46,9 @@ const Auth = () => {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [activeTab, setActiveTab] = useState<"login" | "signup">("login");
   const [adminCreated, setAdminCreated] = useState(false);
+  const [forgotOpen, setForgotOpen] = useState(false);
+  const [forgotEmail, setForgotEmail] = useState("");
+  const [forgotLoading, setForgotLoading] = useState(false);
 
   const isFirstTimeSetup = !hasUsers;
 
@@ -185,6 +190,32 @@ const Auth = () => {
       });
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleForgotPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const parsed = z.string().email().safeParse(forgotEmail);
+    if (!parsed.success) {
+      toast({ title: "Email inválido", description: "Informe um email válido.", variant: "destructive" });
+      return;
+    }
+    setForgotLoading(true);
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(forgotEmail, {
+        redirectTo: `${window.location.origin}/reset-password`,
+      });
+      if (error) throw error;
+      toast({
+        title: "Email enviado",
+        description: "Se o email estiver cadastrado, você receberá as instruções para redefinir sua senha.",
+      });
+      setForgotOpen(false);
+      setForgotEmail("");
+    } catch (error: any) {
+      toast({ title: "Erro ao enviar email", description: error.message, variant: "destructive" });
+    } finally {
+      setForgotLoading(false);
     }
   };
 
@@ -363,6 +394,15 @@ const Auth = () => {
                       "Entrar"
                     )}
                   </Button>
+                  <div className="text-center">
+                    <button
+                      type="button"
+                      onClick={() => { setForgotEmail(email); setForgotOpen(true); }}
+                      className="text-sm text-muted-foreground hover:text-foreground underline-offset-4 hover:underline"
+                    >
+                      Esqueci minha senha
+                    </button>
+                  </div>
                 </form>
               </TabsContent>
 
@@ -486,6 +526,15 @@ const Auth = () => {
                     "Entrar"
                   )}
                 </Button>
+                <div className="text-center">
+                  <button
+                    type="button"
+                    onClick={() => { setForgotEmail(email); setForgotOpen(true); }}
+                    className="text-sm text-muted-foreground hover:text-foreground underline-offset-4 hover:underline"
+                  >
+                    Esqueci minha senha
+                  </button>
+                </div>
               </form>
             )
           )}
@@ -528,6 +577,44 @@ const Auth = () => {
         </CardContent>
       </Card>
 
+      <Dialog open={forgotOpen} onOpenChange={setForgotOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Recuperar senha</DialogTitle>
+            <DialogDescription>
+              Informe o email cadastrado. Enviaremos um link para você redefinir sua senha.
+            </DialogDescription>
+          </DialogHeader>
+          <form onSubmit={handleForgotPassword} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="forgot-email">Email</Label>
+              <Input
+                id="forgot-email"
+                type="email"
+                placeholder="seu@email.com"
+                value={forgotEmail}
+                onChange={(e) => setForgotEmail(e.target.value)}
+                disabled={forgotLoading}
+              />
+            </div>
+            <DialogFooter>
+              <Button type="button" variant="outline" onClick={() => setForgotOpen(false)} disabled={forgotLoading}>
+                Cancelar
+              </Button>
+              <Button type="submit" disabled={forgotLoading}>
+                {forgotLoading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Enviando...
+                  </>
+                ) : (
+                  "Enviar link"
+                )}
+              </Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
