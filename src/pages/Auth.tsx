@@ -12,6 +12,8 @@ import { useRegistrationSettings } from "@/hooks/useRegistrationSettings";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2, ShieldAlert } from "lucide-react";
 import { z } from "zod";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { supabase } from "@/integrations/supabase/client";
 
 
 const loginSchema = z.object({
@@ -44,6 +46,9 @@ const Auth = () => {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [activeTab, setActiveTab] = useState<"login" | "signup">("login");
   const [adminCreated, setAdminCreated] = useState(false);
+  const [forgotOpen, setForgotOpen] = useState(false);
+  const [forgotEmail, setForgotEmail] = useState("");
+  const [forgotLoading, setForgotLoading] = useState(false);
 
   const isFirstTimeSetup = !hasUsers;
 
@@ -185,6 +190,32 @@ const Auth = () => {
       });
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleForgotPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const parsed = z.string().email().safeParse(forgotEmail);
+    if (!parsed.success) {
+      toast({ title: "Email inválido", description: "Informe um email válido.", variant: "destructive" });
+      return;
+    }
+    setForgotLoading(true);
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(forgotEmail, {
+        redirectTo: `${window.location.origin}/reset-password`,
+      });
+      if (error) throw error;
+      toast({
+        title: "Email enviado",
+        description: "Se o email estiver cadastrado, você receberá as instruções para redefinir sua senha.",
+      });
+      setForgotOpen(false);
+      setForgotEmail("");
+    } catch (error: any) {
+      toast({ title: "Erro ao enviar email", description: error.message, variant: "destructive" });
+    } finally {
+      setForgotLoading(false);
     }
   };
 
