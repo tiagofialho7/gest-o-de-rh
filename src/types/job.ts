@@ -5,7 +5,7 @@ export type JobSeniority = "intern" | "junior" | "pleno" | "senior" | "specialis
 export type SalaryType = "not_disclosed" | "negotiable" | "fixed" | "range";
 export type JobUrgency = "low" | "medium" | "high" | "urgent";
 export type DescriptionTone = "startup" | "corporate" | "balanced" | "creative";
-export type EducationLevel = "elementary" | "high_school" | "technical" | "undergraduate" | "postgraduate" | "masters" | "doctorate" | "postdoc";
+export type EducationLevel = "elementary" | "high_school" | "technical" | "undergraduate_ongoing" | "undergraduate" | "postgraduate" | "masters" | "doctorate" | "postdoc";
 
 export interface JobLanguage {
   language: string;
