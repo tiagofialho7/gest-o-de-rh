@@ -367,83 +367,82 @@ const JobApplicationPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#F5F5F5] p-3 md:p-6 lg:p-10">
-      <div className="max-w-7xl w-full mx-auto bg-white rounded-[32px] shadow-2xl ring-1 ring-black/5 overflow-hidden grid lg:grid-cols-12">
+    <div className="min-h-screen w-full bg-[#F5F5F5] text-[#1A2B5C] antialiased">
+      {/* High-impact navy header */}
+      <header className="bg-[#1A2B5C] py-16 md:py-20 px-6 md:px-8 relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-[#E8571A] opacity-10 rounded-full -mr-48 -mt-48 pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-72 h-72 bg-[#E8571A] opacity-5 rounded-full -ml-32 -mb-32 pointer-events-none" />
 
-        {/* LEFT — Narrative panel */}
-        <aside className="lg:col-span-5 bg-[#1A2B5C] relative p-8 md:p-12 lg:sticky lg:top-0 lg:h-screen flex flex-col overflow-hidden">
-          <div className="absolute -top-24 -right-24 w-80 h-80 rounded-full bg-[#E8571A]/30 blur-3xl pointer-events-none" />
-          <div className="absolute -bottom-32 -left-24 w-96 h-96 rounded-full bg-[#E8571A]/10 blur-3xl pointer-events-none" />
-
-          <div className="relative z-10 flex items-center gap-3 mb-10">
-            <img src={pwrLogo} alt={organization?.name || "PWR"} className="h-11 w-auto object-contain" style={{ background: "transparent", backgroundColor: "transparent" }} />
+        <div className="max-w-6xl mx-auto relative z-10">
+          <div className="flex items-center gap-3 mb-10 md:mb-12">
+            <img src={pwrLogo} alt={organization?.name || "PWR"} className="h-11 w-auto object-contain" />
           </div>
 
-          <div className="relative z-10 mb-6 flex flex-wrap gap-2">
-            {job.positions?.title && (
-              <span className="bg-[#E8571A] text-white text-[11px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full">{job.positions.title}</span>
-            )}
-            {job.departments?.name && (
-              <span className="bg-white/10 text-white text-[11px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full border border-white/20">{job.departments.name}</span>
-            )}
-          </div>
-
-          <div className="relative z-10">
-            <span className="text-[#E8571A] uppercase tracking-[0.35em] text-[11px] font-bold">Carreiras PWR</span>
-            <h1 className="text-white font-black uppercase tracking-tighter leading-[0.85] mt-3" style={{ fontSize: "clamp(3rem, 6vw, 5.5rem)" }}>
+          <div className="max-w-3xl">
+            <div className="flex flex-wrap gap-2 mb-6">
+              {job.positions?.title && (
+                <span className="px-4 py-1.5 bg-[#E8571A] text-white text-[10px] font-bold uppercase tracking-widest rounded-full shadow-sm">
+                  {job.positions.title}
+                </span>
+              )}
+              {job.departments?.name && (
+                <span className="px-4 py-1.5 bg-white/5 text-white/80 text-[10px] font-bold uppercase tracking-widest rounded-full border border-white/10">
+                  {job.departments.name}
+                </span>
+              )}
+              <span className="px-4 py-1.5 bg-white/5 text-white/80 text-[10px] font-bold uppercase tracking-widest rounded-full border border-white/10">
+                Carreiras PWR
+              </span>
+            </div>
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-[1.05] tracking-tighter mb-6">
               {job.title}
             </h1>
-            <div className="h-1.5 w-20 bg-[#E8571A] rounded-full mt-6" />
-            <p className="text-white/70 mt-6 text-base leading-relaxed max-w-sm">
-              Venha fazer parte do <strong className="text-white font-bold">time que nunca para</strong>. {organization?.employee_count ? `${organization.employee_count} colaboradores` : "51-200 colaboradores"} · {organization?.industry || "consultoria"}.
+            <p className="text-white/60 text-lg md:text-xl max-w-xl leading-relaxed font-light">
+              Seja parte do <strong className="text-white font-semibold">time que nunca para</strong>. Buscamos mentes criativas para construir o futuro com a gente.
             </p>
           </div>
+        </div>
+      </header>
 
-          <div className="relative z-10 mt-auto pt-10">
-            <p className="text-white/40 text-[10px] uppercase tracking-[0.4em] font-bold mb-4">Nosso time</p>
-            <div className="grid grid-cols-3 gap-2">
-              <div className="aspect-square rounded-2xl overflow-hidden ring-2 ring-white/10">
-                <img src={team1} alt="Time PWR" className="w-full h-full object-cover" />
-              </div>
-              <div className="aspect-square rounded-2xl overflow-hidden ring-2 ring-white/10 mt-4">
-                <img src={team2} alt="Time PWR" className="w-full h-full object-cover" />
-              </div>
-              <div className="aspect-square rounded-2xl bg-[#E8571A] flex flex-col items-center justify-center text-white font-black text-center px-2">
-                <span className="text-2xl leading-none">#</span>
-                <span className="text-[10px] uppercase tracking-widest mt-1">Nunca<br/>Para</span>
-              </div>
-            </div>
-          </div>
-        </aside>
+      {/* Overlapping content grid */}
+      <main className="max-w-6xl mx-auto px-6 md:px-8 -mt-12 md:-mt-16 pb-24 relative z-20">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
 
-        {/* RIGHT — Description + Form */}
-        <div className="lg:col-span-7 p-8 md:p-12 lg:p-16 space-y-16">
-
-          {/* Job Description */}
-          <section>
-            <span className="inline-block px-3 py-1 bg-[#1A2B5C]/5 text-[#1A2B5C] rounded-full text-[10px] font-black tracking-[0.25em] mb-5 uppercase">Sobre a vaga</span>
-            <h2 className="text-3xl md:text-4xl font-black text-[#1A2B5C] tracking-tight mb-6">{job.title}</h2>
-            {job.description && (
-              <div className="prose prose-sm max-w-none [&_p]:text-[#444444] [&_p]:leading-relaxed [&_li]:text-[#444444] [&_strong]:text-[#1A2B5C] [&_strong]:font-bold [&_h1]:text-[#1A2B5C] [&_h2]:text-[#1A2B5C] [&_h3]:text-[#1A2B5C] [&_h4]:text-[#1A2B5C] [&_h2]:border-l-[3px] [&_h2]:border-[#E8571A] [&_h2]:pl-3 [&_h2]:font-bold [&_h2]:mt-6 [&_h3]:border-l-[3px] [&_h3]:border-[#E8571A] [&_h3]:pl-3 [&_h3]:font-bold [&_h3]:mt-6 [&_ul]:my-2 [&_li]:my-0 [&_table]:w-full [&_table]:border-collapse [&_th]:border [&_th]:border-border [&_th]:px-3 [&_th]:py-2 [&_th]:bg-[#F5F5F5] [&_td]:border [&_td]:border-border [&_td]:px-3 [&_td]:py-2">
-                <ReactMarkdown remarkPlugins={[remarkBreaks, remarkGfm]}>{job.description}</ReactMarkdown>
+          {/* Primary column */}
+          <div className="lg:col-span-8 space-y-8">
+            {/* Job description card */}
+            <section className="bg-white p-8 md:p-12 rounded-3xl shadow-xl shadow-[#1A2B5C]/5 ring-1 ring-black/5">
+              <div className="flex items-center gap-4 mb-8">
+                <div className="w-1.5 h-10 bg-[#E8571A] rounded-full" />
+                <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-[#1A2B5C]">Sobre a vaga</h2>
               </div>
-            )}
-            {job.requirements && (
-              <div className="mt-8">
-                <h3 className="font-bold mb-3 border-l-[3px] border-[#E8571A] pl-3 text-[#1A2B5C]">Requisitos</h3>
-                <div className="prose prose-sm max-w-none [&_p]:text-[#444444] [&_li]:text-[#444444] [&_strong]:text-[#1A2B5C] [&_strong]:font-bold [&_ul]:my-2 [&_li]:my-0">
-                  <ReactMarkdown remarkPlugins={[remarkBreaks, remarkGfm]}>{job.requirements}</ReactMarkdown>
+
+              {job.description && (
+                <div className="prose prose-sm max-w-none [&_p]:text-[#444444] [&_p]:leading-relaxed [&_li]:text-[#444444] [&_strong]:text-[#1A2B5C] [&_strong]:font-bold [&_h1]:text-[#1A2B5C] [&_h2]:text-[#1A2B5C] [&_h3]:text-[#1A2B5C] [&_h4]:text-[#1A2B5C] [&_h2]:border-l-[3px] [&_h2]:border-[#E8571A] [&_h2]:pl-3 [&_h2]:font-bold [&_h2]:mt-6 [&_h3]:border-l-[3px] [&_h3]:border-[#E8571A] [&_h3]:pl-3 [&_h3]:font-bold [&_h3]:mt-6 [&_ul]:my-2 [&_li]:my-0 [&_table]:w-full [&_table]:border-collapse [&_th]:border [&_th]:border-border [&_th]:px-3 [&_th]:py-2 [&_th]:bg-[#F5F5F5] [&_td]:border [&_td]:border-border [&_td]:px-3 [&_td]:py-2">
+                  <ReactMarkdown remarkPlugins={[remarkBreaks, remarkGfm]}>{job.description}</ReactMarkdown>
                 </div>
-              </div>
-            )}
-          </section>
+              )}
+              {job.requirements && (
+                <div className="mt-8">
+                  <h3 className="font-bold mb-3 border-l-[3px] border-[#E8571A] pl-3 text-[#1A2B5C]">Requisitos</h3>
+                  <div className="prose prose-sm max-w-none [&_p]:text-[#444444] [&_li]:text-[#444444] [&_strong]:text-[#1A2B5C] [&_strong]:font-bold [&_ul]:my-2 [&_li]:my-0">
+                    <ReactMarkdown remarkPlugins={[remarkBreaks, remarkGfm]}>{job.requirements}</ReactMarkdown>
+                  </div>
+                </div>
+              )}
+            </section>
 
-          {/* Application Form */}
-          <section>
-            <span className="inline-block px-3 py-1 bg-[#E8571A]/10 text-[#E8571A] rounded-full text-[10px] font-black tracking-[0.25em] mb-5 uppercase">Candidate-se</span>
-            <h2 className="text-3xl md:text-4xl font-black text-[#1A2B5C] tracking-tight mb-2">Candidatar-se</h2>
-            <p className="text-[#888888] mb-8">Preencha os campos abaixo. Após salvar, você responderá ao teste de perfil comportamental.</p>
-            <form onSubmit={handleProceedToProfiler} className="space-y-6">
+            {/* Application form card */}
+            <section className="bg-white overflow-hidden rounded-3xl shadow-xl shadow-[#1A2B5C]/5 ring-1 ring-black/5">
+              <div className="bg-[#F5F5F5] px-8 md:px-12 py-7 border-b border-gray-100 flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <div className="w-1.5 h-8 bg-[#E8571A] rounded-full" />
+                  <h2 className="text-xl md:text-2xl font-bold text-[#1A2B5C]">Candidatura</h2>
+                </div>
+                <span className="text-[10px] font-black uppercase text-gray-400 tracking-widest">Etapa 1 de 2</span>
+              </div>
+
+              <form onSubmit={handleProceedToProfiler} className="p-8 md:p-12 space-y-6">
                 {/* Personal Info Section */}
                 <div className="space-y-4">
                   <h3 style={{ color: "#E8571A", fontSize: "0.7rem", letterSpacing: "0.2em", fontWeight: 600, textTransform: "uppercase" }}>
@@ -747,12 +746,73 @@ const JobApplicationPage = () => {
                   )}
                 </Button>
               </form>
-          </section>
+            </section>
+          </div>
+
+          {/* Sidebar column */}
+          <aside className="lg:col-span-4 lg:sticky lg:top-8 space-y-6">
+            {/* Culture card */}
+            <div className="bg-[#1A2B5C] text-white p-8 rounded-3xl shadow-2xl shadow-[#1A2B5C]/20 relative overflow-hidden">
+              <div className="relative z-10">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-1.5 h-6 bg-[#E8571A] rounded-full" />
+                  <h3 className="text-[10px] font-bold text-[#E8571A] uppercase tracking-[0.25em]">Nossa Cultura</h3>
+                </div>
+                <div className="rounded-2xl overflow-hidden mb-6 grid grid-cols-2 gap-2">
+                  <img src={team1} alt="Time PWR" className="w-full aspect-square object-cover rounded-xl" />
+                  <img src={team2} alt="Time PWR" className="w-full aspect-square object-cover rounded-xl mt-3" />
+                </div>
+                <p className="text-sm text-white/70 italic leading-relaxed">
+                  "Trabalhar na {organization?.name || "PWR"} é ter a liberdade de criar e a responsabilidade de impactar vidas todos os dias."
+                </p>
+                <div className="mt-6 flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-full bg-[#E8571A] flex items-center justify-center text-white font-black text-sm">#</div>
+                  <div className="text-[11px]">
+                    <p className="font-bold">Time Nunca Para</p>
+                    <p className="opacity-50">{organization?.industry || "Consultoria"} · {organization?.employee_count ? `${organization.employee_count}+ colaboradores` : "51-200 colaboradores"}</p>
+                  </div>
+                </div>
+              </div>
+              <div className="absolute -bottom-10 -right-10 w-32 h-32 bg-[#E8571A]/20 rounded-full blur-2xl pointer-events-none" />
+              <div className="absolute top-0 right-0 w-24 h-24 bg-white opacity-5 rounded-bl-full" />
+            </div>
+
+            {/* Process card */}
+            <div className="bg-white p-8 rounded-3xl ring-1 ring-black/5 shadow-xl shadow-[#1A2B5C]/5">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-1.5 h-6 bg-[#E8571A] rounded-full" />
+                <h3 className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#1A2B5C]">Como funciona</h3>
+              </div>
+              <ol className="space-y-5">
+                <li className="flex items-start gap-4">
+                  <span className="flex-shrink-0 w-8 h-8 rounded-xl bg-[#F5F5F5] text-[#1A2B5C] font-black text-sm flex items-center justify-center">1</span>
+                  <div>
+                    <p className="text-sm font-bold text-[#1A2B5C]">Preencha seus dados</p>
+                    <p className="text-xs text-gray-500 mt-0.5">Informações pessoais e currículo</p>
+                  </div>
+                </li>
+                <li className="flex items-start gap-4">
+                  <span className="flex-shrink-0 w-8 h-8 rounded-xl bg-[#E8571A] text-white font-black text-sm flex items-center justify-center">2</span>
+                  <div>
+                    <p className="text-sm font-bold text-[#1A2B5C]">Teste de perfil</p>
+                    <p className="text-xs text-gray-500 mt-0.5">~5 minutos · comportamental</p>
+                  </div>
+                </li>
+                <li className="flex items-start gap-4">
+                  <span className="flex-shrink-0 w-8 h-8 rounded-xl bg-[#F5F5F5] text-[#1A2B5C] font-black text-sm flex items-center justify-center">3</span>
+                  <div>
+                    <p className="text-sm font-bold text-[#1A2B5C]">Nosso time avalia</p>
+                    <p className="text-xs text-gray-500 mt-0.5">Retorno por e-mail</p>
+                  </div>
+                </li>
+              </ol>
+            </div>
+          </aside>
         </div>
-      </div>
+      </main>
 
       {/* Footer */}
-      <footer className="max-w-7xl mx-auto px-6 py-8 text-center text-xs" style={{ color: "#888888" }}>
+      <footer className="max-w-6xl mx-auto px-6 md:px-8 py-8 text-center text-xs" style={{ color: "#888888" }}>
         <p>© {new Date().getFullYear()} {organization?.name || "PWR"}. Todos os direitos reservados.</p>
       </footer>
     </div>
