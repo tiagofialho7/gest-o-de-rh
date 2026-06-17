@@ -494,16 +494,17 @@ const JobApplicationPage = () => {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="phone">Telefone *</Label>
+                    <Label htmlFor="phone" style={{ color: "#1A2B5C", fontWeight: 500 }}>Telefone (WhatsApp) *</Label>
                     <Input
                       id="phone"
                       type="tel"
                       value={phone}
                       onChange={(e) => handlePhoneChange(e.target.value)}
                       onBlur={() => validatePhone(phone)}
-                      placeholder="(xx) xxxxx-xxxx"
+                      placeholder="Seu WhatsApp com DDD"
                       maxLength={15}
-                      className={phoneError ? "border-destructive" : ""}
+                      className={cn("focus-visible:ring-[#E8571A] focus-visible:border-[#E8571A]", phoneError ? "border-destructive" : "")}
+                      style={{ border: phoneError ? undefined : "1.5px solid #E0E0E0", borderRadius: "8px" }}
                       required
                     />
                     {phoneError && (
@@ -514,7 +515,7 @@ const JobApplicationPage = () => {
 
                 {/* Location Section */}
                 <div className="space-y-4">
-                  <h3 className="font-medium text-sm text-muted-foreground uppercase tracking-wide">
+                  <h3 style={{ color: "#E8571A", fontSize: "0.7rem", letterSpacing: "0.2em", fontWeight: 600, textTransform: "uppercase" }}>
                     Localização
                   </h3>
 
@@ -567,7 +568,7 @@ const JobApplicationPage = () => {
 
                 {/* Demographics Section */}
                 <div className="space-y-4">
-                  <h3 className="font-medium text-sm text-muted-foreground uppercase tracking-wide">
+                  <h3 style={{ color: "#E8571A", fontSize: "0.7rem", letterSpacing: "0.2em", fontWeight: 600, textTransform: "uppercase" }}>
                     Informações Demográficas
                   </h3>
 
@@ -658,7 +659,7 @@ const JobApplicationPage = () => {
 
                 {/* Resume Section */}
                 <div className="space-y-4">
-                  <h3 className="font-medium text-sm text-muted-foreground uppercase tracking-wide">
+                  <h3 style={{ color: "#E8571A", fontSize: "0.7rem", letterSpacing: "0.2em", fontWeight: 600, textTransform: "uppercase" }}>
                     Currículo
                   </h3>
 
@@ -702,7 +703,8 @@ const JobApplicationPage = () => {
 
                 <Button
                   type="submit"
-                  className="w-full"
+                  className="w-full bg-[#E8571A] hover:bg-[#C4481A] text-white"
+                  style={{ borderRadius: "50px", fontWeight: 700 }}
                   disabled={uploading}
                 >
                   {uploading ? (
@@ -720,18 +722,18 @@ const JobApplicationPage = () => {
 
           {/* Right Column - Job Description (Sticky) */}
           <div className="lg:sticky lg:top-8 lg:self-start">
-            <Card>
+            <Card className="bg-white" style={{ borderRadius: "16px", border: "1px solid #E8E8E8", padding: "32px" }}>
               <CardHeader>
-                <CardTitle className="text-xl">{job.title}</CardTitle>
+                <CardTitle style={{ color: "#1A2B5C", fontSize: "1.25rem", fontWeight: 700 }}>{job.title}</CardTitle>
                 <div className="flex flex-wrap gap-2 mt-2">
                   {job.positions && (
-                    <Badge variant="outline" className="flex items-center gap-1">
+                    <Badge variant="outline" className="flex items-center gap-1 border-[#E8571A] text-[#E8571A]">
                       <Briefcase className="h-3 w-3" />
                       {job.positions.title}
                     </Badge>
                   )}
                   {job.departments && (
-                    <Badge variant="outline" className="flex items-center gap-1">
+                    <Badge variant="outline" className="flex items-center gap-1 border-[#E8571A] text-[#E8571A]">
                       <Building2 className="h-3 w-3" />
                       {job.departments.name}
                     </Badge>
@@ -740,14 +742,14 @@ const JobApplicationPage = () => {
               </CardHeader>
               <CardContent className="max-h-[calc(100vh-300px)] overflow-y-auto">
                 {job.description && (
-                  <div className="prose prose-sm max-w-none dark:prose-invert [&>*]:text-foreground [&_p]:text-foreground [&_h1]:text-foreground [&_h2]:text-foreground [&_h3]:text-foreground [&_h4]:text-foreground [&_strong]:text-foreground [&_li]:text-foreground [&_ul]:my-2 [&_li]:my-0 [&_table]:w-full [&_table]:border-collapse [&_th]:border [&_th]:border-border [&_th]:px-3 [&_th]:py-2 [&_th]:bg-muted [&_td]:border [&_td]:border-border [&_td]:px-3 [&_td]:py-2">
+                  <div className="prose prose-sm max-w-none [&_p]:text-[#444444] [&_li]:text-[#444444] [&_strong]:text-[#1A2B5C] [&_strong]:font-bold [&_h1]:text-[#1A2B5C] [&_h2]:text-[#1A2B5C] [&_h3]:text-[#1A2B5C] [&_h4]:text-[#1A2B5C] [&_h2]:border-l-[3px] [&_h2]:border-[#E8571A] [&_h2]:pl-3 [&_h2]:font-bold [&_h3]:border-l-[3px] [&_h3]:border-[#E8571A] [&_h3]:pl-3 [&_h3]:font-bold [&_ul]:my-2 [&_li]:my-0 [&_table]:w-full [&_table]:border-collapse [&_th]:border [&_th]:border-border [&_th]:px-3 [&_th]:py-2 [&_th]:bg-[#F5F5F5] [&_td]:border [&_td]:border-border [&_td]:px-3 [&_td]:py-2">
                     <ReactMarkdown remarkPlugins={[remarkBreaks, remarkGfm]}>{job.description}</ReactMarkdown>
                   </div>
                 )}
                 {job.requirements && (
                   <div className="mt-6">
-                    <h3 className="font-semibold mb-2">Requisitos</h3>
-                    <div className="prose prose-sm max-w-none dark:prose-invert [&>*]:text-foreground [&_p]:text-foreground [&_h1]:text-foreground [&_h2]:text-foreground [&_h3]:text-foreground [&_h4]:text-foreground [&_strong]:text-foreground [&_li]:text-foreground [&_ul]:my-2 [&_li]:my-0 [&_table]:w-full [&_table]:border-collapse [&_th]:border [&_th]:border-border [&_th]:px-3 [&_th]:py-2 [&_th]:bg-muted [&_td]:border [&_td]:border-border [&_td]:px-3 [&_td]:py-2">
+                    <h3 className="font-bold mb-2 border-l-[3px] border-[#E8571A] pl-3 text-[#1A2B5C]">Requisitos</h3>
+                    <div className="prose prose-sm max-w-none [&_p]:text-[#444444] [&_li]:text-[#444444] [&_strong]:text-[#1A2B5C] [&_strong]:font-bold [&_ul]:my-2 [&_li]:my-0">
                       <ReactMarkdown remarkPlugins={[remarkBreaks, remarkGfm]}>{job.requirements}</ReactMarkdown>
                     </div>
                   </div>
@@ -758,9 +760,24 @@ const JobApplicationPage = () => {
         </div>
       </main>
 
+      {/* Team photo strip */}
+      <section className="relative w-full overflow-hidden" style={{ height: "280px" }}>
+        <img
+          src={teamPhoto}
+          alt="Time PWR"
+          className="w-full h-full"
+          style={{ objectFit: "cover", objectPosition: "center top" }}
+        />
+        <div className="absolute inset-0 flex items-center justify-center" style={{ background: "rgba(26, 43, 92, 0.55)" }}>
+          <p className="text-white text-center px-4" style={{ fontSize: "1.5rem", fontWeight: 700 }}>
+            Venha fazer parte desse time
+          </p>
+        </div>
+      </section>
+
       {/* Footer */}
-      <footer className="border-t border-border bg-card py-8">
-        <div className="max-w-6xl mx-auto px-4 text-center text-sm text-muted-foreground">
+      <footer className="bg-[#1A2B5C] py-8 border-t-4 border-[#E8571A]">
+        <div className="max-w-6xl mx-auto px-4 text-center text-sm" style={{ color: "rgba(255,255,255,0.7)" }}>
           <p>© {new Date().getFullYear()} {organization?.name || "Popcode"}. Todos os direitos reservados.</p>
         </div>
       </footer>
