@@ -37,7 +37,8 @@ import {
 } from "@/constants/brazilData";
 import { TALENT_BANK_JOB_ID } from "@/constants/talentBank";
 import pwrLogo from "@/assets/pwr-logo.png";
-import teamPhoto from "@/assets/team/team-1.png";
+import team1 from "@/assets/team/team-1.png";
+import team2 from "@/assets/team/team-2.png";
 
 // Age validation constants (16-100 years)
 const today = new Date();
@@ -366,54 +367,83 @@ const JobApplicationPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#F5F5F5] flex flex-col">
-      {/* Hero Header */}
-      <header className="bg-[#1A2B5C] border-b-4 border-[#E8571A]">
-        <div className="max-w-[1100px] mx-auto px-6 py-12 text-center">
-          <div className="flex justify-center mb-6">
-            <img
-              src={pwrLogo}
-              alt={organization?.name || "PWR"}
-              className="h-14 w-auto object-contain"
-              style={{ background: "transparent", backgroundColor: "transparent" }}
-            />
+    <div className="min-h-screen bg-[#F5F5F5] p-3 md:p-6 lg:p-10">
+      <div className="max-w-7xl w-full mx-auto bg-white rounded-[32px] shadow-2xl ring-1 ring-black/5 overflow-hidden grid lg:grid-cols-12">
+
+        {/* LEFT — Narrative panel */}
+        <aside className="lg:col-span-5 bg-[#1A2B5C] relative p-8 md:p-12 lg:sticky lg:top-0 lg:h-screen flex flex-col overflow-hidden">
+          <div className="absolute -top-24 -right-24 w-80 h-80 rounded-full bg-[#E8571A]/30 blur-3xl pointer-events-none" />
+          <div className="absolute -bottom-32 -left-24 w-96 h-96 rounded-full bg-[#E8571A]/10 blur-3xl pointer-events-none" />
+
+          <div className="relative z-10 flex items-center gap-3 mb-10">
+            <img src={pwrLogo} alt={organization?.name || "PWR"} className="h-11 w-auto object-contain" style={{ background: "transparent", backgroundColor: "transparent" }} />
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-5 tracking-tight">
-            {job.title}
-          </h1>
-          <div className="flex flex-wrap items-center justify-center gap-2 mb-5">
+
+          <div className="relative z-10 mb-6 flex flex-wrap gap-2">
             {job.positions?.title && (
-              <span className="bg-[#E8571A] text-white text-xs font-semibold px-4 py-1.5" style={{ borderRadius: "50px" }}>
-                {job.positions.title}
-              </span>
+              <span className="bg-[#E8571A] text-white text-[11px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full">{job.positions.title}</span>
             )}
             {job.departments?.name && (
-              <span className="bg-[#E8571A] text-white text-xs font-semibold px-4 py-1.5" style={{ borderRadius: "50px" }}>
-                {job.departments.name}
-              </span>
+              <span className="bg-white/10 text-white text-[11px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full border border-white/20">{job.departments.name}</span>
             )}
           </div>
-          <p className="text-sm" style={{ color: "rgba(255,255,255,0.6)" }}>
-            {organization?.employee_count ? `${organization.employee_count} colaboradores` : "51-200 colaboradores"}
-            {" · "}
-            {organization?.industry || "consultoria"}
-          </p>
-        </div>
-      </header>
 
-      {/* Main Content - Two Column Layout */}
-      <main className="flex-1 w-full" style={{ maxWidth: "1100px", margin: "0 auto", padding: "40px 24px" }}>
-        <div className="grid grid-cols-1 lg:grid-cols-2" style={{ gap: "32px" }}>
-          {/* Left Column - Application Form */}
-          <Card className="bg-white" style={{ borderRadius: "16px", border: "1px solid #E8E8E8", padding: "32px" }}>
-            <CardHeader>
-              <CardTitle style={{ color: "#1A2B5C", fontSize: "1.25rem", fontWeight: 700 }}>Candidatar-se</CardTitle>
-              <CardDescription style={{ color: "#888888" }}>
-                Preencha os campos abaixo. Após salvar, você responderá ao teste de perfil comportamental.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <form onSubmit={handleProceedToProfiler} className="space-y-6">
+          <div className="relative z-10">
+            <span className="text-[#E8571A] uppercase tracking-[0.35em] text-[11px] font-bold">Carreiras PWR</span>
+            <h1 className="text-white font-black uppercase tracking-tighter leading-[0.85] mt-3" style={{ fontSize: "clamp(3rem, 6vw, 5.5rem)" }}>
+              {job.title}
+            </h1>
+            <div className="h-1.5 w-20 bg-[#E8571A] rounded-full mt-6" />
+            <p className="text-white/70 mt-6 text-base leading-relaxed max-w-sm">
+              Venha fazer parte do <strong className="text-white font-bold">time que nunca para</strong>. {organization?.employee_count ? `${organization.employee_count} colaboradores` : "51-200 colaboradores"} · {organization?.industry || "consultoria"}.
+            </p>
+          </div>
+
+          <div className="relative z-10 mt-auto pt-10">
+            <p className="text-white/40 text-[10px] uppercase tracking-[0.4em] font-bold mb-4">Nosso time</p>
+            <div className="grid grid-cols-3 gap-2">
+              <div className="aspect-square rounded-2xl overflow-hidden ring-2 ring-white/10">
+                <img src={team1} alt="Time PWR" className="w-full h-full object-cover" />
+              </div>
+              <div className="aspect-square rounded-2xl overflow-hidden ring-2 ring-white/10 mt-4">
+                <img src={team2} alt="Time PWR" className="w-full h-full object-cover" />
+              </div>
+              <div className="aspect-square rounded-2xl bg-[#E8571A] flex flex-col items-center justify-center text-white font-black text-center px-2">
+                <span className="text-2xl leading-none">#</span>
+                <span className="text-[10px] uppercase tracking-widest mt-1">Nunca<br/>Para</span>
+              </div>
+            </div>
+          </div>
+        </aside>
+
+        {/* RIGHT — Description + Form */}
+        <div className="lg:col-span-7 p-8 md:p-12 lg:p-16 space-y-16">
+
+          {/* Job Description */}
+          <section>
+            <span className="inline-block px-3 py-1 bg-[#1A2B5C]/5 text-[#1A2B5C] rounded-full text-[10px] font-black tracking-[0.25em] mb-5 uppercase">Sobre a vaga</span>
+            <h2 className="text-3xl md:text-4xl font-black text-[#1A2B5C] tracking-tight mb-6">{job.title}</h2>
+            {job.description && (
+              <div className="prose prose-sm max-w-none [&_p]:text-[#444444] [&_p]:leading-relaxed [&_li]:text-[#444444] [&_strong]:text-[#1A2B5C] [&_strong]:font-bold [&_h1]:text-[#1A2B5C] [&_h2]:text-[#1A2B5C] [&_h3]:text-[#1A2B5C] [&_h4]:text-[#1A2B5C] [&_h2]:border-l-[3px] [&_h2]:border-[#E8571A] [&_h2]:pl-3 [&_h2]:font-bold [&_h2]:mt-6 [&_h3]:border-l-[3px] [&_h3]:border-[#E8571A] [&_h3]:pl-3 [&_h3]:font-bold [&_h3]:mt-6 [&_ul]:my-2 [&_li]:my-0 [&_table]:w-full [&_table]:border-collapse [&_th]:border [&_th]:border-border [&_th]:px-3 [&_th]:py-2 [&_th]:bg-[#F5F5F5] [&_td]:border [&_td]:border-border [&_td]:px-3 [&_td]:py-2">
+                <ReactMarkdown remarkPlugins={[remarkBreaks, remarkGfm]}>{job.description}</ReactMarkdown>
+              </div>
+            )}
+            {job.requirements && (
+              <div className="mt-8">
+                <h3 className="font-bold mb-3 border-l-[3px] border-[#E8571A] pl-3 text-[#1A2B5C]">Requisitos</h3>
+                <div className="prose prose-sm max-w-none [&_p]:text-[#444444] [&_li]:text-[#444444] [&_strong]:text-[#1A2B5C] [&_strong]:font-bold [&_ul]:my-2 [&_li]:my-0">
+                  <ReactMarkdown remarkPlugins={[remarkBreaks, remarkGfm]}>{job.requirements}</ReactMarkdown>
+                </div>
+              </div>
+            )}
+          </section>
+
+          {/* Application Form */}
+          <section>
+            <span className="inline-block px-3 py-1 bg-[#E8571A]/10 text-[#E8571A] rounded-full text-[10px] font-black tracking-[0.25em] mb-5 uppercase">Candidate-se</span>
+            <h2 className="text-3xl md:text-4xl font-black text-[#1A2B5C] tracking-tight mb-2">Candidatar-se</h2>
+            <p className="text-[#888888] mb-8">Preencha os campos abaixo. Após salvar, você responderá ao teste de perfil comportamental.</p>
+            <form onSubmit={handleProceedToProfiler} className="space-y-6">
                 {/* Personal Info Section */}
                 <div className="space-y-4">
                   <h3 style={{ color: "#E8571A", fontSize: "0.7rem", letterSpacing: "0.2em", fontWeight: 600, textTransform: "uppercase" }}>
@@ -717,69 +747,13 @@ const JobApplicationPage = () => {
                   )}
                 </Button>
               </form>
-            </CardContent>
-          </Card>
-
-          {/* Right Column - Job Description (Sticky) */}
-          <div className="lg:sticky lg:top-8 lg:self-start">
-            <Card className="bg-white" style={{ borderRadius: "16px", border: "1px solid #E8E8E8", padding: "32px" }}>
-              <CardHeader>
-                <CardTitle style={{ color: "#1A2B5C", fontSize: "1.25rem", fontWeight: 700 }}>{job.title}</CardTitle>
-                <div className="flex flex-wrap gap-2 mt-2">
-                  {job.positions && (
-                    <Badge variant="outline" className="flex items-center gap-1 border-[#E8571A] text-[#E8571A]">
-                      <Briefcase className="h-3 w-3" />
-                      {job.positions.title}
-                    </Badge>
-                  )}
-                  {job.departments && (
-                    <Badge variant="outline" className="flex items-center gap-1 border-[#E8571A] text-[#E8571A]">
-                      <Building2 className="h-3 w-3" />
-                      {job.departments.name}
-                    </Badge>
-                  )}
-                </div>
-              </CardHeader>
-              <CardContent className="max-h-[calc(100vh-300px)] overflow-y-auto">
-                {job.description && (
-                  <div className="prose prose-sm max-w-none [&_p]:text-[#444444] [&_li]:text-[#444444] [&_strong]:text-[#1A2B5C] [&_strong]:font-bold [&_h1]:text-[#1A2B5C] [&_h2]:text-[#1A2B5C] [&_h3]:text-[#1A2B5C] [&_h4]:text-[#1A2B5C] [&_h2]:border-l-[3px] [&_h2]:border-[#E8571A] [&_h2]:pl-3 [&_h2]:font-bold [&_h3]:border-l-[3px] [&_h3]:border-[#E8571A] [&_h3]:pl-3 [&_h3]:font-bold [&_ul]:my-2 [&_li]:my-0 [&_table]:w-full [&_table]:border-collapse [&_th]:border [&_th]:border-border [&_th]:px-3 [&_th]:py-2 [&_th]:bg-[#F5F5F5] [&_td]:border [&_td]:border-border [&_td]:px-3 [&_td]:py-2">
-                    <ReactMarkdown remarkPlugins={[remarkBreaks, remarkGfm]}>{job.description}</ReactMarkdown>
-                  </div>
-                )}
-                {job.requirements && (
-                  <div className="mt-6">
-                    <h3 className="font-bold mb-2 border-l-[3px] border-[#E8571A] pl-3 text-[#1A2B5C]">Requisitos</h3>
-                    <div className="prose prose-sm max-w-none [&_p]:text-[#444444] [&_li]:text-[#444444] [&_strong]:text-[#1A2B5C] [&_strong]:font-bold [&_ul]:my-2 [&_li]:my-0">
-                      <ReactMarkdown remarkPlugins={[remarkBreaks, remarkGfm]}>{job.requirements}</ReactMarkdown>
-                    </div>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          </div>
+          </section>
         </div>
-      </main>
-
-      {/* Team photo strip */}
-      <section className="relative w-full overflow-hidden" style={{ height: "280px" }}>
-        <img
-          src={teamPhoto}
-          alt="Time PWR"
-          className="w-full h-full"
-          style={{ objectFit: "cover", objectPosition: "center top" }}
-        />
-        <div className="absolute inset-0 flex items-center justify-center" style={{ background: "rgba(26, 43, 92, 0.55)" }}>
-          <p className="text-white text-center px-4" style={{ fontSize: "1.5rem", fontWeight: 700 }}>
-            Venha fazer parte desse time
-          </p>
-        </div>
-      </section>
+      </div>
 
       {/* Footer */}
-      <footer className="bg-[#1A2B5C] py-8 border-t-4 border-[#E8571A]">
-        <div className="max-w-6xl mx-auto px-4 text-center text-sm" style={{ color: "rgba(255,255,255,0.7)" }}>
-          <p>© {new Date().getFullYear()} {organization?.name || "Popcode"}. Todos os direitos reservados.</p>
-        </div>
+      <footer className="max-w-7xl mx-auto px-6 py-8 text-center text-xs" style={{ color: "#888888" }}>
+        <p>© {new Date().getFullYear()} {organization?.name || "PWR"}. Todos os direitos reservados.</p>
       </footer>
     </div>
   );
