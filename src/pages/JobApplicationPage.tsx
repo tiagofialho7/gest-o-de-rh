@@ -36,6 +36,8 @@ import {
   PCD_TYPE_OPTIONS,
 } from "@/constants/brazilData";
 import { TALENT_BANK_JOB_ID } from "@/constants/talentBank";
+import pwrLogo from "@/assets/pwr-logo.png";
+import teamPhoto from "@/assets/team/team-1.png";
 
 // Age validation constants (16-100 years)
 const today = new Date();
@@ -364,64 +366,49 @@ const JobApplicationPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
-      {/* Header */}
-      <header className="border-b border-border bg-card">
-        <div className="max-w-6xl mx-auto px-4 py-12 text-center">
+    <div className="min-h-screen bg-[#F5F5F5] flex flex-col">
+      {/* Hero Header */}
+      <header className="bg-[#1A2B5C] border-b-4 border-[#E8571A]">
+        <div className="max-w-[1100px] mx-auto px-6 py-12 text-center">
           <div className="flex justify-center mb-6">
-            {organization?.logo_url ? (
-              <img
-                src={organization.logo_url}
-                alt={organization.name}
-                className="h-16 w-16 rounded-lg object-contain"
-              />
-            ) : (
-              <div className="size-16 rounded-lg bg-primary/10 flex items-center justify-center">
-                <FileText className="size-8 text-primary" />
-              </div>
-            )}
+            <img
+              src={pwrLogo}
+              alt={organization?.name || "PWR"}
+              className="h-14 w-auto object-contain"
+              style={{ background: "transparent", backgroundColor: "transparent" }}
+            />
           </div>
-          
-          <h1 className="text-3xl font-bold mb-4">
-            Trabalhe na {organization?.name || "Popcode"}
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-5 tracking-tight">
+            {job.title}
           </h1>
-          
-          <div className="flex items-center justify-center gap-4 text-sm text-muted-foreground flex-wrap">
-            {organization?.employee_count && (
-              <div className="flex items-center gap-1">
-                <Users className="size-4" />
-                <span>{organization.employee_count} colaboradores</span>
-              </div>
+          <div className="flex flex-wrap items-center justify-center gap-2 mb-5">
+            {job.positions?.title && (
+              <span className="bg-[#E8571A] text-white text-xs font-semibold px-4 py-1.5" style={{ borderRadius: "50px" }}>
+                {job.positions.title}
+              </span>
             )}
-            {organization?.industry && (
-              <div className="flex items-center gap-1">
-                <Building2 className="size-4" />
-                <span>{organization.industry}</span>
-              </div>
-            )}
-            {organization?.website && (
-              <a
-                href={organization.website}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-1 hover:text-primary transition-colors"
-              >
-                <Globe className="size-4" />
-                <span>Website</span>
-              </a>
+            {job.departments?.name && (
+              <span className="bg-[#E8571A] text-white text-xs font-semibold px-4 py-1.5" style={{ borderRadius: "50px" }}>
+                {job.departments.name}
+              </span>
             )}
           </div>
+          <p className="text-sm" style={{ color: "rgba(255,255,255,0.6)" }}>
+            {organization?.employee_count ? `${organization.employee_count} colaboradores` : "51-200 colaboradores"}
+            {" · "}
+            {organization?.industry || "consultoria"}
+          </p>
         </div>
       </header>
 
       {/* Main Content - Two Column Layout */}
-      <main className="flex-1 max-w-6xl mx-auto px-4 py-8 w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <main className="flex-1 w-full" style={{ maxWidth: "1100px", margin: "0 auto", padding: "40px 24px" }}>
+        <div className="grid grid-cols-1 lg:grid-cols-2" style={{ gap: "32px" }}>
           {/* Left Column - Application Form */}
-          <Card>
+          <Card className="bg-white" style={{ borderRadius: "16px", border: "1px solid #E8E8E8", padding: "32px" }}>
             <CardHeader>
-              <CardTitle>Candidatar-se</CardTitle>
-              <CardDescription>
+              <CardTitle style={{ color: "#1A2B5C", fontSize: "1.25rem", fontWeight: 700 }}>Candidatar-se</CardTitle>
+              <CardDescription style={{ color: "#888888" }}>
                 Preencha os campos abaixo. Após salvar, você responderá ao teste de perfil comportamental.
               </CardDescription>
             </CardHeader>
@@ -429,23 +416,25 @@ const JobApplicationPage = () => {
               <form onSubmit={handleProceedToProfiler} className="space-y-6">
                 {/* Personal Info Section */}
                 <div className="space-y-4">
-                  <h3 className="font-medium text-sm text-muted-foreground uppercase tracking-wide">
+                  <h3 style={{ color: "#E8571A", fontSize: "0.7rem", letterSpacing: "0.2em", fontWeight: 600, textTransform: "uppercase" }}>
                     Informações Pessoais
                   </h3>
 
                   <div className="space-y-2">
-                    <Label htmlFor="fullName">Nome Completo *</Label>
+                    <Label htmlFor="fullName" style={{ color: "#1A2B5C", fontWeight: 500 }}>Nome Completo *</Label>
                     <Input
                       id="fullName"
                       value={fullName}
                       onChange={(e) => setFullName(e.target.value)}
                       placeholder="Seu nome completo"
+                      className="focus-visible:ring-[#E8571A] focus-visible:border-[#E8571A]"
+                      style={{ border: "1.5px solid #E0E0E0", borderRadius: "8px" }}
                       required
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <Label>Data de Nascimento *</Label>
+                    <Label style={{ color: "#1A2B5C", fontWeight: 500 }}>Data de Nascimento *</Label>
                     <Popover>
                       <PopoverTrigger asChild>
                         <Button
@@ -454,6 +443,7 @@ const JobApplicationPage = () => {
                             "w-full justify-start text-left font-normal",
                             !birthDate && "text-muted-foreground"
                           )}
+                          style={{ border: "1.5px solid #E0E0E0", borderRadius: "8px" }}
                         >
                           <CalendarIcon className="mr-2 h-4 w-4" />
                           {birthDate ? (
@@ -486,7 +476,7 @@ const JobApplicationPage = () => {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="email">E-mail *</Label>
+                    <Label htmlFor="email" style={{ color: "#1A2B5C", fontWeight: 500 }}>E-mail *</Label>
                     <Input
                       id="email"
                       type="email"
@@ -494,7 +484,8 @@ const JobApplicationPage = () => {
                       onChange={(e) => handleEmailChange(e.target.value)}
                       onBlur={() => validateEmail(email)}
                       placeholder="seu@email.com"
-                      className={emailError ? "border-destructive" : ""}
+                      className={cn("focus-visible:ring-[#E8571A] focus-visible:border-[#E8571A]", emailError ? "border-destructive" : "")}
+                      style={{ border: emailError ? undefined : "1.5px solid #E0E0E0", borderRadius: "8px" }}
                       required
                     />
                     {emailError && (
@@ -503,16 +494,17 @@ const JobApplicationPage = () => {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="phone">Telefone *</Label>
+                    <Label htmlFor="phone" style={{ color: "#1A2B5C", fontWeight: 500 }}>Telefone (WhatsApp) *</Label>
                     <Input
                       id="phone"
                       type="tel"
                       value={phone}
                       onChange={(e) => handlePhoneChange(e.target.value)}
                       onBlur={() => validatePhone(phone)}
-                      placeholder="(xx) xxxxx-xxxx"
+                      placeholder="Seu WhatsApp com DDD"
                       maxLength={15}
-                      className={phoneError ? "border-destructive" : ""}
+                      className={cn("focus-visible:ring-[#E8571A] focus-visible:border-[#E8571A]", phoneError ? "border-destructive" : "")}
+                      style={{ border: phoneError ? undefined : "1.5px solid #E0E0E0", borderRadius: "8px" }}
                       required
                     />
                     {phoneError && (
@@ -523,7 +515,7 @@ const JobApplicationPage = () => {
 
                 {/* Location Section */}
                 <div className="space-y-4">
-                  <h3 className="font-medium text-sm text-muted-foreground uppercase tracking-wide">
+                  <h3 style={{ color: "#E8571A", fontSize: "0.7rem", letterSpacing: "0.2em", fontWeight: 600, textTransform: "uppercase" }}>
                     Localização
                   </h3>
 
@@ -576,7 +568,7 @@ const JobApplicationPage = () => {
 
                 {/* Demographics Section */}
                 <div className="space-y-4">
-                  <h3 className="font-medium text-sm text-muted-foreground uppercase tracking-wide">
+                  <h3 style={{ color: "#E8571A", fontSize: "0.7rem", letterSpacing: "0.2em", fontWeight: 600, textTransform: "uppercase" }}>
                     Informações Demográficas
                   </h3>
 
@@ -667,7 +659,7 @@ const JobApplicationPage = () => {
 
                 {/* Resume Section */}
                 <div className="space-y-4">
-                  <h3 className="font-medium text-sm text-muted-foreground uppercase tracking-wide">
+                  <h3 style={{ color: "#E8571A", fontSize: "0.7rem", letterSpacing: "0.2em", fontWeight: 600, textTransform: "uppercase" }}>
                     Currículo
                   </h3>
 
@@ -711,7 +703,8 @@ const JobApplicationPage = () => {
 
                 <Button
                   type="submit"
-                  className="w-full"
+                  className="w-full bg-[#E8571A] hover:bg-[#C4481A] text-white"
+                  style={{ borderRadius: "50px", fontWeight: 700 }}
                   disabled={uploading}
                 >
                   {uploading ? (
@@ -729,18 +722,18 @@ const JobApplicationPage = () => {
 
           {/* Right Column - Job Description (Sticky) */}
           <div className="lg:sticky lg:top-8 lg:self-start">
-            <Card>
+            <Card className="bg-white" style={{ borderRadius: "16px", border: "1px solid #E8E8E8", padding: "32px" }}>
               <CardHeader>
-                <CardTitle className="text-xl">{job.title}</CardTitle>
+                <CardTitle style={{ color: "#1A2B5C", fontSize: "1.25rem", fontWeight: 700 }}>{job.title}</CardTitle>
                 <div className="flex flex-wrap gap-2 mt-2">
                   {job.positions && (
-                    <Badge variant="outline" className="flex items-center gap-1">
+                    <Badge variant="outline" className="flex items-center gap-1 border-[#E8571A] text-[#E8571A]">
                       <Briefcase className="h-3 w-3" />
                       {job.positions.title}
                     </Badge>
                   )}
                   {job.departments && (
-                    <Badge variant="outline" className="flex items-center gap-1">
+                    <Badge variant="outline" className="flex items-center gap-1 border-[#E8571A] text-[#E8571A]">
                       <Building2 className="h-3 w-3" />
                       {job.departments.name}
                     </Badge>
@@ -749,14 +742,14 @@ const JobApplicationPage = () => {
               </CardHeader>
               <CardContent className="max-h-[calc(100vh-300px)] overflow-y-auto">
                 {job.description && (
-                  <div className="prose prose-sm max-w-none dark:prose-invert [&>*]:text-foreground [&_p]:text-foreground [&_h1]:text-foreground [&_h2]:text-foreground [&_h3]:text-foreground [&_h4]:text-foreground [&_strong]:text-foreground [&_li]:text-foreground [&_ul]:my-2 [&_li]:my-0 [&_table]:w-full [&_table]:border-collapse [&_th]:border [&_th]:border-border [&_th]:px-3 [&_th]:py-2 [&_th]:bg-muted [&_td]:border [&_td]:border-border [&_td]:px-3 [&_td]:py-2">
+                  <div className="prose prose-sm max-w-none [&_p]:text-[#444444] [&_li]:text-[#444444] [&_strong]:text-[#1A2B5C] [&_strong]:font-bold [&_h1]:text-[#1A2B5C] [&_h2]:text-[#1A2B5C] [&_h3]:text-[#1A2B5C] [&_h4]:text-[#1A2B5C] [&_h2]:border-l-[3px] [&_h2]:border-[#E8571A] [&_h2]:pl-3 [&_h2]:font-bold [&_h3]:border-l-[3px] [&_h3]:border-[#E8571A] [&_h3]:pl-3 [&_h3]:font-bold [&_ul]:my-2 [&_li]:my-0 [&_table]:w-full [&_table]:border-collapse [&_th]:border [&_th]:border-border [&_th]:px-3 [&_th]:py-2 [&_th]:bg-[#F5F5F5] [&_td]:border [&_td]:border-border [&_td]:px-3 [&_td]:py-2">
                     <ReactMarkdown remarkPlugins={[remarkBreaks, remarkGfm]}>{job.description}</ReactMarkdown>
                   </div>
                 )}
                 {job.requirements && (
                   <div className="mt-6">
-                    <h3 className="font-semibold mb-2">Requisitos</h3>
-                    <div className="prose prose-sm max-w-none dark:prose-invert [&>*]:text-foreground [&_p]:text-foreground [&_h1]:text-foreground [&_h2]:text-foreground [&_h3]:text-foreground [&_h4]:text-foreground [&_strong]:text-foreground [&_li]:text-foreground [&_ul]:my-2 [&_li]:my-0 [&_table]:w-full [&_table]:border-collapse [&_th]:border [&_th]:border-border [&_th]:px-3 [&_th]:py-2 [&_th]:bg-muted [&_td]:border [&_td]:border-border [&_td]:px-3 [&_td]:py-2">
+                    <h3 className="font-bold mb-2 border-l-[3px] border-[#E8571A] pl-3 text-[#1A2B5C]">Requisitos</h3>
+                    <div className="prose prose-sm max-w-none [&_p]:text-[#444444] [&_li]:text-[#444444] [&_strong]:text-[#1A2B5C] [&_strong]:font-bold [&_ul]:my-2 [&_li]:my-0">
                       <ReactMarkdown remarkPlugins={[remarkBreaks, remarkGfm]}>{job.requirements}</ReactMarkdown>
                     </div>
                   </div>
@@ -767,9 +760,24 @@ const JobApplicationPage = () => {
         </div>
       </main>
 
+      {/* Team photo strip */}
+      <section className="relative w-full overflow-hidden" style={{ height: "280px" }}>
+        <img
+          src={teamPhoto}
+          alt="Time PWR"
+          className="w-full h-full"
+          style={{ objectFit: "cover", objectPosition: "center top" }}
+        />
+        <div className="absolute inset-0 flex items-center justify-center" style={{ background: "rgba(26, 43, 92, 0.55)" }}>
+          <p className="text-white text-center px-4" style={{ fontSize: "1.5rem", fontWeight: 700 }}>
+            Venha fazer parte desse time
+          </p>
+        </div>
+      </section>
+
       {/* Footer */}
-      <footer className="border-t border-border bg-card py-8">
-        <div className="max-w-6xl mx-auto px-4 text-center text-sm text-muted-foreground">
+      <footer className="bg-[#1A2B5C] py-8 border-t-4 border-[#E8571A]">
+        <div className="max-w-6xl mx-auto px-4 text-center text-sm" style={{ color: "rgba(255,255,255,0.7)" }}>
           <p>© {new Date().getFullYear()} {organization?.name || "Popcode"}. Todos os direitos reservados.</p>
         </div>
       </footer>
