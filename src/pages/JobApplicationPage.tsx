@@ -36,6 +36,8 @@ import {
   PCD_TYPE_OPTIONS,
 } from "@/constants/brazilData";
 import { TALENT_BANK_JOB_ID } from "@/constants/talentBank";
+import pwrLogo from "@/assets/pwr-logo.png";
+import teamPhoto from "@/assets/team/team-1.png";
 
 // Age validation constants (16-100 years)
 const today = new Date();
@@ -364,64 +366,49 @@ const JobApplicationPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
-      {/* Header */}
-      <header className="border-b border-border bg-card">
-        <div className="max-w-6xl mx-auto px-4 py-12 text-center">
+    <div className="min-h-screen bg-[#F5F5F5] flex flex-col">
+      {/* Hero Header */}
+      <header className="bg-[#1A2B5C] border-b-4 border-[#E8571A]">
+        <div className="max-w-[1100px] mx-auto px-6 py-12 text-center">
           <div className="flex justify-center mb-6">
-            {organization?.logo_url ? (
-              <img
-                src={organization.logo_url}
-                alt={organization.name}
-                className="h-16 w-16 rounded-lg object-contain"
-              />
-            ) : (
-              <div className="size-16 rounded-lg bg-primary/10 flex items-center justify-center">
-                <FileText className="size-8 text-primary" />
-              </div>
-            )}
+            <img
+              src={pwrLogo}
+              alt={organization?.name || "PWR"}
+              className="h-14 w-auto object-contain"
+              style={{ background: "transparent", backgroundColor: "transparent" }}
+            />
           </div>
-          
-          <h1 className="text-3xl font-bold mb-4">
-            Trabalhe na {organization?.name || "Popcode"}
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-5 tracking-tight">
+            {job.title}
           </h1>
-          
-          <div className="flex items-center justify-center gap-4 text-sm text-muted-foreground flex-wrap">
-            {organization?.employee_count && (
-              <div className="flex items-center gap-1">
-                <Users className="size-4" />
-                <span>{organization.employee_count} colaboradores</span>
-              </div>
+          <div className="flex flex-wrap items-center justify-center gap-2 mb-5">
+            {job.positions?.title && (
+              <span className="bg-[#E8571A] text-white text-xs font-semibold px-4 py-1.5" style={{ borderRadius: "50px" }}>
+                {job.positions.title}
+              </span>
             )}
-            {organization?.industry && (
-              <div className="flex items-center gap-1">
-                <Building2 className="size-4" />
-                <span>{organization.industry}</span>
-              </div>
-            )}
-            {organization?.website && (
-              <a
-                href={organization.website}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-1 hover:text-primary transition-colors"
-              >
-                <Globe className="size-4" />
-                <span>Website</span>
-              </a>
+            {job.departments?.name && (
+              <span className="bg-[#E8571A] text-white text-xs font-semibold px-4 py-1.5" style={{ borderRadius: "50px" }}>
+                {job.departments.name}
+              </span>
             )}
           </div>
+          <p className="text-sm" style={{ color: "rgba(255,255,255,0.6)" }}>
+            {organization?.employee_count ? `${organization.employee_count} colaboradores` : "51-200 colaboradores"}
+            {" · "}
+            {organization?.industry || "consultoria"}
+          </p>
         </div>
       </header>
 
       {/* Main Content - Two Column Layout */}
-      <main className="flex-1 max-w-6xl mx-auto px-4 py-8 w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <main className="flex-1 w-full" style={{ maxWidth: "1100px", margin: "0 auto", padding: "40px 24px" }}>
+        <div className="grid grid-cols-1 lg:grid-cols-2" style={{ gap: "32px" }}>
           {/* Left Column - Application Form */}
-          <Card>
+          <Card className="bg-white" style={{ borderRadius: "16px", border: "1px solid #E8E8E8", padding: "32px" }}>
             <CardHeader>
-              <CardTitle>Candidatar-se</CardTitle>
-              <CardDescription>
+              <CardTitle style={{ color: "#1A2B5C", fontSize: "1.25rem", fontWeight: 700 }}>Candidatar-se</CardTitle>
+              <CardDescription style={{ color: "#888888" }}>
                 Preencha os campos abaixo. Após salvar, você responderá ao teste de perfil comportamental.
               </CardDescription>
             </CardHeader>
@@ -429,23 +416,25 @@ const JobApplicationPage = () => {
               <form onSubmit={handleProceedToProfiler} className="space-y-6">
                 {/* Personal Info Section */}
                 <div className="space-y-4">
-                  <h3 className="font-medium text-sm text-muted-foreground uppercase tracking-wide">
+                  <h3 style={{ color: "#E8571A", fontSize: "0.7rem", letterSpacing: "0.2em", fontWeight: 600, textTransform: "uppercase" }}>
                     Informações Pessoais
                   </h3>
 
                   <div className="space-y-2">
-                    <Label htmlFor="fullName">Nome Completo *</Label>
+                    <Label htmlFor="fullName" style={{ color: "#1A2B5C", fontWeight: 500 }}>Nome Completo *</Label>
                     <Input
                       id="fullName"
                       value={fullName}
                       onChange={(e) => setFullName(e.target.value)}
                       placeholder="Seu nome completo"
+                      className="focus-visible:ring-[#E8571A] focus-visible:border-[#E8571A]"
+                      style={{ border: "1.5px solid #E0E0E0", borderRadius: "8px" }}
                       required
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <Label>Data de Nascimento *</Label>
+                    <Label style={{ color: "#1A2B5C", fontWeight: 500 }}>Data de Nascimento *</Label>
                     <Popover>
                       <PopoverTrigger asChild>
                         <Button
@@ -454,6 +443,7 @@ const JobApplicationPage = () => {
                             "w-full justify-start text-left font-normal",
                             !birthDate && "text-muted-foreground"
                           )}
+                          style={{ border: "1.5px solid #E0E0E0", borderRadius: "8px" }}
                         >
                           <CalendarIcon className="mr-2 h-4 w-4" />
                           {birthDate ? (
@@ -486,7 +476,7 @@ const JobApplicationPage = () => {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="email">E-mail *</Label>
+                    <Label htmlFor="email" style={{ color: "#1A2B5C", fontWeight: 500 }}>E-mail *</Label>
                     <Input
                       id="email"
                       type="email"
@@ -494,7 +484,8 @@ const JobApplicationPage = () => {
                       onChange={(e) => handleEmailChange(e.target.value)}
                       onBlur={() => validateEmail(email)}
                       placeholder="seu@email.com"
-                      className={emailError ? "border-destructive" : ""}
+                      className={cn("focus-visible:ring-[#E8571A] focus-visible:border-[#E8571A]", emailError ? "border-destructive" : "")}
+                      style={{ border: emailError ? undefined : "1.5px solid #E0E0E0", borderRadius: "8px" }}
                       required
                     />
                     {emailError && (
