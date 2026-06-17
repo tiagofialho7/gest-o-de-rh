@@ -303,12 +303,12 @@ const PwrCareers = () => {
             <div className="h-1 w-20 bg-[#E8571A] mx-auto mb-4" />
             <span className="text-[#E8571A] uppercase tracking-[0.25em] text-[0.75rem] font-bold">Nosso Time</span>
             <h2 className="text-3xl md:text-4xl font-black uppercase tracking-tight text-[#1A2B5C] mt-3">
-              Pessoas que <span className="text-[#E8571A]">nunca param</span>
+              TIME QUE <span className="text-[#E8571A]">NUNCA PARA</span>
             </h2>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <img src={team1} alt="Time PWR Gestão" className="w-full h-auto rounded-xl shadow-lg object-cover" />
-            <img src={team2} alt="Equipe PWR Gestão reunida" className="w-full h-auto rounded-xl shadow-lg object-cover" />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6" style={{ gridTemplateColumns: "1fr 1fr" }}>
+            <img src={team1} alt="Time PWR Gestão" className="w-full rounded-xl shadow-lg object-cover" style={{ height: "320px", objectFit: "cover", objectPosition: "center" }} />
+            <img src={team2} alt="Equipe PWR Gestão reunida" className="w-full rounded-xl shadow-lg object-cover" style={{ height: "320px", objectFit: "cover", objectPosition: "center" }} />
           </div>
         </div>
       </section>
@@ -458,7 +458,7 @@ const PwrCareers = () => {
       <footer className="bg-black text-white py-12 px-4">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-3">
-            <img src={pwrLogo} alt="PWR Gestão" className="h-10 bg-white rounded p-1" />
+            <img src={pwrLogo} alt="PWR Gestão" className="h-10 bg-transparent" style={{ background: "transparent", backgroundColor: "transparent" }} />
             <div>
               <p className="font-bold">PWR Gestão</p>
               <p className="text-xs text-[#888888]">#NuncaParar #SempreEvoluir</p>
