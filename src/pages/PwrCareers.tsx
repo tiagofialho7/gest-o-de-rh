@@ -252,7 +252,7 @@ const PwrCareers = () => {
                   <div className="size-12 rounded-full bg-white flex items-center justify-center">
                     <Sparkles className="size-6 text-[#E8571A]" />
                   </div>
-                  <h3 className="text-[2.5rem] font-black text-[#E8571A] leading-none">10</h3>
+                  <h3 className="text-[2.5rem] font-black text-[#E8571A] leading-none">12+1</h3>
                   <h3 className="text-2xl font-black uppercase text-[#1A2B5C]">anos de jornada</h3>
                 </div>
                 <p className="text-[#1A2B5C] leading-relaxed">
@@ -300,8 +300,6 @@ const PwrCareers = () => {
       <section className="py-20 px-4 bg-[#F5F5F5]">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-10">
-            <div className="h-1 w-20 bg-[#E8571A] mx-auto mb-4" />
-            <span className="text-[#E8571A] uppercase tracking-[0.25em] text-[0.75rem] font-bold">Nosso Time</span>
             <h2 className="text-3xl md:text-4xl font-black uppercase tracking-tight text-[#1A2B5C] mt-3">
               TIME QUE <span className="text-[#E8571A]">NUNCA PARA</span>
             </h2>
