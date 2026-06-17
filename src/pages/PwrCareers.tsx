@@ -309,14 +309,9 @@ const PwrCareers = () => {
             <div className="flex flex-col gap-6">
               <div className="flex items-center gap-4 group">
                 <div className="h-12 w-2 bg-[#E8571A] rounded-full transition-all duration-300 group-hover:h-16" />
-                <div className="flex flex-col">
-                  <span className="text-[11px] font-bold text-[#1A2B5C]/50 uppercase tracking-[0.2em] leading-none mb-1">
-                    Polo Corporativo
-                  </span>
-                  <span className="text-2xl font-extrabold text-[#1A2B5C] leading-tight">
-                    Unidade <span className="text-[#E8571A]">São Paulo</span>
-                  </span>
-                </div>
+                <span className="text-2xl font-extrabold text-[#1A2B5C] leading-tight">
+                  Unidade <span className="text-[#E8571A]">São Paulo</span>
+                </span>
               </div>
               <div className="relative overflow-hidden rounded-xl shadow-2xl transition-all duration-500 hover:shadow-[#E8571A]/10 hover:-translate-y-1" style={{ height: "320px" }}>
                 <img src={team1} alt="Time PWR Gestão" className="w-full h-full object-cover" style={{ objectPosition: "center" }} />
