@@ -28,6 +28,8 @@ import {
 } from "lucide-react";
 import pwrLogo from "@/assets/pwr-logo.png";
 import pwrBanner from "@/assets/pwr-banner.png";
+import team1 from "@/assets/team/team-1.png";
+import team2 from "@/assets/team/team-2.png";
 
 const PWR_SLUG = "pwr-gestao";
 
@@ -140,7 +142,7 @@ const PwrCareers = () => {
       {/* HEADER NAV */}
       <header className="absolute top-0 left-0 right-0 z-20">
         <div className="max-w-6xl mx-auto px-4 py-5 flex items-center justify-between">
-          <img src={pwrLogo} alt="PWR Gestão" className="h-11 w-auto bg-white rounded-md p-1.5 shadow-lg" />
+          <img src={pwrLogo} alt="PWR Gestão" className="h-11 w-auto bg-transparent" style={{ background: "transparent", backgroundColor: "transparent" }} />
           <nav className="hidden md:flex items-center gap-7 text-sm font-semibold uppercase tracking-wider text-white/80">
             <a href="#sobre" className="hover:text-[#E8571A] transition-colors">Sobre</a>
             <a href="#vagas" className="hover:text-[#E8571A] transition-colors">Vagas</a>
@@ -264,6 +266,7 @@ const PwrCareers = () => {
 
       {/* CTA TIME */}
       <section className="bg-[#E8571A] text-white py-16 px-4 relative overflow-hidden">
+        {/* placeholder marker, replaced below */}
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2260%22 height=%2260%22><path d=%22M0 60L60 0%22 stroke=%22white%22 stroke-opacity=%220.05%22/></svg>')] opacity-50" />
         <div className="max-w-4xl mx-auto text-center">
           <Users className="size-12 mx-auto mb-4 text-white" />
@@ -271,6 +274,43 @@ const PwrCareers = () => {
           <p className="text-white text-lg max-w-2xl mx-auto">
             Procuramos pessoas que compartilhem da nossa filosofia: garra, consistência, gratidão e a vontade de <strong>nunca parar</strong>.
           </p>
+        </div>
+      </section>
+
+      {/* NOSSA HISTÓRIA - VIDEO */}
+      <section className="py-20 px-4 bg-white">
+        <div className="max-w-[900px] mx-auto text-center">
+          <div className="h-1 w-20 bg-[#E8571A] mx-auto mb-4" />
+          <span className="text-[#E8571A] uppercase tracking-[0.25em] text-[0.75rem] font-bold">Nossa História</span>
+          <h2 className="text-3xl md:text-4xl font-black uppercase tracking-tight text-[#1A2B5C] mt-3 mb-10">
+            Conheça a PWR <span className="text-[#E8571A]">em movimento</span>
+          </h2>
+          <div className="w-full" style={{ aspectRatio: "16 / 9" }}>
+            <iframe
+              src="https://www.youtube.com/embed/oGaWrCdAwHM"
+              title="PWR Gestão"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+              style={{ width: "100%", height: "100%", border: "none", borderRadius: "12px" }}
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* NOSSO TIME - PHOTOS */}
+      <section className="py-20 px-4 bg-[#F5F5F5]">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-10">
+            <div className="h-1 w-20 bg-[#E8571A] mx-auto mb-4" />
+            <span className="text-[#E8571A] uppercase tracking-[0.25em] text-[0.75rem] font-bold">Nosso Time</span>
+            <h2 className="text-3xl md:text-4xl font-black uppercase tracking-tight text-[#1A2B5C] mt-3">
+              Pessoas que <span className="text-[#E8571A]">nunca param</span>
+            </h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <img src={team1} alt="Time PWR Gestão" className="w-full h-auto rounded-xl shadow-lg object-cover" />
+            <img src={team2} alt="Equipe PWR Gestão reunida" className="w-full h-auto rounded-xl shadow-lg object-cover" />
+          </div>
         </div>
       </section>
 
