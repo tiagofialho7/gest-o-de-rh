@@ -256,7 +256,7 @@ const PwrCareers = () => {
                   <h3 className="text-2xl font-black uppercase text-[#1A2B5C]">anos de jornada</h3>
                 </div>
                 <p className="text-[#1A2B5C] leading-relaxed">
-                  Uma <strong className="text-[#1A2B5C]">década de muitas histórias e conquistas</strong>, construída com pessoas que nunca param e estão sempre evoluindo.
+                  <strong className="text-[#1A2B5C]">Mais de uma década de muitas histórias e conquistas</strong>, construída com pessoas que nunca param e estão sempre evoluindo.
                 </p>
               </CardContent>
             </Card>
