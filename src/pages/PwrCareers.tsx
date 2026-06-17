@@ -304,14 +304,42 @@ const PwrCareers = () => {
               TIME QUE <span className="text-[#E8571A]">NUNCA PARA</span>
             </h2>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6" style={{ gridTemplateColumns: "1fr 1fr" }}>
-            <div>
-              <span style={{ fontSize: "0.75rem", fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.15em", color: "#E8571A", display: "block", marginBottom: "8px" }}>Unidade SP</span>
-              <img src={team1} alt="Time PWR Gestão" className="w-full rounded-xl shadow-lg object-cover" style={{ height: "320px", objectFit: "cover", objectPosition: "center" }} />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10" style={{ gridTemplateColumns: "1fr 1fr" }}>
+            {/* Unit São Paulo */}
+            <div className="flex flex-col gap-6">
+              <div className="flex items-center gap-4 group">
+                <div className="h-12 w-2 bg-[#E8571A] rounded-full transition-all duration-300 group-hover:h-16" />
+                <div className="flex flex-col">
+                  <span className="text-[11px] font-bold text-[#1A2B5C]/50 uppercase tracking-[0.2em] leading-none mb-1">
+                    Polo Corporativo
+                  </span>
+                  <span className="text-2xl font-extrabold text-[#1A2B5C] leading-tight">
+                    Unidade <span className="text-[#E8571A]">São Paulo</span>
+                  </span>
+                </div>
+              </div>
+              <div className="relative overflow-hidden rounded-xl shadow-2xl transition-all duration-500 hover:shadow-[#E8571A]/10 hover:-translate-y-1" style={{ height: "320px" }}>
+                <img src={team1} alt="Time PWR Gestão" className="w-full h-full object-cover" style={{ objectPosition: "center" }} />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#1A2B5C]/40 to-transparent pointer-events-none" />
+              </div>
             </div>
-            <div>
-              <span style={{ fontSize: "0.75rem", fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.15em", color: "#E8571A", display: "block", marginBottom: "8px" }}>Unidade FOR</span>
-              <img src={team2} alt="Equipe PWR Gestão reunida" className="w-full rounded-xl shadow-lg object-cover" style={{ height: "320px", objectFit: "cover", objectPosition: "center" }} />
+            {/* Unit Fortaleza */}
+            <div className="flex flex-col gap-6">
+              <div className="flex items-center gap-4 group">
+                <div className="h-12 w-2 bg-[#E8571A] rounded-full transition-all duration-300 group-hover:h-16" />
+                <div className="flex flex-col">
+                  <span className="text-[11px] font-bold text-[#1A2B5C]/50 uppercase tracking-[0.2em] leading-none mb-1">
+                    Sede Administrativa
+                  </span>
+                  <span className="text-2xl font-extrabold text-[#1A2B5C] leading-tight">
+                    Unidade <span className="text-[#E8571A]">Fortaleza</span>
+                  </span>
+                </div>
+              </div>
+              <div className="relative overflow-hidden rounded-xl shadow-2xl transition-all duration-500 hover:shadow-[#E8571A]/10 hover:-translate-y-1" style={{ height: "320px" }}>
+                <img src={team2} alt="Equipe PWR Gestão reunida" className="w-full h-full object-cover" style={{ objectPosition: "center" }} />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#1A2B5C]/40 to-transparent pointer-events-none" />
+              </div>
             </div>
           </div>
         </div>
