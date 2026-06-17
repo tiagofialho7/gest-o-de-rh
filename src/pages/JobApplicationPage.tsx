@@ -37,7 +37,8 @@ import {
 } from "@/constants/brazilData";
 import { TALENT_BANK_JOB_ID } from "@/constants/talentBank";
 import pwrLogo from "@/assets/pwr-logo.png";
-import teamPhoto from "@/assets/team/team-1.png";
+import team1 from "@/assets/team/team-1.png";
+import team2 from "@/assets/team/team-2.png";
 
 // Age validation constants (16-100 years)
 const today = new Date();
