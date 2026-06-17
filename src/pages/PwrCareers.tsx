@@ -266,7 +266,6 @@ const PwrCareers = () => {
 
       {/* CTA TIME */}
       <section className="bg-[#E8571A] text-white py-16 px-4 relative overflow-hidden">
-        {/* placeholder marker, replaced below */}
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2260%22 height=%2260%22><path d=%22M0 60L60 0%22 stroke=%22white%22 stroke-opacity=%220.05%22/></svg>')] opacity-50" />
         <div className="max-w-4xl mx-auto text-center">
           <Users className="size-12 mx-auto mb-4 text-white" />
