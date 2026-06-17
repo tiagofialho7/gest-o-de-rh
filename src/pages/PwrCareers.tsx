@@ -256,7 +256,7 @@ const PwrCareers = () => {
                   <h3 className="text-2xl font-black uppercase text-[#1A2B5C]">anos de jornada</h3>
                 </div>
                 <p className="text-[#1A2B5C] leading-relaxed">
-                  Uma <strong className="text-[#1A2B5C]">década de muitas histórias e conquistas</strong>, construída com pessoas que nunca param e estão sempre evoluindo.
+                  <strong className="text-[#1A2B5C]">Mais de uma década de muitas histórias e conquistas</strong>, construída com pessoas que nunca param e estão sempre evoluindo.
                 </p>
               </CardContent>
             </Card>
@@ -305,8 +305,14 @@ const PwrCareers = () => {
             </h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6" style={{ gridTemplateColumns: "1fr 1fr" }}>
-            <img src={team1} alt="Time PWR Gestão" className="w-full rounded-xl shadow-lg object-cover" style={{ height: "320px", objectFit: "cover", objectPosition: "center" }} />
-            <img src={team2} alt="Equipe PWR Gestão reunida" className="w-full rounded-xl shadow-lg object-cover" style={{ height: "320px", objectFit: "cover", objectPosition: "center" }} />
+            <div>
+              <span style={{ fontSize: "0.75rem", fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.15em", color: "#E8571A", display: "block", marginBottom: "8px" }}>Unidade SP</span>
+              <img src={team1} alt="Time PWR Gestão" className="w-full rounded-xl shadow-lg object-cover" style={{ height: "320px", objectFit: "cover", objectPosition: "center" }} />
+            </div>
+            <div>
+              <span style={{ fontSize: "0.75rem", fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.15em", color: "#E8571A", display: "block", marginBottom: "8px" }}>Unidade FOR</span>
+              <img src={team2} alt="Equipe PWR Gestão reunida" className="w-full rounded-xl shadow-lg object-cover" style={{ height: "320px", objectFit: "cover", objectPosition: "center" }} />
+            </div>
           </div>
         </div>
       </section>
