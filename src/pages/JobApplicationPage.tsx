@@ -369,10 +369,18 @@ const JobApplicationPage = () => {
 
   return (
     <div className="min-h-screen w-full bg-[#F5F5F5] text-[#1A2B5C] antialiased">
-      {/* High-impact navy header */}
-      <header className="bg-[#1A2B5C] py-16 md:py-20 px-6 md:px-8 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-[#E8571A] opacity-10 rounded-full -mr-48 -mt-48 pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-72 h-72 bg-[#E8571A] opacity-5 rounded-full -ml-32 -mb-32 pointer-events-none" />
+      {/* High-impact hero header — same background as landing page */}
+      <header
+        className="relative py-16 md:py-20 px-6 md:px-8 overflow-hidden"
+        style={{
+          backgroundImage: `linear-gradient(rgba(10,10,10,0.7), rgba(10,10,10,0.85)), url(${pwrBanner})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      >
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent" />
+        <div className="absolute -top-40 -right-40 w-[500px] h-[500px] bg-[#E8571A]/20 rounded-full blur-3xl" />
+        <div className="absolute -bottom-40 -left-40 w-[500px] h-[500px] bg-[#E8571A]/10 rounded-full blur-3xl" />
 
         <div className="max-w-6xl mx-auto relative z-10">
           <div className="flex items-center gap-3 mb-10 md:mb-12">
