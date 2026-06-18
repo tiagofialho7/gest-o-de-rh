@@ -39,6 +39,7 @@ export const useJobById = (jobId: string | undefined, isDemoMode: boolean = fals
           *,
           positions:position_id (id, title),
           departments:department_id (id, name),
+          units:unit_id (id, name, address, city, state),
           organizations:organization_id (id, name, slug, logo_url, website, industry, employee_count)
         `)
         .eq("id", jobId)

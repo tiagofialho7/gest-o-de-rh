@@ -59,7 +59,9 @@ export interface Job {
   units?: {
     id: string;
     name: string;
+    address?: string | null;
     city: string | null;
+    state?: string | null;
   } | null;
 }
 

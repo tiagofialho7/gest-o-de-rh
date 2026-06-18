@@ -69,6 +69,7 @@ const AccessManagement = lazy(() => import("./pages/AccessManagement"));
 const ThemeEditor = lazy(() => import("./pages/ThemeEditor"));
 const MyPdis = lazy(() => import("./pages/MyPdis"));
 const TimeTracking = lazy(() => import("./pages/TimeTracking"));
+const Units = lazy(() => import("./pages/Units"));
 const EvaluationAnswerPage = lazy(() => import("./pages/EvaluationAnswerPage"));
 const EvaluationResultPage = lazy(() => import("./pages/EvaluationResultPage"));
 
@@ -194,6 +195,7 @@ const App = () => (
             <Route path="/company-settings/integrations" element={<PeopleRoute><IntegrationsSettings /></PeopleRoute>} />
             <Route path="/skills-management" element={<PeopleRoute><SkillsManagement /></PeopleRoute>} />
             <Route path="/invites" element={<PeopleRoute><PendingInvites /></PeopleRoute>} />
+            <Route path="/units" element={<PeopleRoute><Units /></PeopleRoute>} />
             <Route path="/vagas/new" element={<PeopleRoute><JobFormPage /></PeopleRoute>} />
             <Route path="/vagas/:id/edit" element={<PeopleRoute><JobFormPage /></PeopleRoute>} />
             <Route path="/performance-evaluation" element={<PeopleRoute><PerformanceEvaluation /></PeopleRoute>} />

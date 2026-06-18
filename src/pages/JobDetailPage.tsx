@@ -3,7 +3,7 @@ import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ArrowLeft, Share2, Building2, Briefcase, Calendar, Copy, Check, Pencil, FileText } from "lucide-react";
+import { ArrowLeft, Share2, Building2, Briefcase, Calendar, Copy, Check, Pencil, FileText, MapPin } from "lucide-react";
 import { useJobById } from "@/hooks/useJobById";
 import CandidateKanbanBoard from "@/components/CandidateKanbanBoard";
 
@@ -109,6 +109,18 @@ const JobDetailPage = () => {
                   {format(new Date(job.created_at), "dd/MM/yyyy", { locale: ptBR })}
                 </span>
               </div>
+              {job.units && (
+                <p
+                  className="flex items-center gap-1 mt-1.5"
+                  style={{ fontSize: "0.8rem", color: "#888888" }}
+                >
+                  <MapPin className="h-3 w-3" />
+                  <span>
+                    {job.units.name}
+                    {job.units.address ? ` — ${job.units.address}` : ""}
+                  </span>
+                </p>
+              )}
             </div>
           </div>
 

@@ -13,7 +13,8 @@ import {
   Search, 
   Briefcase,
   ChevronRight,
-  Calendar
+  Calendar,
+  MapPin
 } from "lucide-react";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
@@ -162,6 +163,15 @@ const CareersPage = () => {
                         <h3 className="font-semibold text-foreground mb-2">
                           {job.title}
                         </h3>
+                        {(job.unit_name || job.unit_address) && (
+                          <p className="flex items-center gap-1 mb-2" style={{ fontSize: "0.8rem", color: "#888888" }}>
+                            <MapPin className="h-3 w-3" />
+                            <span className="truncate">
+                              {job.unit_name}
+                              {job.unit_address ? ` — ${job.unit_address}` : ""}
+                            </span>
+                          </p>
+                        )}
                         <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
                           {job.seniority && (
                             <Badge variant="secondary" className="text-xs">

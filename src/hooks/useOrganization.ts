@@ -64,6 +64,7 @@ export interface CareersJob {
   work_model?: string | null;
   unit_name?: string | null;
   unit_city?: string | null;
+  unit_address?: string | null;
 }
 
 /**
@@ -116,7 +117,7 @@ export const useActiveJobsForCareers = (organizationId: string | undefined, isDe
           seniority,
           work_model,
           created_at,
-          units:unit_id (name, city)
+          units:unit_id (name, city, address)
         `)
         .eq("status", "active")
         .eq("organization_id", organizationId)
@@ -134,6 +135,7 @@ export const useActiveJobsForCareers = (organizationId: string | undefined, isDe
         created_at: job.created_at,
         unit_name: (job.units as any)?.name || null,
         unit_city: (job.units as any)?.city || null,
+        unit_address: (job.units as any)?.address || null,
       }));
     },
     enabled: !!organizationId || isDemoMode,

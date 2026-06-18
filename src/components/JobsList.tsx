@@ -32,6 +32,7 @@ import {
   Briefcase,
   LayoutGrid,
   List,
+  MapPin,
   Plus,
   MoreVertical,
   Pencil,
@@ -127,6 +128,15 @@ const JobsList = ({ isDemoMode = false }: JobsListProps) => {
             <CardTitle className="text-lg truncate">{job.title}</CardTitle>
             {job.positions && (
               <p className="text-sm text-muted-foreground">{job.positions.title}</p>
+            )}
+            {job.units && (
+              <p className="flex items-center gap-1 truncate" style={{ fontSize: "0.8rem", color: "#888888" }}>
+                <MapPin className="h-3 w-3 shrink-0" />
+                <span className="truncate">
+                  {job.units.name}
+                  {job.units.address ? ` — ${job.units.address}` : ""}
+                </span>
+              </p>
             )}
           </div>
           <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>

@@ -8,6 +8,7 @@ interface CreateUnitInput {
   city: string;
   state: string;
   country?: string;
+  address?: string;
 }
 
 export const useCreateUnit = () => {
@@ -26,6 +27,7 @@ export const useCreateUnit = () => {
           city: input.city,
           state: input.state,
           country: input.country || "BR",
+          address: input.address || null,
           organization_id: organization.id,
           is_active: true,
         })
