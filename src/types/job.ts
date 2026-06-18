@@ -47,7 +47,7 @@ export interface Job {
   urgency: JobUrgency | null;
   require_cover_letter: boolean | null;
   tags: string[] | null;
-  youtube_url: string | null;
+  youtube_url?: string | null;
   // Joined relations
   positions?: {
     id: string;
