@@ -78,6 +78,16 @@ export interface JobApplication {
   updated_at: string;
 }
 
+export interface JobStage {
+  id?: string;
+  job_id?: string;
+  nome: string;
+  descricao: string;
+  mensagem_email: string;
+  enviar_email: boolean;
+  ordem: number;
+}
+
 export interface JobFormData {
   // Step 1: Basic Info
   title: string;
@@ -110,6 +120,10 @@ export interface JobFormData {
   urgency: JobUrgency;
   require_cover_letter: boolean;
   tags: string[];
+  // Step: Mídia
+  youtube_url: string;
+  // Step: Processo Seletivo
+  stages: JobStage[];
   // Final
   status: JobStatus;
 }
@@ -173,5 +187,7 @@ export const DEFAULT_JOB_FORM_DATA: JobFormData = {
   urgency: "medium",
   require_cover_letter: false,
   tags: [],
+  youtube_url: "",
+  stages: [],
   status: "draft",
 };
