@@ -950,6 +950,30 @@ const JobApplicationPage = () => {
       <footer className="max-w-6xl mx-auto px-6 md:px-8 py-8 text-center text-xs" style={{ color: "#888888" }}>
         <p>© {new Date().getFullYear()} {organization?.name || "PWR"}. Todos os direitos reservados.</p>
       </footer>
+
+      {/* Floating "Candidatar-se" CTA — hidden once form is open */}
+      {!showForm && (
+        <button
+          type="button"
+          onClick={handleOpenForm}
+          style={{
+            position: "fixed",
+            bottom: "32px",
+            right: "32px",
+            backgroundColor: "#E8571A",
+            color: "#ffffff",
+            fontWeight: 700,
+            fontSize: "1rem",
+            borderRadius: "50px",
+            padding: "14px 36px",
+            boxShadow: "0 4px 16px rgba(232, 87, 26, 0.35)",
+            zIndex: 50,
+          }}
+          className="hover:brightness-110 transition"
+        >
+          Candidatar-se
+        </button>
+      )}
     </div>
   );
 };
