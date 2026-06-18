@@ -13,7 +13,8 @@ import {
   Search, 
   Briefcase,
   ChevronRight,
-  Calendar
+  Calendar,
+  MapPin
 } from "lucide-react";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
