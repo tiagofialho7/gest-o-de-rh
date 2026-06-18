@@ -25,9 +25,10 @@ E para estimular o seu bem-estar e desenvolvimento, a Popcode oferece:
 
 
 - Regime de contratação CLT/PJ;
-- Vale alimentação;
-- Auxílio Home Office:
+- Ajuda de Custo com Alimentação;
+- Ajuda de Custo com Transporte;
 - Plano de saúde e odontológico;
-- Day off no mês do aniversário;
-- Day off de saúde mental
-- Reembolso de curso e certificações`;
+- PPR;
+- Bolsa Capacitação para Estudos;
+- Treinamentos Internos;
+- Acesso à Plataforma de Cursos Corporativos da PWR`;

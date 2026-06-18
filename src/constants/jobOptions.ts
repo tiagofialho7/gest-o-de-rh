@@ -76,25 +76,20 @@ export const EDUCATION_LEVEL_LABELS: Record<EducationLevel, string> = {
 };
 
 export const JOB_BENEFITS = [
-  "Vale refeição",
-  "Vale alimentação",
-  "Vale transporte",
+  "Ajuda de Custo com Alimentação",
+  "Ajuda de Custo com Transporte",
   "Plano de saúde",
   "Plano odontológico",
   "Seguro de vida",
   "Gympass/Wellhub",
-  "Day off de aniversário",
   "Home office",
-  "Auxílio home office",
-  "PLR",
+  "PPR",
   "Stock options",
-  "Auxílio creche",
-  "Auxílio educação",
-  "Cursos e certificações",
-  "Horário flexível",
-  "Previdência privada",
+  "Bolsa Capacitação para Estudos",
+  "Treinamentos Internos",
   "Convênio farmácia",
-  "Licença maternidade/paternidade estendida",
+  "Licença Maternidade estendida",
+  "Acesso à Plataforma de Cursos Corporativos da PWR",
 ];
 
 export const LANGUAGE_OPTIONS = [

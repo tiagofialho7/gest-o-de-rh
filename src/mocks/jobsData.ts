@@ -153,7 +153,7 @@ export const mockOrganization: Organization = {
   interview_format: "3 etapas: Fit cultural, Técnico e Proposta",
   hiring_time: "2-3 semanas",
   hiring_process_description: "Nosso processo é humanizado e transparente. Começamos com um bate-papo sobre cultura, seguido de avaliação técnica e finalizamos com proposta.",
-  benefits: ["Vale refeição", "Plano de saúde", "Home office", "Horário flexível", "Day off de aniversário"],
+  benefits: ["Ajuda de Custo com Alimentação", "Plano de saúde", "Home office", "PPR", "Bolsa Capacitação para Estudos"],
   linkedin_url: "https://linkedin.com/company/popcode",
   instagram_handle: "@popcode.tech",
   twitter_handle: null,
