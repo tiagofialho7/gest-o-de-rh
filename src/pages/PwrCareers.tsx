@@ -56,6 +56,8 @@ interface PwrJob {
   seniority: string | null;
   created_at: string;
   department: string | null;
+  unit_name: string | null;
+  unit_address: string | null;
   unit_city: string | null;
   unit_state: string | null;
 }
@@ -76,7 +78,7 @@ function usePwrJobs() {
         .select(
           `id, title, description, work_model, contract_type, seniority, created_at,
            departments:department_id (name),
-           units:unit_id (city, state)`
+           units:unit_id (name, address, city, state)`
         )
         .eq("status", "active")
         .order("created_at", { ascending: false });
@@ -95,6 +97,8 @@ function usePwrJobs() {
         seniority: j.seniority,
         created_at: j.created_at,
         department: j.departments?.name ?? null,
+        unit_name: j.units?.name ?? null,
+        unit_address: j.units?.address ?? null,
         unit_city: j.units?.city ?? null,
         unit_state: j.units?.state ?? null,
       }));
@@ -430,6 +434,15 @@ const PwrCareers = () => {
                         <h3 className="font-bold text-[1.125rem] mb-2 text-[#1A2B5C] group-hover:text-[#E8571A] transition-colors">
                           {job.title}
                         </h3>
+                        {(job.unit_name || job.unit_address) && (
+                          <p className="flex items-center gap-1 mb-2" style={{ fontSize: "0.8rem", color: "#888888" }}>
+                            <MapPin className="size-3" />
+                            <span className="truncate">
+                              {job.unit_name}
+                              {job.unit_address ? ` — ${job.unit_address}` : ""}
+                            </span>
+                          </p>
+                        )}
                         <div className="flex flex-wrap items-center gap-2 text-sm text-[#333333]">
                           {job.department && <Badge className="bg-[#E8571A] text-white border-0 hover:bg-[#E8571A] rounded text-[0.75rem] uppercase font-bold">{job.department}</Badge>}
                           {job.work_model && (
