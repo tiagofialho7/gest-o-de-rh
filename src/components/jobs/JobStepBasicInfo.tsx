@@ -309,6 +309,32 @@ export function JobStepBasicInfo({ form }: JobStepBasicInfoProps) {
             )}
           />
         </div>
+
+        {/* Mídia */}
+        <div className="space-y-3 pt-2 border-t">
+          <div>
+            <h3 className="text-base font-semibold">Mídia</h3>
+            <p className="text-sm text-muted-foreground">
+              Conteúdo opcional para enriquecer a vaga e os e-mails do processo seletivo.
+            </p>
+          </div>
+          <FormField
+            control={form.control}
+            name="youtube_url"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Link do Vídeo Institucional (YouTube)</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="https://www.youtube.com/watch?v=..."
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
       </div>
 
       {/* Dialog de criação de unidade */}
