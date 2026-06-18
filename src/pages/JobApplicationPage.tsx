@@ -16,6 +16,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Checkbox } from "@/components/ui/checkbox";
 import { CalendarIcon, Upload, FileText, Briefcase, Building2, ArrowRight, Users, Globe, MapPin } from "lucide-react";
 import { useJobById } from "@/hooks/useJobById";
 import { useJobStages } from "@/hooks/useJobStages";
@@ -84,6 +85,21 @@ const JobApplicationPage = () => {
   const [sexualOrientation, setSexualOrientation] = useState("");
   const [isPcd, setIsPcd] = useState<string>("");
   const [pcdType, setPcdType] = useState("");
+
+  // UI state: hide form until candidate clicks the floating CTA
+  const [showForm, setShowForm] = useState(false);
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [termsError, setTermsError] = useState("");
+
+  const handleOpenForm = () => {
+    setShowForm(true);
+    // wait for render then scroll
+    setTimeout(() => {
+      document
+        .getElementById("application-form")
+        ?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 50);
+  };
 
 
   const { cities, isLoading: citiesLoading } = useBrazilianCities(state);
@@ -258,6 +274,11 @@ const JobApplicationPage = () => {
       });
       return;
     }
+    if (!acceptedTerms) {
+      setTermsError("Você precisa aceitar os termos para se candidatar.");
+      return;
+    }
+    setTermsError("");
 
     setUploading(true);
     try {
