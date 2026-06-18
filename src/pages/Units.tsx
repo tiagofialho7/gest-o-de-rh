@@ -277,8 +277,8 @@ const UnitsPage = () => {
                   </SelectTrigger>
                   <SelectContent>
                     {BRAZILIAN_STATES.map((s) => (
-                      <SelectItem key={s.uf} value={s.uf}>
-                        {s.uf} — {s.name}
+                      <SelectItem key={s.value} value={s.value}>
+                        {s.value} — {s.label}
                       </SelectItem>
                     ))}
                   </SelectContent>
