@@ -23,10 +23,13 @@ import { JobStepRequirements } from "@/components/jobs/JobStepRequirements";
 import { JobStepCompensation } from "@/components/jobs/JobStepCompensation";
 import { JobStepDescription } from "@/components/jobs/JobStepDescription";
 import { JobStepProcess } from "@/components/jobs/JobStepProcess";
+import { JobStepProcessoSeletivo } from "@/components/jobs/JobStepProcessoSeletivo";
 import { JobStepReview } from "@/components/jobs/JobStepReview";
 import { useCreateJob } from "@/hooks/useCreateJob";
 import { useUpdateJob } from "@/hooks/useUpdateJob";
 import { useJobById } from "@/hooks/useJobById";
+import { useJobStages } from "@/hooks/useJobStages";
+import { useSaveJobStages } from "@/hooks/useSaveJobStages";
 import { useRequireOrganization } from "@/hooks/useRequireOrganization";
 import { useOrganizationIntegrations } from "@/hooks/useOrganizationIntegrations";
 import {
@@ -69,6 +72,27 @@ const formSchema = z.object({
   require_cover_letter: z.boolean(),
   tags: z.array(z.string()),
   status: z.enum(["active", "closed", "draft", "on_hold"]),
+  youtube_url: z
+    .string()
+    .trim()
+    .refine(
+      (v) => !v || /(?:youtube\.com|youtu\.be)/i.test(v),
+      "URL deve ser do YouTube (youtube.com ou youtu.be)"
+    )
+    .default(""),
+  stages: z
+    .array(
+      z.object({
+        id: z.string().optional(),
+        job_id: z.string().optional(),
+        nome: z.string(),
+        descricao: z.string().default(""),
+        mensagem_email: z.string().default(""),
+        enviar_email: z.boolean().default(true),
+        ordem: z.number().default(0),
+      })
+    )
+    .default([]),
 });
 
 const isJobSeniority = (
@@ -91,8 +115,10 @@ const JobFormPage = () => {
 
   const { organization } = useRequireOrganization();
   const { data: existingJob, isLoading: isLoadingJob } = useJobById(id);
+  const { data: existingStages } = useJobStages(id);
   const createJob = useCreateJob();
   const updateJob = useUpdateJob();
+  const saveStages = useSaveJobStages();
   const { data: integrations, isLoading: isLoadingIntegrations } = useOrganizationIntegrations(
     organization?.id || null
   );
@@ -145,9 +171,11 @@ const JobFormPage = () => {
         require_cover_letter: existingJob.require_cover_letter || false,
         tags: existingJob.tags || [],
         status: existingJob.status || "draft",
+        youtube_url: existingJob.youtube_url || "",
+        stages: existingStages || [],
       });
     }
-  }, [existingJob, isEditing, form]);
+  }, [existingJob, existingStages, isEditing, form]);
 
   const totalSteps = JOB_WIZARD_STEPS.length;
   const isLastStep = currentStep === totalSteps;
@@ -230,13 +258,20 @@ const JobFormPage = () => {
       urgency: values.urgency,
       require_cover_letter: values.require_cover_letter,
       tags: values.tags,
+      youtube_url: values.youtube_url?.trim() || null,
     };
 
     try {
+      let jobId: string;
       if (isEditing && id) {
         await updateJob.mutateAsync({ id, ...jobData });
+        jobId = id;
       } else {
-        await createJob.mutateAsync(jobData as any);
+        const created = await createJob.mutateAsync(jobData as any);
+        jobId = (created as any).id;
+      }
+      if (jobId) {
+        await saveStages.mutateAsync({ jobId, stages: values.stages || [] });
       }
       navigate("/vagas");
     } catch (error) {
@@ -257,6 +292,8 @@ const JobFormPage = () => {
       case 5:
         return <JobStepProcess form={form} />;
       case 6:
+        return <JobStepProcessoSeletivo form={form} />;
+      case 7:
         return <JobStepReview form={form} />;
       default:
         return null;
