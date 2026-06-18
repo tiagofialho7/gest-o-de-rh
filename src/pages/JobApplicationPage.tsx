@@ -16,7 +16,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { CalendarIcon, Upload, FileText, Briefcase, Building2, ArrowRight, Users, Globe } from "lucide-react";
+import { CalendarIcon, Upload, FileText, Briefcase, Building2, ArrowRight, Users, Globe, MapPin } from "lucide-react";
 import { useJobById } from "@/hooks/useJobById";
 import { useBrazilianCities } from "@/hooks/useBrazilianCities";
 import { supabase } from "@/integrations/supabase/client";
@@ -406,6 +406,18 @@ const JobApplicationPage = () => {
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-[1.05] tracking-tighter mb-6">
               {job.title}
             </h1>
+            {job.units && (
+              <p
+                className="flex items-center gap-1.5 mb-4"
+                style={{ fontSize: "0.8rem", color: "#cccccc" }}
+              >
+                <MapPin className="h-3.5 w-3.5" />
+                <span>
+                  {job.units.name}
+                  {job.units.address ? ` — ${job.units.address}` : ""}
+                </span>
+              </p>
+            )}
             <p className="text-white/60 text-lg md:text-xl max-w-xl leading-relaxed font-light">
               Seja parte do <strong className="text-white font-semibold">time que nunca para</strong>. Buscamos mentes criativas para construir o futuro com a gente.
             </p>
