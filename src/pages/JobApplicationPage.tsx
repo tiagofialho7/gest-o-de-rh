@@ -62,6 +62,7 @@ const JobApplicationPage = () => {
   }, [id, navigate]);
   
   const { data: job, isLoading } = useJobById(id, isDemoMode);
+  const { data: jobStages } = useJobStages(id);
   // Get organization from job data (includes org via JOIN)
   const organization = job?.organizations;
 
