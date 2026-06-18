@@ -455,6 +455,53 @@ const JobApplicationPage = () => {
               )}
             </section>
 
+            {/* Selection process timeline */}
+            {jobStages && jobStages.length > 0 && (
+              <section
+                className="bg-white p-8 md:p-12 rounded-3xl shadow-xl shadow-[#1A2B5C]/5"
+                style={{ border: "1px solid #E8E8E8", borderRadius: "12px" }}
+              >
+                <h2
+                  className="text-xl md:text-2xl font-bold mb-6"
+                  style={{
+                    color: "#1A2B5C",
+                    borderLeft: "3px solid #E8571A",
+                    paddingLeft: "12px",
+                  }}
+                >
+                  Como é o nosso processo seletivo?
+                </h2>
+                <ol className="space-y-5">
+                  {jobStages.map((stage, idx) => (
+                    <li key={stage.id || idx} className="flex items-start gap-4">
+                      <span
+                        className="flex-shrink-0 flex items-center justify-center w-9 h-9 rounded-full text-white font-bold text-sm"
+                        style={{ backgroundColor: "#E8571A" }}
+                      >
+                        {idx + 1}
+                      </span>
+                      <div className="flex-1">
+                        <p
+                          className="font-bold"
+                          style={{ color: "#1A2B5C", fontSize: "1rem" }}
+                        >
+                          {stage.nome}
+                        </p>
+                        {stage.descricao && (
+                          <p
+                            className="mt-1 leading-relaxed"
+                            style={{ color: "#666666", fontSize: "0.9rem" }}
+                          >
+                            {stage.descricao}
+                          </p>
+                        )}
+                      </div>
+                    </li>
+                  ))}
+                </ol>
+              </section>
+            )}
+
             {/* Application form card */}
             <section className="bg-white overflow-hidden rounded-3xl shadow-xl shadow-[#1A2B5C]/5 ring-1 ring-black/5">
               <div className="bg-[#F5F5F5] px-8 md:px-12 py-7 border-b border-gray-100 flex items-center justify-between">
