@@ -40,7 +40,20 @@ export const useUpdateCandidateStage = () => {
     },
     onSuccess: ({ candidateIds, stage }, { jobId }) => {
       queryClient.invalidateQueries({ queryKey: ["job-applications", jobId] });
-      
+
+      // Fire-and-forget: trigger automated email for this stage.
+      supabase.functions
+        .invoke("send-stage-email", {
+          body: {
+            job_id: jobId,
+            stage_label: STAGE_LABELS[stage],
+            candidate_ids: candidateIds,
+          },
+        })
+        .catch((err) => {
+          console.warn("Failed to invoke send-stage-email:", err);
+        });
+
       toast({
         title: "Candidatos atualizados",
         description: `${candidateIds.length} candidato(s) movido(s) para ${STAGE_LABELS[stage]}.`,
