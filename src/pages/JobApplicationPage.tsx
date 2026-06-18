@@ -523,8 +523,12 @@ const JobApplicationPage = () => {
               </section>
             )}
 
-            {/* Application form card */}
-            <section className="bg-white overflow-hidden rounded-3xl shadow-xl shadow-[#1A2B5C]/5 ring-1 ring-black/5">
+            {/* Application form card — hidden until user clicks the floating CTA */}
+            {showForm && (
+            <section
+              id="application-form"
+              className="bg-white overflow-hidden rounded-3xl shadow-xl shadow-[#1A2B5C]/5 ring-1 ring-black/5 scroll-mt-8"
+            >
               <div className="bg-[#F5F5F5] px-8 md:px-12 py-7 border-b border-gray-100 flex items-center justify-between">
                 <div className="flex items-center gap-4">
                   <div className="w-1.5 h-8 bg-[#E8571A] rounded-full" />
@@ -821,6 +825,45 @@ const JobApplicationPage = () => {
                   <p>Após salvar seus dados, você responderá ao teste de perfil comportamental (aproximadamente 5 minutos). Sua candidatura só será enviada após a conclusão do teste.</p>
                 </div>
 
+                {/* LGPD consent */}
+                <div className="space-y-2">
+                  <label className="flex items-start gap-3 cursor-pointer">
+                    <Checkbox
+                      checked={acceptedTerms}
+                      onCheckedChange={(checked) => {
+                        const value = checked === true;
+                        setAcceptedTerms(value);
+                        if (value) setTermsError("");
+                      }}
+                      className="mt-0.5 border-[#E8571A] data-[state=checked]:bg-[#E8571A] data-[state=checked]:border-[#E8571A] data-[state=checked]:text-white"
+                      aria-invalid={!!termsError}
+                    />
+                    <span
+                      style={{
+                        fontSize: "0.8rem",
+                        color: "#555555",
+                        lineHeight: 1.5,
+                      }}
+                    >
+                      Li e concordo com o tratamento dos meus dados pessoais pela PWR Gestão para fins de recrutamento e seleção, conforme a{" "}
+                      <a
+                        href="https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2018/lei/l13709.htm"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="underline"
+                        style={{ color: "#E8571A" }}
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        Lei Geral de Proteção de Dados
+                      </a>{" "}
+                      (LGPD — Lei nº 13.709/2018).
+                    </span>
+                  </label>
+                  {termsError && (
+                    <p style={{ color: "#E8571A", fontSize: "0.8rem" }}>{termsError}</p>
+                  )}
+                </div>
+
                 <Button
                   type="submit"
                   className="w-full bg-[#E8571A] hover:bg-[#C4481A] text-white"
@@ -838,6 +881,7 @@ const JobApplicationPage = () => {
                 </Button>
               </form>
             </section>
+            )}
           </div>
 
           {/* Sidebar column */}
