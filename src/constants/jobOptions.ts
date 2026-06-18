@@ -13,8 +13,9 @@ export const JOB_WIZARD_STEPS = [
   { id: 2, title: "Requisitos", description: "Habilidades e qualificações" },
   { id: 3, title: "Remuneração", description: "Salário e benefícios" },
   { id: 4, title: "Descrição", description: "Gerar descrição com IA" },
-  { id: 5, title: "Processo", description: "Datas e configurações" },
-  { id: 6, title: "Revisão", description: "Confirmar e publicar" },
+  { id: 5, title: "Configurações", description: "Datas e configurações" },
+  { id: 6, title: "Processo Seletivo", description: "Etapas do processo e e-mails automáticos" },
+  { id: 7, title: "Revisão", description: "Confirmar e publicar" },
 ];
 
 export const WORK_MODEL_LABELS: Record<WorkModel, string> = {

@@ -1834,6 +1834,57 @@ export type Database = {
           },
         ]
       }
+      job_stages: {
+        Row: {
+          created_at: string
+          descricao: string | null
+          enviar_email: boolean
+          id: string
+          job_id: string
+          mensagem_email: string | null
+          nome: string
+          ordem: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          descricao?: string | null
+          enviar_email?: boolean
+          id?: string
+          job_id: string
+          mensagem_email?: string | null
+          nome: string
+          ordem?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          descricao?: string | null
+          enviar_email?: boolean
+          id?: string
+          job_id?: string
+          mensagem_email?: string | null
+          nome?: string
+          ordem?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "job_stages_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "jobs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "job_stages_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "jobs_public"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       jobs: {
         Row: {
           application_deadline: string | null
@@ -1869,6 +1920,7 @@ export type Database = {
           updated_at: string
           urgency: string | null
           work_model: string | null
+          youtube_url: string | null
         }
         Insert: {
           application_deadline?: string | null
@@ -1904,6 +1956,7 @@ export type Database = {
           updated_at?: string
           urgency?: string | null
           work_model?: string | null
+          youtube_url?: string | null
         }
         Update: {
           application_deadline?: string | null
@@ -1939,6 +1992,7 @@ export type Database = {
           updated_at?: string
           urgency?: string | null
           work_model?: string | null
+          youtube_url?: string | null
         }
         Relationships: [
           {
