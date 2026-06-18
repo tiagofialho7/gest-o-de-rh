@@ -42,13 +42,15 @@ export const useJobs = (options: UseJobsOptions = {}) => {
           requirements,
           position_id,
           department_id,
+          unit_id,
           status,
           created_by,
           created_at,
           updated_at,
           closed_at,
           positions (id, title),
-          departments (id, name)
+          departments (id, name),
+          units:unit_id (id, name, address, city, state)
         `)
         .eq("organization_id", organization.id)
         .order("created_at", { ascending: false });
