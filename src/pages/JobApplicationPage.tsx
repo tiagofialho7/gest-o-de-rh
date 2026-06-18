@@ -16,6 +16,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Checkbox } from "@/components/ui/checkbox";
 import { CalendarIcon, Upload, FileText, Briefcase, Building2, ArrowRight, Users, Globe, MapPin } from "lucide-react";
 import { useJobById } from "@/hooks/useJobById";
 import { useJobStages } from "@/hooks/useJobStages";
@@ -84,6 +85,21 @@ const JobApplicationPage = () => {
   const [sexualOrientation, setSexualOrientation] = useState("");
   const [isPcd, setIsPcd] = useState<string>("");
   const [pcdType, setPcdType] = useState("");
+
+  // UI state: hide form until candidate clicks the floating CTA
+  const [showForm, setShowForm] = useState(false);
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [termsError, setTermsError] = useState("");
+
+  const handleOpenForm = () => {
+    setShowForm(true);
+    // wait for render then scroll
+    setTimeout(() => {
+      document
+        .getElementById("application-form")
+        ?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 50);
+  };
 
 
   const { cities, isLoading: citiesLoading } = useBrazilianCities(state);
@@ -258,6 +274,11 @@ const JobApplicationPage = () => {
       });
       return;
     }
+    if (!acceptedTerms) {
+      setTermsError("Você precisa aceitar os termos para se candidatar.");
+      return;
+    }
+    setTermsError("");
 
     setUploading(true);
     try {
@@ -502,8 +523,12 @@ const JobApplicationPage = () => {
               </section>
             )}
 
-            {/* Application form card */}
-            <section className="bg-white overflow-hidden rounded-3xl shadow-xl shadow-[#1A2B5C]/5 ring-1 ring-black/5">
+            {/* Application form card — hidden until user clicks the floating CTA */}
+            {showForm && (
+            <section
+              id="application-form"
+              className="bg-white overflow-hidden rounded-3xl shadow-xl shadow-[#1A2B5C]/5 ring-1 ring-black/5 scroll-mt-8"
+            >
               <div className="bg-[#F5F5F5] px-8 md:px-12 py-7 border-b border-gray-100 flex items-center justify-between">
                 <div className="flex items-center gap-4">
                   <div className="w-1.5 h-8 bg-[#E8571A] rounded-full" />
@@ -800,6 +825,45 @@ const JobApplicationPage = () => {
                   <p>Após salvar seus dados, você responderá ao teste de perfil comportamental (aproximadamente 5 minutos). Sua candidatura só será enviada após a conclusão do teste.</p>
                 </div>
 
+                {/* LGPD consent */}
+                <div className="space-y-2">
+                  <label className="flex items-start gap-3 cursor-pointer">
+                    <Checkbox
+                      checked={acceptedTerms}
+                      onCheckedChange={(checked) => {
+                        const value = checked === true;
+                        setAcceptedTerms(value);
+                        if (value) setTermsError("");
+                      }}
+                      className="mt-0.5 border-[#E8571A] data-[state=checked]:bg-[#E8571A] data-[state=checked]:border-[#E8571A] data-[state=checked]:text-white"
+                      aria-invalid={!!termsError}
+                    />
+                    <span
+                      style={{
+                        fontSize: "0.8rem",
+                        color: "#555555",
+                        lineHeight: 1.5,
+                      }}
+                    >
+                      Li e concordo com o tratamento dos meus dados pessoais pela PWR Gestão para fins de recrutamento e seleção, conforme a{" "}
+                      <a
+                        href="https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2018/lei/l13709.htm"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="underline"
+                        style={{ color: "#E8571A" }}
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        Lei Geral de Proteção de Dados
+                      </a>{" "}
+                      (LGPD — Lei nº 13.709/2018).
+                    </span>
+                  </label>
+                  {termsError && (
+                    <p style={{ color: "#E8571A", fontSize: "0.8rem" }}>{termsError}</p>
+                  )}
+                </div>
+
                 <Button
                   type="submit"
                   className="w-full bg-[#E8571A] hover:bg-[#C4481A] text-white"
@@ -817,6 +881,7 @@ const JobApplicationPage = () => {
                 </Button>
               </form>
             </section>
+            )}
           </div>
 
           {/* Sidebar column */}
@@ -885,6 +950,30 @@ const JobApplicationPage = () => {
       <footer className="max-w-6xl mx-auto px-6 md:px-8 py-8 text-center text-xs" style={{ color: "#888888" }}>
         <p>© {new Date().getFullYear()} {organization?.name || "PWR"}. Todos os direitos reservados.</p>
       </footer>
+
+      {/* Floating "Candidatar-se" CTA — hidden once form is open */}
+      {!showForm && (
+        <button
+          type="button"
+          onClick={handleOpenForm}
+          style={{
+            position: "fixed",
+            bottom: "32px",
+            right: "32px",
+            backgroundColor: "#E8571A",
+            color: "#ffffff",
+            fontWeight: 700,
+            fontSize: "1rem",
+            borderRadius: "50px",
+            padding: "14px 36px",
+            boxShadow: "0 4px 16px rgba(232, 87, 26, 0.35)",
+            zIndex: 50,
+          }}
+          className="hover:brightness-110 transition"
+        >
+          Candidatar-se
+        </button>
+      )}
     </div>
   );
 };

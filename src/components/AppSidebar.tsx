@@ -98,9 +98,15 @@ const menuGroups: MenuGroup[] = [
       { icon: Building2, label: "Departamentos", href: "/departments" },
       { icon: Briefcase, label: "Cargos", href: "/positions" },
       { icon: MapPin, label: "Unidades", href: "/units" },
+      { icon: UserMinus, label: "Desligamentos", href: "/terminations" },
+    ],
+  },
+  {
+    label: "RECRUTAMENTO E SELEÇÃO PWR",
+    showFor: "people",
+    items: [
       { icon: ClipboardList, label: "Vagas", href: "/vagas" },
       { icon: Archive, label: "Banco de Talentos", href: "/talent-bank" },
-      { icon: UserMinus, label: "Desligamentos", href: "/terminations" },
     ],
   },
   {
