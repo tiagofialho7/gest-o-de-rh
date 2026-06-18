@@ -3,7 +3,7 @@ import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ArrowLeft, Share2, Building2, Briefcase, Calendar, Copy, Check, Pencil, FileText } from "lucide-react";
+import { ArrowLeft, Share2, Building2, Briefcase, Calendar, Copy, Check, Pencil, FileText, MapPin } from "lucide-react";
 import { useJobById } from "@/hooks/useJobById";
 import CandidateKanbanBoard from "@/components/CandidateKanbanBoard";
 
