@@ -18,6 +18,7 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { CalendarIcon, Upload, FileText, Briefcase, Building2, ArrowRight, Users, Globe, MapPin } from "lucide-react";
 import { useJobById } from "@/hooks/useJobById";
+import { useJobStages } from "@/hooks/useJobStages";
 import { useBrazilianCities } from "@/hooks/useBrazilianCities";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
