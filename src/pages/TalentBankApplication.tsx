@@ -70,6 +70,20 @@ const TalentBankApplication = () => {
   const [desiredPosition, setDesiredPosition] = useState("");
   const [desiredSeniority, setDesiredSeniority] = useState("");
 
+  // UI state: hide form until candidate clicks the floating CTA + LGPD
+  const [showForm, setShowForm] = useState(false);
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [termsError, setTermsError] = useState("");
+
+  const handleOpenForm = () => {
+    setShowForm(true);
+    setTimeout(() => {
+      document
+        .getElementById("application-form")
+        ?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 50);
+  };
+
   const { cities, isLoading: citiesLoading } = useBrazilianCities(state);
 
   // Fetch unique position types from job_descriptions
