@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -15,6 +14,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Checkbox } from "@/components/ui/checkbox";
 import { CalendarIcon, Upload, FileText, ArrowRight } from "lucide-react";
 import { useBrazilianCities } from "@/hooks/useBrazilianCities";
 import { supabase } from "@/integrations/supabase/client";
@@ -32,6 +32,9 @@ import {
   SEXUAL_ORIENTATION_OPTIONS,
   PCD_TYPE_OPTIONS,
 } from "@/constants/brazilData";
+import pwrLogo from "@/assets/pwr-logo.png";
+import team1 from "@/assets/team/team-1.png";
+import team2 from "@/assets/team/team-2.png";
 
 // Seniority options are fetched dynamically from job_descriptions
 
@@ -66,6 +69,20 @@ const TalentBankApplication = () => {
   // Talent bank specific fields
   const [desiredPosition, setDesiredPosition] = useState("");
   const [desiredSeniority, setDesiredSeniority] = useState("");
+
+  // UI state: hide form until candidate clicks the floating CTA + LGPD
+  const [showForm, setShowForm] = useState(false);
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [termsError, setTermsError] = useState("");
+
+  const handleOpenForm = () => {
+    setShowForm(true);
+    setTimeout(() => {
+      document
+        .getElementById("application-form")
+        ?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 50);
+  };
 
   const { cities, isLoading: citiesLoading } = useBrazilianCities(state);
 
@@ -298,6 +315,11 @@ const TalentBankApplication = () => {
       });
       return;
     }
+    if (!acceptedTerms) {
+      setTermsError("Você precisa aceitar os termos para se candidatar.");
+      return;
+    }
+    setTermsError("");
 
     setUploading(true);
     try {
@@ -353,43 +375,99 @@ const TalentBankApplication = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background py-8 px-4">
-      <div className="max-w-3xl mx-auto space-y-6">
-        {/* Job Info Card */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-2xl">Banco de Talentos</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="prose prose-sm max-w-none dark:prose-invert [&>*]:text-foreground [&_p]:text-foreground [&_h1]:text-foreground [&_h2]:text-foreground [&_h3]:text-foreground [&_h4]:text-foreground [&_strong]:text-foreground [&_li]:text-foreground [&_ul]:my-2 [&_li]:my-0">
+    <div className="min-h-screen w-full bg-[#F5F5F5] text-[#1A2B5C] antialiased">
+      {/* Hero banner — same dark navy treatment as the job detail page */}
+      <header
+        className="relative w-full px-6 md:px-8 py-16 md:py-20"
+        style={{
+          backgroundColor: "#1A2B5C",
+          borderBottom: "4px solid #E8571A",
+        }}
+      >
+        <div className="max-w-6xl mx-auto relative z-10">
+          <div className="flex items-center gap-3 mb-10 md:mb-12">
+            <img src={pwrLogo} alt="PWR" className="h-11 w-auto object-contain" />
+          </div>
+          <div className="max-w-3xl">
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-[1.05] tracking-tighter mb-6">
+              Banco de Talentos
+            </h1>
+            <p
+              className="text-lg md:text-xl max-w-xl leading-relaxed font-light"
+              style={{ color: "rgba(255,255,255,0.6)" }}
+            >
+              Cadastre-se e seja considerado para futuras oportunidades
+            </p>
+          </div>
+        </div>
+      </header>
+
+      <main className="max-w-6xl mx-auto px-6 md:px-8 -mt-12 md:-mt-16 pb-24 relative z-20">
+        <div className="space-y-8">
+          {/* Sobre a Empresa */}
+          <section className="bg-white p-8 md:p-12 rounded-3xl shadow-xl shadow-[#1A2B5C]/5 ring-1 ring-black/5">
+            <h2
+              className="text-xl md:text-2xl font-bold mb-6"
+              style={{
+                color: "#1A2B5C",
+                borderLeft: "3px solid #E8571A",
+                paddingLeft: "12px",
+              }}
+            >
+              Sobre a Empresa
+            </h2>
+            <div className="prose prose-sm max-w-none [&_p]:text-[#444444] [&_p]:leading-relaxed [&_li]:text-[#444444] [&_strong]:text-[#1A2B5C] [&_strong]:font-bold [&_h1]:text-[#1A2B5C] [&_h2]:text-[#1A2B5C] [&_h3]:text-[#1A2B5C] [&_h4]:text-[#1A2B5C] [&_h2]:border-l-[3px] [&_h2]:border-[#E8571A] [&_h2]:pl-3 [&_h2]:font-bold [&_h2]:mt-6 [&_h3]:border-l-[3px] [&_h3]:border-[#E8571A] [&_h3]:pl-3 [&_h3]:font-bold [&_h3]:mt-6 [&_ul]:my-2 [&_li]:my-0">
               <ReactMarkdown remarkPlugins={[remarkBreaks]}>{TALENT_BANK_DESCRIPTION}</ReactMarkdown>
             </div>
-          </CardContent>
-        </Card>
+          </section>
 
-        {/* Application Form */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Candidatar-se</CardTitle>
-            <CardDescription>
-              Preencha os campos abaixo. Após salvar, você responderá ao teste de perfil comportamental.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
+          {/* Full-width team photo strip */}
+          <section className="relative w-full overflow-hidden rounded-3xl ring-1 ring-black/5 shadow-xl shadow-[#1A2B5C]/5">
+            <div className="grid grid-cols-2 h-48 md:h-64">
+              <img src={team1} alt="Time PWR" className="w-full h-full object-cover" />
+              <img src={team2} alt="Time PWR" className="w-full h-full object-cover" />
+            </div>
+            <div
+              className="absolute inset-0 flex items-center justify-center px-6 text-center"
+              style={{ backgroundColor: "rgba(26, 43, 92, 0.78)" }}
+            >
+              <p className="text-white font-bold text-xl md:text-3xl tracking-tight max-w-2xl">
+                Faça parte do <span style={{ color: "#E8571A" }}>time que nunca para</span>.
+              </p>
+            </div>
+          </section>
+
+          {/* Application form — hidden until floating CTA is clicked */}
+          {showForm && (
+          <section
+            id="application-form"
+            className="bg-white scroll-mt-8"
+            style={{
+              border: "1px solid #E8E8E8",
+              borderRadius: "16px",
+              padding: "32px",
+            }}
+          >
+            <div className="flex items-center gap-4 mb-8">
+              <div className="w-1.5 h-8 bg-[#E8571A] rounded-full" />
+              <h2 className="text-xl md:text-2xl font-bold text-[#1A2B5C]">Cadastro no Banco de Talentos</h2>
+            </div>
             <form onSubmit={handleProceedToProfiler} className="space-y-6">
               {/* Personal Info Section */}
               <div className="space-y-4">
-                <h3 className="font-medium text-sm text-muted-foreground uppercase tracking-wide">
+                <h3 style={{ color: "#E8571A", fontSize: "0.7rem", letterSpacing: "0.2em", fontWeight: 600, textTransform: "uppercase" }}>
                   Informações Pessoais
                 </h3>
 
                 <div className="space-y-2">
-                  <Label htmlFor="fullName">Nome Completo *</Label>
+                  <Label htmlFor="fullName" style={{ color: "#1A2B5C", fontWeight: 500 }}>Nome Completo *</Label>
                   <Input
                     id="fullName"
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
                     placeholder="Seu nome completo"
+                    className="focus-visible:ring-[#E8571A] focus-visible:border-[#E8571A]"
+                    style={{ border: "1.5px solid #E0E0E0", borderRadius: "8px" }}
                     required
                   />
                 </div>
@@ -397,7 +475,7 @@ const TalentBankApplication = () => {
                 {/* Talent Bank specific fields */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label>Cargo Pretendido *</Label>
+                    <Label style={{ color: "#1A2B5C", fontWeight: 500 }}>Cargo Pretendido *</Label>
                     <Select value={desiredPosition} onValueChange={setDesiredPosition}>
                       <SelectTrigger>
                         <SelectValue placeholder="Selecione o cargo" />
@@ -413,7 +491,7 @@ const TalentBankApplication = () => {
                   </div>
 
                   <div className="space-y-2">
-                    <Label>Senioridade *</Label>
+                    <Label style={{ color: "#1A2B5C", fontWeight: 500 }}>Senioridade *</Label>
                     <Select value={desiredSeniority} onValueChange={setDesiredSeniority}>
                       <SelectTrigger>
                         <SelectValue placeholder="Selecione a senioridade" />
@@ -430,7 +508,7 @@ const TalentBankApplication = () => {
                 </div>
 
                 <div className="space-y-2">
-                  <Label>Data de Nascimento *</Label>
+                  <Label style={{ color: "#1A2B5C", fontWeight: 500 }}>Data de Nascimento *</Label>
                   <Popover>
                     <PopoverTrigger asChild>
                       <Button
@@ -439,6 +517,7 @@ const TalentBankApplication = () => {
                           "w-full justify-start text-left font-normal",
                           !birthDate && "text-muted-foreground"
                         )}
+                        style={{ border: "1.5px solid #E0E0E0", borderRadius: "8px" }}
                       >
                         <CalendarIcon className="mr-2 h-4 w-4" />
                         {birthDate ? (
@@ -471,14 +550,15 @@ const TalentBankApplication = () => {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="email">E-mail *</Label>
+                  <Label htmlFor="email" style={{ color: "#1A2B5C", fontWeight: 500 }}>E-mail *</Label>
                   <Input
                     id="email"
                     type="email"
                     value={email}
                     onChange={(e) => handleEmailChange(e.target.value)}
                     placeholder="seu@email.com"
-                    className={emailError ? "border-destructive" : ""}
+                    className={cn("focus-visible:ring-[#E8571A] focus-visible:border-[#E8571A]", emailError ? "border-destructive" : "")}
+                    style={{ border: emailError ? undefined : "1.5px solid #E0E0E0", borderRadius: "8px" }}
                     required
                   />
                   {emailError && (
@@ -487,13 +567,14 @@ const TalentBankApplication = () => {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="phone">Telefone *</Label>
+                  <Label htmlFor="phone" style={{ color: "#1A2B5C", fontWeight: 500 }}>Telefone *</Label>
                   <Input
                     id="phone"
                     value={phone}
                     onChange={(e) => handlePhoneChange(e.target.value)}
                     placeholder="(xx) xxxxx-xxxx"
-                    className={phoneError ? "border-destructive" : ""}
+                    className={cn("focus-visible:ring-[#E8571A] focus-visible:border-[#E8571A]", phoneError ? "border-destructive" : "")}
+                    style={{ border: phoneError ? undefined : "1.5px solid #E0E0E0", borderRadius: "8px" }}
                     required
                   />
                   {phoneError && (
@@ -504,13 +585,13 @@ const TalentBankApplication = () => {
 
               {/* Location Section */}
               <div className="space-y-4">
-                <h3 className="font-medium text-sm text-muted-foreground uppercase tracking-wide">
+                <h3 style={{ color: "#E8571A", fontSize: "0.7rem", letterSpacing: "0.2em", fontWeight: 600, textTransform: "uppercase" }}>
                   Localização
                 </h3>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label>Estado *</Label>
+                    <Label style={{ color: "#1A2B5C", fontWeight: 500 }}>Estado *</Label>
                     <Select value={state} onValueChange={handleStateChange}>
                       <SelectTrigger>
                         <SelectValue placeholder="Selecione o estado" />
@@ -526,7 +607,7 @@ const TalentBankApplication = () => {
                   </div>
 
                   <div className="space-y-2">
-                    <Label>Cidade *</Label>
+                    <Label style={{ color: "#1A2B5C", fontWeight: 500 }}>Cidade *</Label>
                     <Select 
                       value={city} 
                       onValueChange={setCity}
@@ -549,13 +630,13 @@ const TalentBankApplication = () => {
 
               {/* Demographics Section */}
               <div className="space-y-4">
-                <h3 className="font-medium text-sm text-muted-foreground uppercase tracking-wide">
+                <h3 style={{ color: "#E8571A", fontSize: "0.7rem", letterSpacing: "0.2em", fontWeight: 600, textTransform: "uppercase" }}>
                   Diversidade e Inclusão
                 </h3>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label>Raça/Etnia *</Label>
+                    <Label style={{ color: "#1A2B5C", fontWeight: 500 }}>Raça/Etnia *</Label>
                     <Select value={race} onValueChange={setRace}>
                       <SelectTrigger>
                         <SelectValue placeholder="Selecione" />
@@ -571,7 +652,7 @@ const TalentBankApplication = () => {
                   </div>
 
                   <div className="space-y-2">
-                    <Label>Gênero *</Label>
+                    <Label style={{ color: "#1A2B5C", fontWeight: 500 }}>Gênero *</Label>
                     <Select value={gender} onValueChange={setGender}>
                       <SelectTrigger>
                         <SelectValue placeholder="Selecione" />
@@ -587,7 +668,7 @@ const TalentBankApplication = () => {
                   </div>
 
                   <div className="space-y-2">
-                    <Label>Orientação Sexual *</Label>
+                    <Label style={{ color: "#1A2B5C", fontWeight: 500 }}>Orientação Sexual *</Label>
                     <Select value={sexualOrientation} onValueChange={setSexualOrientation}>
                       <SelectTrigger>
                         <SelectValue placeholder="Selecione" />
@@ -603,7 +684,7 @@ const TalentBankApplication = () => {
                   </div>
 
                   <div className="space-y-2">
-                    <Label>Pessoa com Deficiência (PCD)? *</Label>
+                    <Label style={{ color: "#1A2B5C", fontWeight: 500 }}>Pessoa com Deficiência (PCD)? *</Label>
                     <RadioGroup value={isPcd} onValueChange={setIsPcd}>
                       <div className="flex items-center space-x-4">
                         <div className="flex items-center space-x-2">
@@ -620,7 +701,7 @@ const TalentBankApplication = () => {
 
                   {isPcd === "sim" && (
                     <div className="space-y-2">
-                      <Label>Tipo de Deficiência *</Label>
+                      <Label style={{ color: "#1A2B5C", fontWeight: 500 }}>Tipo de Deficiência *</Label>
                       <Select value={pcdType} onValueChange={setPcdType}>
                         <SelectTrigger>
                           <SelectValue placeholder="Selecione" />
@@ -640,12 +721,12 @@ const TalentBankApplication = () => {
 
               {/* Resume Section */}
               <div className="space-y-4">
-                <h3 className="font-medium text-sm text-muted-foreground uppercase tracking-wide">
+                <h3 style={{ color: "#E8571A", fontSize: "0.7rem", letterSpacing: "0.2em", fontWeight: 600, textTransform: "uppercase" }}>
                   Currículo
                 </h3>
 
                 <div className="space-y-2">
-                  <Label>Upload do Currículo (PDF) *</Label>
+                  <Label style={{ color: "#1A2B5C", fontWeight: 500 }}>Upload do Currículo (PDF) *</Label>
                   <div className="flex items-center gap-4">
                     <Button
                       type="button"
@@ -676,9 +757,43 @@ const TalentBankApplication = () => {
                 </div>
               </div>
 
+              {/* LGPD consent */}
+              <div className="space-y-2">
+                <label className="flex items-start gap-3 cursor-pointer">
+                  <Checkbox
+                    checked={acceptedTerms}
+                    onCheckedChange={(checked) => {
+                      const value = checked === true;
+                      setAcceptedTerms(value);
+                      if (value) setTermsError("");
+                    }}
+                    className="mt-0.5 border-[#E8571A] data-[state=checked]:bg-[#E8571A] data-[state=checked]:border-[#E8571A] data-[state=checked]:text-white"
+                    aria-invalid={!!termsError}
+                  />
+                  <span style={{ fontSize: "0.8rem", color: "#555555", lineHeight: 1.5 }}>
+                    Li e concordo com o tratamento dos meus dados pessoais pela PWR Gestão para fins de recrutamento e seleção, conforme a{" "}
+                    <a
+                      href="https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2018/lei/l13709.htm"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="underline"
+                      style={{ color: "#E8571A" }}
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      Lei Geral de Proteção de Dados
+                    </a>{" "}
+                    (LGPD — Lei nº 13.709/2018).
+                  </span>
+                </label>
+                {termsError && (
+                  <p style={{ color: "#E8571A", fontSize: "0.8rem" }}>{termsError}</p>
+                )}
+              </div>
+
               <Button
                 type="submit"
-                className="w-full"
+                className="w-full bg-[#E8571A] hover:bg-[#C4481A] text-white"
+                style={{ borderRadius: "50px", fontWeight: 700 }}
                 disabled={uploading}
               >
                 {uploading ? (
@@ -691,9 +806,34 @@ const TalentBankApplication = () => {
                 )}
               </Button>
             </form>
-          </CardContent>
-        </Card>
-      </div>
+          </section>
+          )}
+        </div>
+      </main>
+
+      {/* Floating "Cadastrar-se" CTA */}
+      {!showForm && (
+        <button
+          type="button"
+          onClick={handleOpenForm}
+          style={{
+            position: "fixed",
+            bottom: "32px",
+            right: "32px",
+            backgroundColor: "#E8571A",
+            color: "#ffffff",
+            fontWeight: 700,
+            fontSize: "1rem",
+            borderRadius: "50px",
+            padding: "14px 36px",
+            boxShadow: "0 4px 16px rgba(232, 87, 26, 0.35)",
+            zIndex: 50,
+          }}
+          className="hover:brightness-110 transition"
+        >
+          Cadastrar-se
+        </button>
+      )}
     </div>
   );
 };
