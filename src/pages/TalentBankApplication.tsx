@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -15,6 +14,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Checkbox } from "@/components/ui/checkbox";
 import { CalendarIcon, Upload, FileText, ArrowRight } from "lucide-react";
 import { useBrazilianCities } from "@/hooks/useBrazilianCities";
 import { supabase } from "@/integrations/supabase/client";
@@ -32,6 +32,9 @@ import {
   SEXUAL_ORIENTATION_OPTIONS,
   PCD_TYPE_OPTIONS,
 } from "@/constants/brazilData";
+import pwrLogo from "@/assets/pwr-logo.png";
+import team1 from "@/assets/team/team-1.png";
+import team2 from "@/assets/team/team-2.png";
 
 // Seniority options are fetched dynamically from job_descriptions
 
