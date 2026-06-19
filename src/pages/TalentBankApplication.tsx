@@ -315,6 +315,11 @@ const TalentBankApplication = () => {
       });
       return;
     }
+    if (!acceptedTerms) {
+      setTermsError("Você precisa aceitar os termos para se candidatar.");
+      return;
+    }
+    setTermsError("");
 
     setUploading(true);
     try {
