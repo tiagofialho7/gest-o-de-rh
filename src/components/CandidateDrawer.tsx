@@ -24,6 +24,7 @@ import {
   RefreshCw,
   Loader2,
   AlertCircle,
+  Heart,
 } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { format } from "date-fns";
@@ -44,6 +45,7 @@ import {
 import { getProfileByCode, type Profile } from "@/lib/profiler/profiles";
 import { getProfilerInitials } from "@/lib/profiler/utils";
 import { useRetryAIAnalysis } from "@/hooks/useRetryAIAnalysis";
+import CandidateFitCulturalTab from "@/components/CandidateFitCulturalTab";
 
 interface CandidateDrawerProps {
   open: boolean;
@@ -346,7 +348,7 @@ const CandidateDrawer = ({
           onValueChange={handleTabChange}
           className="mt-6"
         >
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="info" className="flex items-center gap-1">
               <User className="h-4 w-4" />
               <span className="hidden sm:inline text-xs">Info</span>
@@ -358,6 +360,10 @@ const CandidateDrawer = ({
             <TabsTrigger value="ai-analysis" className="flex items-center gap-1">
               <Sparkles className="h-4 w-4" />
               <span className="hidden sm:inline text-xs">Análise IA</span>
+            </TabsTrigger>
+            <TabsTrigger value="fit-cultural" className="flex items-center gap-1">
+              <Heart className="h-4 w-4" />
+              <span className="hidden sm:inline text-xs">Fit</span>
             </TabsTrigger>
             <TabsTrigger value="resume" className="flex items-center gap-1">
               <FileText className="h-4 w-4" />
