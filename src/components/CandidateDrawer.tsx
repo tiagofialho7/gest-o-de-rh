@@ -720,16 +720,12 @@ const CandidateDrawer = ({
               )}
             </TabsContent>
 
-            {/* Resume Tab */}
-            <TabsContent value="resume" className="pr-4">
-            </TabsContent>
-
             {/* Fit Cultural Tab */}
             <TabsContent value="fit-cultural" className="pr-4">
               <CandidateFitCulturalTab candidateEmail={candidate.candidate_email} />
             </TabsContent>
 
-            {/* Resume Tab (content) */}
+            {/* Resume Tab */}
             <TabsContent value="resume" className="pr-4">
               {candidate.resume_url ? (
                 loadingResume ? (
