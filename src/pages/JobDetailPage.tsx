@@ -3,9 +3,11 @@ import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ArrowLeft, Share2, Building2, Briefcase, Calendar, Copy, Check, Pencil, FileText, MapPin } from "lucide-react";
+import { ArrowLeft, Share2, Building2, Briefcase, Calendar, Copy, Check, Pencil, FileText, MapPin, Users, Heart } from "lucide-react";
 import { useJobById } from "@/hooks/useJobById";
 import CandidateKanbanBoard from "@/components/CandidateKanbanBoard";
+import JobFitResponsesTab from "@/components/JobFitResponsesTab";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import { JOB_STATUS_LABELS, JOB_STATUS_VARIANTS } from "@/types/job";
 import { format } from "date-fns";
@@ -152,19 +154,36 @@ const JobDetailPage = () => {
           </div>
         </div>
 
-        {/* Candidates Kanban Board */}
-        <CandidateKanbanBoard 
-          jobId={job.id} 
-          jobTitle={job.title}
-          isDemoMode={isDemoMode}
-          jobData={{
-            title: job.title,
-            description: job.description,
-            requirements: job.requirements,
-            position: job.positions,
-            department: job.departments,
-          }}
-        />
+        {/* Kanban + Fit Cultural Responses */}
+        <Tabs defaultValue="kanban" className="w-full">
+          <TabsList>
+            <TabsTrigger value="kanban" className="gap-2">
+              <Users className="h-4 w-4" />
+              Kanban
+            </TabsTrigger>
+            <TabsTrigger value="fit-responses" className="gap-2">
+              <Heart className="h-4 w-4" />
+              Respostas Fit Cultural
+            </TabsTrigger>
+          </TabsList>
+          <TabsContent value="kanban" className="mt-4">
+            <CandidateKanbanBoard
+              jobId={job.id}
+              jobTitle={job.title}
+              isDemoMode={isDemoMode}
+              jobData={{
+                title: job.title,
+                description: job.description,
+                requirements: job.requirements,
+                position: job.positions,
+                department: job.departments,
+              }}
+            />
+          </TabsContent>
+          <TabsContent value="fit-responses" className="mt-4">
+            <JobFitResponsesTab jobId={job.id} />
+          </TabsContent>
+        </Tabs>
       </div>
 
 
