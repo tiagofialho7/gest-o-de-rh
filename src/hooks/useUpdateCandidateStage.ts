@@ -48,6 +48,8 @@ export const useUpdateCandidateStage = () => {
             job_id: jobId,
             stage_label: STAGE_LABELS[stage],
             candidate_ids: candidateIds,
+            origin:
+              typeof window !== "undefined" ? window.location.origin : null,
           },
         })
         .catch((err) => {

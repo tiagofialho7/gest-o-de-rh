@@ -12,6 +12,7 @@ interface Payload {
   job_id: string;
   stage_label: string;
   candidate_ids: string[];
+  origin?: string | null;
 }
 
 const escapeHtml = (s: string) =>
@@ -29,8 +30,10 @@ function buildHtml(opts: {
   youtubeUrl?: string | null;
   isFitCultural: boolean;
   orgName: string;
+  fitAccessUrl?: string | null;
 }) {
-  const { candidateName, jobTitle, message, youtubeUrl, isFitCultural, orgName } = opts;
+  const { candidateName, jobTitle, message, youtubeUrl, isFitCultural, orgName, fitAccessUrl } =
+    opts;
   const videoBlock =
     isFitCultural && youtubeUrl
       ? `
@@ -44,6 +47,25 @@ function buildHtml(opts: {
           </a>
         </div>`
       : "";
+  const fitBlock =
+    isFitCultural && fitAccessUrl
+      ? `
+        <div style="margin: 28px 0; padding: 24px; background-color: #1A2B5C; border-radius: 12px; text-align: center;">
+          <p style="margin: 0 0 6px 0; color: #ffffff; font-weight: 700; font-size: 16px;">
+            Sua etapa de Fit Cultural PWR está liberada
+          </p>
+          <p style="margin: 0 0 18px 0; color: #E8E8E8; font-size: 14px;">
+            Acesse o formulário exclusivo para concluir esta etapa.
+          </p>
+          <a href="${fitAccessUrl}" target="_blank"
+             style="display: inline-block; background-color: #E8571A; color: #ffffff; padding: 14px 32px; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 15px;">
+            Acessar Fit Cultural
+          </a>
+          <p style="margin: 16px 0 0 0; color: #B8C0D6; font-size: 12px;">
+            Este link expira em 7 dias.
+          </p>
+        </div>`
+      : "";
   return `
   <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 0 auto; padding: 32px 24px; background: #ffffff; color: #1A2B5C;">
     <div style="border-left: 4px solid #E8571A; padding-left: 14px; margin-bottom: 24px;">
@@ -54,6 +76,7 @@ function buildHtml(opts: {
     <div style="color: #444444; font-size: 15px; line-height: 1.6;">
       ${escapeHtml(message)}
     </div>
+    ${fitBlock}
     ${videoBlock}
     <hr style="border: none; border-top: 1px solid #E8E8E8; margin: 32px 0;" />
     <p style="color: #888888; font-size: 12px; text-align: center;">
@@ -160,10 +183,43 @@ Deno.serve(async (req) => {
     const isFit = stage.nome.toLowerCase().includes("fit cultural");
     const fromName = org.invite_from_name || org.name || "PWR Gestão";
     const fromEmail = org.invite_from_email;
+    const baseUrl = (body.origin || "").replace(/\/+$/, "");
 
     const results: any[] = [];
     for (const c of candidates || []) {
       if (!c.candidate_email) continue;
+
+      // For Fit Cultural stage: invalidate previous tokens for this candidate/job
+      // and create a fresh AcessoFit token valid for 7 days.
+      let fitAccessUrl: string | null = null;
+      if (isFit) {
+        try {
+          await supabaseAdmin
+            .from("acessos_fit")
+            .update({ expires_at: new Date().toISOString(), usado: true })
+            .eq("candidato_id", c.id)
+            .eq("vaga_id", body.job_id);
+
+          const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString();
+          const { data: acesso, error: acessoErr } = await supabaseAdmin
+            .from("acessos_fit")
+            .insert({
+              candidato_id: c.id,
+              vaga_id: body.job_id,
+              expires_at: expiresAt,
+              usado: false,
+            })
+            .select("token")
+            .single();
+
+          if (acessoErr) throw acessoErr;
+          if (baseUrl && acesso?.token) {
+            fitAccessUrl = `${baseUrl}/fit-cultural/${acesso.token}`;
+          }
+        } catch (err) {
+          console.error(`[${FUNCTION_NAME}] Failed to create AcessoFit for ${c.id}:`, err);
+        }
+      }
 
       const html = buildHtml({
         candidateName: c.candidate_name || "candidato(a)",
@@ -172,6 +228,7 @@ Deno.serve(async (req) => {
         youtubeUrl: job.youtube_url,
         isFitCultural: isFit,
         orgName: org.name || "PWR Gestão",
+        fitAccessUrl,
       });
 
       const resp = await fetch("https://api.resend.com/emails", {
@@ -183,7 +240,9 @@ Deno.serve(async (req) => {
         body: JSON.stringify({
           from: `${fromName} <${fromEmail}>`,
           to: [c.candidate_email],
-          subject: `Atualização do seu processo seletivo — ${job.title} | PWR Gestão`,
+          subject: isFit
+            ? `Próxima etapa: Fit Cultural PWR — ${job.title}`
+            : `Atualização do seu processo seletivo — ${job.title} | PWR Gestão`,
           html,
         }),
       });
