@@ -15,7 +15,8 @@ export const JOB_WIZARD_STEPS = [
   { id: 4, title: "Descrição", description: "Gerar descrição com IA" },
   { id: 5, title: "Configurações", description: "Datas e configurações" },
   { id: 6, title: "Processo Seletivo", description: "Etapas do processo e e-mails automáticos" },
-  { id: 7, title: "Revisão", description: "Confirmar e publicar" },
+  { id: 7, title: "Fit Cultural", description: "Vídeo e perguntas personalizadas de fit cultural" },
+  { id: 8, title: "Revisão", description: "Confirmar e publicar" },
 ];
 
 export const WORK_MODEL_LABELS: Record<WorkModel, string> = {
