@@ -24,12 +24,15 @@ import { JobStepCompensation } from "@/components/jobs/JobStepCompensation";
 import { JobStepDescription } from "@/components/jobs/JobStepDescription";
 import { JobStepProcess } from "@/components/jobs/JobStepProcess";
 import { JobStepProcessoSeletivo } from "@/components/jobs/JobStepProcessoSeletivo";
+import { JobStepFitCultural } from "@/components/jobs/JobStepFitCultural";
 import { JobStepReview } from "@/components/jobs/JobStepReview";
 import { useCreateJob } from "@/hooks/useCreateJob";
 import { useUpdateJob } from "@/hooks/useUpdateJob";
 import { useJobById } from "@/hooks/useJobById";
 import { useJobStages } from "@/hooks/useJobStages";
 import { useSaveJobStages } from "@/hooks/useSaveJobStages";
+import { useFitCultural } from "@/hooks/useFitCultural";
+import { useSaveFitCultural } from "@/hooks/useSaveFitCultural";
 import { useRequireOrganization } from "@/hooks/useRequireOrganization";
 import { useOrganizationIntegrations } from "@/hooks/useOrganizationIntegrations";
 import {
@@ -93,6 +96,30 @@ const formSchema = z.object({
       })
     )
     .default([]),
+  fit_cultural_titulo: z.string().default("Fit Cultural PWR"),
+  fit_cultural_video_url: z
+    .string()
+    .trim()
+    .refine(
+      (v) => !v || /(?:youtube\.com|youtu\.be)/i.test(v),
+      "URL deve ser do YouTube (youtube.com ou youtu.be)"
+    )
+    .default(""),
+  fit_cultural_descricao: z.string().default(""),
+  fit_cultural_ativo: z.boolean().default(true),
+  perguntas_fit: z
+    .array(
+      z.object({
+        id: z.string().optional(),
+        vaga_id: z.string().optional(),
+        texto: z.string(),
+        tipo: z.enum(["texto_longo", "multipla_escolha", "escala"]),
+        opcoes: z.array(z.string()).default([]),
+        obrigatoria: z.boolean().default(true),
+        ordem: z.number().default(0),
+      })
+    )
+    .default([]),
 });
 
 const isJobSeniority = (
@@ -116,9 +143,11 @@ const JobFormPage = () => {
   const { organization } = useRequireOrganization();
   const { data: existingJob, isLoading: isLoadingJob } = useJobById(id);
   const { data: existingStages } = useJobStages(id);
+  const { data: existingFit } = useFitCultural(id);
   const createJob = useCreateJob();
   const updateJob = useUpdateJob();
   const saveStages = useSaveJobStages();
+  const saveFit = useSaveFitCultural();
   const { data: integrations, isLoading: isLoadingIntegrations } = useOrganizationIntegrations(
     organization?.id || null
   );
@@ -173,9 +202,14 @@ const JobFormPage = () => {
         status: existingJob.status || "draft",
         youtube_url: existingJob.youtube_url || "",
         stages: existingStages || [],
+        fit_cultural_titulo: existingFit?.fit?.titulo || "Fit Cultural PWR",
+        fit_cultural_video_url: existingFit?.fit?.video_url || "",
+        fit_cultural_descricao: existingFit?.fit?.descricao || "",
+        fit_cultural_ativo: existingFit?.fit?.ativo ?? true,
+        perguntas_fit: existingFit?.perguntas || [],
       });
     }
-  }, [existingJob, existingStages, isEditing, form]);
+  }, [existingJob, existingStages, existingFit, isEditing, form]);
 
   const totalSteps = JOB_WIZARD_STEPS.length;
   const isLastStep = currentStep === totalSteps;
@@ -272,6 +306,16 @@ const JobFormPage = () => {
       }
       if (jobId) {
         await saveStages.mutateAsync({ jobId, stages: values.stages || [] });
+        await saveFit.mutateAsync({
+          jobId,
+          fit: {
+            titulo: values.fit_cultural_titulo?.trim() || "Fit Cultural PWR",
+            video_url: values.fit_cultural_video_url?.trim() || null,
+            descricao: values.fit_cultural_descricao?.trim() || null,
+            ativo: values.fit_cultural_ativo ?? true,
+          },
+          perguntas: values.perguntas_fit || [],
+        });
       }
       navigate("/vagas");
     } catch (error) {
@@ -294,6 +338,8 @@ const JobFormPage = () => {
       case 6:
         return <JobStepProcessoSeletivo form={form} />;
       case 7:
+        return <JobStepFitCultural form={form} />;
+      case 8:
         return <JobStepReview form={form} />;
       default:
         return null;

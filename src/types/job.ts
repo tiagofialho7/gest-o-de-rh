@@ -88,6 +88,18 @@ export interface JobStage {
   ordem: number;
 }
 
+export type PerguntaFitTipo = "texto_longo" | "multipla_escolha" | "escala";
+
+export interface PerguntaFitData {
+  id?: string;
+  vaga_id?: string;
+  texto: string;
+  tipo: PerguntaFitTipo;
+  opcoes: string[];
+  obrigatoria: boolean;
+  ordem: number;
+}
+
 export interface JobFormData {
   // Step 1: Basic Info
   title: string;
@@ -124,6 +136,12 @@ export interface JobFormData {
   youtube_url: string;
   // Step: Processo Seletivo
   stages: JobStage[];
+  // Step: Fit Cultural
+  fit_cultural_titulo: string;
+  fit_cultural_video_url: string;
+  fit_cultural_descricao: string;
+  fit_cultural_ativo: boolean;
+  perguntas_fit: PerguntaFitData[];
   // Final
   status: JobStatus;
 }
@@ -189,5 +207,10 @@ export const DEFAULT_JOB_FORM_DATA: JobFormData = {
   tags: [],
   youtube_url: "",
   stages: [],
+  fit_cultural_titulo: "Fit Cultural PWR",
+  fit_cultural_video_url: "",
+  fit_cultural_descricao: "",
+  fit_cultural_ativo: true,
+  perguntas_fit: [],
   status: "draft",
 };
