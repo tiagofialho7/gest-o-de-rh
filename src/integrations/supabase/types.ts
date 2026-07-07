@@ -14,6 +14,58 @@ export type Database = {
   }
   public: {
     Tables: {
+      acessos_fit: {
+        Row: {
+          candidato_id: string
+          created_at: string
+          expires_at: string
+          id: string
+          token: string
+          usado: boolean
+          vaga_id: string
+        }
+        Insert: {
+          candidato_id: string
+          created_at?: string
+          expires_at?: string
+          id?: string
+          token?: string
+          usado?: boolean
+          vaga_id: string
+        }
+        Update: {
+          candidato_id?: string
+          created_at?: string
+          expires_at?: string
+          id?: string
+          token?: string
+          usado?: boolean
+          vaga_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "acessos_fit_candidato_id_fkey"
+            columns: ["candidato_id"]
+            isOneToOne: false
+            referencedRelation: "job_applications"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "acessos_fit_vaga_id_fkey"
+            columns: ["vaga_id"]
+            isOneToOne: false
+            referencedRelation: "jobs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "acessos_fit_vaga_id_fkey"
+            columns: ["vaga_id"]
+            isOneToOne: false
+            referencedRelation: "jobs_public"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       audit_log: {
         Row: {
           action: string
@@ -1560,6 +1612,54 @@ export type Database = {
           },
         ]
       }
+      fit_cultural: {
+        Row: {
+          ativo: boolean
+          created_at: string
+          descricao: string | null
+          id: string
+          titulo: string
+          updated_at: string
+          vaga_id: string
+          video_url: string | null
+        }
+        Insert: {
+          ativo?: boolean
+          created_at?: string
+          descricao?: string | null
+          id?: string
+          titulo?: string
+          updated_at?: string
+          vaga_id: string
+          video_url?: string | null
+        }
+        Update: {
+          ativo?: boolean
+          created_at?: string
+          descricao?: string | null
+          id?: string
+          titulo?: string
+          updated_at?: string
+          vaga_id?: string
+          video_url?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fit_cultural_vaga_id_fkey"
+            columns: ["vaga_id"]
+            isOneToOne: true
+            referencedRelation: "jobs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fit_cultural_vaga_id_fkey"
+            columns: ["vaga_id"]
+            isOneToOne: true
+            referencedRelation: "jobs_public"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       hard_skills: {
         Row: {
           area_id: string | null
@@ -2800,6 +2900,57 @@ export type Database = {
           },
         ]
       }
+      perguntas_fit: {
+        Row: {
+          created_at: string
+          id: string
+          obrigatoria: boolean
+          opcoes: Json | null
+          ordem: number
+          texto: string
+          tipo: Database["public"]["Enums"]["pergunta_fit_tipo"]
+          updated_at: string
+          vaga_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          obrigatoria?: boolean
+          opcoes?: Json | null
+          ordem?: number
+          texto: string
+          tipo?: Database["public"]["Enums"]["pergunta_fit_tipo"]
+          updated_at?: string
+          vaga_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          obrigatoria?: boolean
+          opcoes?: Json | null
+          ordem?: number
+          texto?: string
+          tipo?: Database["public"]["Enums"]["pergunta_fit_tipo"]
+          updated_at?: string
+          vaga_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "perguntas_fit_vaga_id_fkey"
+            columns: ["vaga_id"]
+            isOneToOne: false
+            referencedRelation: "jobs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "perguntas_fit_vaga_id_fkey"
+            columns: ["vaga_id"]
+            isOneToOne: false
+            referencedRelation: "jobs_public"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       permission_audit_log: {
         Row: {
           action: string
@@ -3086,6 +3237,62 @@ export type Database = {
           rate_key?: string
         }
         Relationships: []
+      }
+      respostas_fit: {
+        Row: {
+          candidato_id: string
+          created_at: string
+          id: string
+          pergunta_id: string
+          resposta: string | null
+          vaga_id: string
+        }
+        Insert: {
+          candidato_id: string
+          created_at?: string
+          id?: string
+          pergunta_id: string
+          resposta?: string | null
+          vaga_id: string
+        }
+        Update: {
+          candidato_id?: string
+          created_at?: string
+          id?: string
+          pergunta_id?: string
+          resposta?: string | null
+          vaga_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "respostas_fit_candidato_id_fkey"
+            columns: ["candidato_id"]
+            isOneToOne: false
+            referencedRelation: "job_applications"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "respostas_fit_pergunta_id_fkey"
+            columns: ["pergunta_id"]
+            isOneToOne: false
+            referencedRelation: "perguntas_fit"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "respostas_fit_vaga_id_fkey"
+            columns: ["vaga_id"]
+            isOneToOne: false
+            referencedRelation: "jobs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "respostas_fit_vaga_id_fkey"
+            columns: ["vaga_id"]
+            isOneToOne: false
+            referencedRelation: "jobs_public"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       role_permissions: {
         Row: {
@@ -4280,6 +4487,7 @@ export type Database = {
         | "entregue"
         | "concluido"
         | "cancelado"
+      pergunta_fit_tipo: "texto_longo" | "multipla_escolha" | "escala"
       position_level:
         | "junior"
         | "mid"
@@ -4584,6 +4792,7 @@ export const Constants = {
         "concluido",
         "cancelado",
       ],
+      pergunta_fit_tipo: ["texto_longo", "multipla_escolha", "escala"],
       position_level: [
         "junior",
         "mid",
