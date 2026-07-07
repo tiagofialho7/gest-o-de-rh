@@ -207,5 +207,10 @@ export const DEFAULT_JOB_FORM_DATA: JobFormData = {
   tags: [],
   youtube_url: "",
   stages: [],
+  fit_cultural_titulo: "Fit Cultural PWR",
+  fit_cultural_video_url: "",
+  fit_cultural_descricao: "",
+  fit_cultural_ativo: true,
+  perguntas_fit: [],
   status: "draft",
 };
