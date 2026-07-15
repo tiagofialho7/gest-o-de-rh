@@ -238,6 +238,13 @@ Deno.serve(async (req) => {
       .select("*")
       .eq("job_id", body.job_id);
 
+    // Load fit cultural questions for this job (used only if the stage is Fit Cultural)
+    const { data: perguntasFit } = await supabaseAdmin
+      .from("perguntas_fit")
+      .select("texto, tipo, opcoes, ordem")
+      .eq("vaga_id", body.job_id)
+      .order("ordem", { ascending: true });
+
     const label = body.stage_label.toLowerCase();
     const stage = (stages || []).find(
       (s: any) =>
@@ -338,6 +345,7 @@ Deno.serve(async (req) => {
         isFitCultural: isFit,
         orgName: org.name || "PWR Gestão",
         fitAccessUrl,
+        perguntas: (perguntasFit as any) || [],
       });
 
       const resp = await fetch("https://api.resend.com/emails", {
