@@ -190,7 +190,12 @@ const Auth = () => {
   const handleGoogleAuth = async () => {
     setIsLoading(true);
     try {
-      await signInWithGoogle();
+      // Preserve any ?next=... so the user returns to the same /auth URL
+      // (e.g. OAuth consent flow) after the Google round-trip.
+      const redirectUri = nextPath
+        ? `${window.location.origin}/auth?next=${encodeURIComponent(nextPath)}`
+        : window.location.origin;
+      await signInWithGoogle(redirectUri);
     } catch (error: any) {
       toast({
         title: "Erro ao autenticar",
