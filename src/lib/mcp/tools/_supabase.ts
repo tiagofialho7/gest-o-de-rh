@@ -1,6 +1,10 @@
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import type { ToolContext } from "@lovable.dev/mcp-js";
 
+// `process` is a Deno/Node runtime global inside the emitted Edge Function.
+// Declared here so the Vite/TSC frontend build doesn't require @types/node.
+declare const process: { env: Record<string, string | undefined> };
+
 /**
  * Build a Supabase client scoped to the MCP caller. The verified access token
  * from the OAuth bearer is forwarded so all queries run under the user's
