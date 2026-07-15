@@ -31,9 +31,21 @@ function buildHtml(opts: {
   isFitCultural: boolean;
   orgName: string;
   fitAccessUrl?: string | null;
+  perguntas?: Array<{ texto: string; tipo: string; opcoes: string[] | null; ordem: number }>;
 }) {
-  const { candidateName, jobTitle, message, youtubeUrl, isFitCultural, orgName, fitAccessUrl } =
+  const { candidateName, jobTitle, message, youtubeUrl, isFitCultural, orgName, fitAccessUrl, perguntas } =
     opts;
+
+  if (isFitCultural) {
+    return buildFitCulturalHtml({
+      candidateName,
+      youtubeUrl,
+      orgName,
+      fitAccessUrl,
+      perguntas: perguntas ?? [],
+    });
+  }
+
   const videoBlock =
     isFitCultural && youtubeUrl
       ? `
@@ -86,6 +98,103 @@ function buildHtml(opts: {
   </div>`;
 }
 
+function buildFitCulturalHtml(opts: {
+  candidateName: string;
+  youtubeUrl?: string | null;
+  orgName: string;
+  fitAccessUrl?: string | null;
+  perguntas: Array<{ texto: string; tipo: string; opcoes: string[] | null; ordem: number }>;
+}) {
+  const { candidateName, youtubeUrl, orgName, fitAccessUrl, perguntas } = opts;
+
+  const videoBlock = youtubeUrl
+    ? `
+      <div style="padding: 28px 24px; background-color: #ffffff;">
+        <h3 style="margin: 0 0 16px 0; color: #1A2B5C; font-size: 18px; font-weight: 700;">Assista ao vídeo antes de responder</h3>
+        <div style="text-align: center;">
+          <a href="${youtubeUrl}" target="_blank"
+             style="display: inline-block; background-color: #E8571A; color: #ffffff; padding: 16px 36px; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 16px;">
+            Assistir ao Vídeo Institucional
+          </a>
+          <p style="margin: 12px 0 0 0; color: #888888; font-size: 12px; word-break: break-all;">${escapeHtml(youtubeUrl)}</p>
+        </div>
+      </div>`
+    : "";
+
+  const sorted = [...perguntas].sort((a, b) => (a.ordem ?? 0) - (b.ordem ?? 0));
+  const questionsBlock = sorted.length
+    ? `
+      <div style="padding: 28px 24px; background-color: #F9F9F9;">
+        <h3 style="margin: 0 0 20px 0; color: #1A2B5C; font-size: 18px; font-weight: 700;">Perguntas do Fit Cultural</h3>
+        ${sorted
+          .map((p, i) => {
+            const num = i + 1;
+            const escalaNote =
+              p.tipo === "escala"
+                ? `<p style="margin: 6px 0 0 44px; color: #888888; font-size: 13px;">(Responda com um número de 1 a 5)</p>`
+                : "";
+            const opcoesList =
+              p.tipo === "multipla_escolha" && p.opcoes && p.opcoes.length
+                ? `<ul style="margin: 8px 0 0 44px; padding: 0 0 0 18px; color: #444444; font-size: 14px;">
+                    ${p.opcoes.map((o) => `<li style="margin: 4px 0;">${escapeHtml(o)}</li>`).join("")}
+                  </ul>`
+                : "";
+            return `
+              <div style="margin-bottom: 18px;">
+                <table cellpadding="0" cellspacing="0" border="0" style="width: 100%;">
+                  <tr>
+                    <td style="width: 32px; vertical-align: top;">
+                      <div style="width: 28px; height: 28px; background-color: #E8571A; color: #ffffff; border-radius: 50%; text-align: center; line-height: 28px; font-weight: 700; font-size: 13px;">${num}</div>
+                    </td>
+                    <td style="vertical-align: top; padding-left: 12px;">
+                      <p style="margin: 4px 0 0 0; color: #1A2B5C; font-weight: 700; font-size: 15px;">${escapeHtml(p.texto)}</p>
+                    </td>
+                  </tr>
+                </table>
+                ${opcoesList}
+                ${escalaNote}
+              </div>`;
+          })
+          .join("")}
+      </div>`
+    : "";
+
+  const accessBlock = fitAccessUrl
+    ? `
+      <div style="padding: 28px 24px; background-color: #ffffff; text-align: center;">
+        <p style="margin: 0 0 16px 0; color: #444444; font-size: 15px;">Para responder, acesse o link abaixo:</p>
+        <a href="${fitAccessUrl}" target="_blank"
+           style="display: inline-block; background-color: #E8571A; color: #ffffff; padding: 16px 36px; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 16px;">
+          Responder o Fit Cultural
+        </a>
+        <p style="margin: 12px 0 0 0; color: #888888; font-size: 12px; word-break: break-all;">${escapeHtml(fitAccessUrl)}</p>
+      </div>`
+    : "";
+
+  return `
+  <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 640px; margin: 0 auto; background: #ffffff;">
+    <div style="background-color: #1A2B5C; padding: 32px 24px; border-bottom: 4px solid #E8571A;">
+      <div style="color: #E8571A; font-weight: 800; font-size: 22px; letter-spacing: 1px; margin-bottom: 12px;">PWR GESTÃO</div>
+      <p style="margin: 0; color: #ffffff; font-weight: 700; font-size: 18px; line-height: 1.4;">
+        Olá, ${escapeHtml(candidateName)}! Você avançou para a etapa de Fit Cultural PWR.
+      </p>
+    </div>
+    ${videoBlock}
+    ${questionsBlock}
+    ${accessBlock}
+    <div style="padding: 0 24px 20px 24px; background-color: #ffffff;">
+      <p style="margin: 0; color: #888888; font-size: 12px; text-align: center;">
+        Este link expira em 7 dias. Após esse prazo, entre em contato com o time de RH da PWR Gestão.
+      </p>
+    </div>
+    <div style="background-color: #1A2B5C; padding: 18px 24px; text-align: center;">
+      <p style="margin: 0; color: #888888; font-size: 12px;">
+        ${escapeHtml(orgName || "PWR Gestão")} | pwrgestao.com | (85) 9693-8483
+      </p>
+    </div>
+  </div>`;
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders, status: 204 });
@@ -128,6 +237,13 @@ Deno.serve(async (req) => {
       .from("job_stages")
       .select("*")
       .eq("job_id", body.job_id);
+
+    // Load fit cultural questions for this job (used only if the stage is Fit Cultural)
+    const { data: perguntasFit } = await supabaseAdmin
+      .from("perguntas_fit")
+      .select("texto, tipo, opcoes, ordem")
+      .eq("vaga_id", body.job_id)
+      .order("ordem", { ascending: true });
 
     const label = body.stage_label.toLowerCase();
     const stage = (stages || []).find(
@@ -229,6 +345,7 @@ Deno.serve(async (req) => {
         isFitCultural: isFit,
         orgName: org.name || "PWR Gestão",
         fitAccessUrl,
+        perguntas: (perguntasFit as any) || [],
       });
 
       const resp = await fetch("https://api.resend.com/emails", {
