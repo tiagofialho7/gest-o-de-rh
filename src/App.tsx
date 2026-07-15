@@ -74,6 +74,7 @@ const EvaluationAnswerPage = lazy(() => import("./pages/EvaluationAnswerPage"));
 const EvaluationResultPage = lazy(() => import("./pages/EvaluationResultPage"));
 const FitCulturalPage = lazy(() => import("./pages/FitCulturalPage"));
 const FitCulturalPreviewPage = lazy(() => import("./pages/FitCulturalPreviewPage"));
+const OAuthConsent = lazy(() => import("./pages/OAuthConsent"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -134,6 +135,13 @@ const App = () => (
           <Route path="/fit-cultural/preview" element={
             <Suspense fallback={<div className="container mx-auto px-4 py-8 space-y-4"><Skeleton className="h-12 w-64" /><Skeleton className="h-64 w-full" /></div>}>
               <FitCulturalPreviewPage />
+            </Suspense>
+          } />
+
+          {/* OAuth consent for MCP / third-party integrations */}
+          <Route path="/.lovable/oauth/consent" element={
+            <Suspense fallback={<div className="container mx-auto px-4 py-8 space-y-4"><Skeleton className="h-12 w-64" /><Skeleton className="h-64 w-full" /></div>}>
+              <OAuthConsent />
             </Suspense>
           } />
 

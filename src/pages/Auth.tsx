@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { hasInviteTokenInHash } from "@/lib/inviteDetection";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -36,6 +36,10 @@ const Auth = () => {
   const { hasUsers, isLoading: isCheckingUsers } = useSystemStatus();
   const { registrationEnabled, isLoading: isLoadingRegistration } = useRegistrationSettings();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  // Consume ?next=<same-origin path>, e.g. from /.lovable/oauth/consent.
+  const nextRaw = searchParams.get("next");
+  const nextPath = nextRaw && nextRaw.startsWith("/") && !nextRaw.startsWith("//") ? nextRaw : null;
   const { toast } = useToast();
 
   const [fullName, setFullName] = useState("");
@@ -60,6 +64,11 @@ const Auth = () => {
       navigate("/accept-invite");
       return;
     }
+    // Honor ?next=/some/path (e.g. OAuth consent return URL).
+    if (nextPath) {
+      navigate(nextPath, { replace: true });
+      return;
+    }
     // First time setup: go to onboarding to create organization
     // Normal login: go to dashboard
     if (isFirstTimeSetup) {
@@ -67,7 +76,7 @@ const Auth = () => {
     } else {
       navigate("/people-analytics");
     }
-  }, [user, isFirstTimeSetup, isCheckingUsers, navigate]);
+  }, [user, isFirstTimeSetup, isCheckingUsers, navigate, nextPath]);
 
   const clearForm = () => {
     setFullName("");
@@ -181,7 +190,12 @@ const Auth = () => {
   const handleGoogleAuth = async () => {
     setIsLoading(true);
     try {
-      await signInWithGoogle();
+      // Preserve any ?next=... so the user returns to the same /auth URL
+      // (e.g. OAuth consent flow) after the Google round-trip.
+      const redirectUri = nextPath
+        ? `${window.location.origin}/auth?next=${encodeURIComponent(nextPath)}`
+        : window.location.origin;
+      await signInWithGoogle(redirectUri);
     } catch (error: any) {
       toast({
         title: "Erro ao autenticar",
